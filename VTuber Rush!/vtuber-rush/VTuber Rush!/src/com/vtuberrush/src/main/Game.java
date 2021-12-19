@@ -19,20 +19,19 @@ public class Game extends JFrame{
 		importImage();
 		
 		//Window Initialization
-		setIconImage(new ImageIcon("/WindowIcon.png").getImage());
+		setIconImage(new ImageIcon("../VTuber Rush!/res/WindowIcon.png").getImage());
 		setTitle("Vtuber Rush!");
 		setSize(1280,720);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);	
-		
 		gameScreen = new GameScreen(image);
 		add(gameScreen);
 		setVisible(true);
 	}
 	
 	private void importImage() {
-		InputStream imageStream = getClass().getResourceAsStream("/PomuRainpuff.png");
+		InputStream imageStream = getClass().getResourceAsStream("/WindowIcon.png");
 		try {
 			image = ImageIO.read(imageStream);
 		} catch (IOException e) {
