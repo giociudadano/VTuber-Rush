@@ -3,8 +3,6 @@ package com.vtuberrush.src.main;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import com.vtuberrush.src.input.KeyboardInput;
-import com.vtuberrush.src.input.MouseInput;
 import com.vtuberrush.src.scenes.Menu;
 import com.vtuberrush.src.scenes.Playing;
 import com.vtuberrush.src.scenes.Settings;
@@ -16,9 +14,6 @@ public class Game extends JFrame implements Runnable {
 	
 	private final double frameRateCap = 60.0;
 	private final double tickRateCap = 120.0;
-	
-	private KeyboardInput keyboardInput;
-	private MouseInput mouseInput;
 	
 	private Render render;
 	private Menu menu;
@@ -49,17 +44,6 @@ public class Game extends JFrame implements Runnable {
 		playing = new Playing(this);
 		settings = new Settings(this);
 	}
-	
-	private void initInput() {
-		keyboardInput = new KeyboardInput();
-		mouseInput = new MouseInput();
-		
-		addKeyListener(keyboardInput);
-		addMouseListener(mouseInput);
-		addMouseMotionListener(mouseInput);
-		
-		requestFocus();
-	}
 
 	private void startGame() {
 		gameThread = new Thread(this){};
@@ -72,7 +56,7 @@ public class Game extends JFrame implements Runnable {
 	
 	public static void main(String[] args) {
 		Game game = new Game();	
-		game.initInput();
+		game.gameScreen.initInput();
 		game.startGame();
 	}
 
