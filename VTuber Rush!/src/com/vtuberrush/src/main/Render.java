@@ -16,8 +16,10 @@ public class Render {
 			game.getMenu().render(graphics);
 			break;
 		case PLAYING:
+			game.getPlaying().render(graphics);
 			break;
 		case SETTINGS:
+			game.getSettings().render(graphics);
 			break;
 		default:
 			break;
