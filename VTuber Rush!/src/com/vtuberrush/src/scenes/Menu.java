@@ -26,7 +26,7 @@ public class Menu extends GameScene implements SceneMethods {
 
 	@Override
 	public void render(Graphics graphics) {
-		for(int y = 0; y < 20; y++) {
+		for(int y = 0; y < 24; y++) {
 			for(int x = 0; x < 40; x++) {
 				graphics.drawImage(sprites.get(getRandomInt()), x*32, y*32, null);
 			}
@@ -43,14 +43,14 @@ public class Menu extends GameScene implements SceneMethods {
 	}
 	
 	private void loadSprites() {
-		for(int y = 0; y < 40; y++) {
-			for(int x = 0; x < 20; x++) {
+		for(int y = 0; y < 10; y++) {
+			for(int x = 0; x < 10; x++) {
 				sprites.add(image.getSubimage(x*32, y*32, 32, 32));
 			}
 		}
 	}
 	
 	private int getRandomInt() {
-		return random.nextInt(400);
+		return random.nextInt(100);
 	}
 }
