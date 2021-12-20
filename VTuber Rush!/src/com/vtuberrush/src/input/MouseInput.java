@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import com.vtuberrush.src.main.Game;
+import com.vtuberrush.src.main.GameStates;
 
 public class MouseInput implements MouseListener, MouseMotionListener{
 
@@ -19,21 +20,72 @@ public class MouseInput implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		switch(GameStates.gameState) {
+		case MENU:
+			game.getMenu().mouseMoved(e.getX(),e.getY());
+			break;
+		case PLAYING:
+			game.getPlaying().mouseMoved(e.getX(),e.getY());
+			break;
+		case SETTINGS:
+			game.getSettings().mouseMoved(e.getX(),e.getY());
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getButton()==MouseEvent.BUTTON1){
-			System.out.println("Mouse: " + e.getX() + " " + e.getY());
+			switch(GameStates.gameState) {
+			case MENU:
+				game.getMenu().mouseClicked(e.getX(),e.getY());
+				break;
+			case PLAYING:
+				game.getPlaying().mouseClicked(e.getX(),e.getY());
+				break;
+			case SETTINGS:
+				game.getSettings().mouseClicked(e.getX(),e.getY());
+				break;
+			default:
+				break;
+			}
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		switch(GameStates.gameState) {
+		case MENU:
+			game.getMenu().mousePressed(e.getX(),e.getY());
+			break;
+		case PLAYING:
+			game.getPlaying().mousePressed(e.getX(),e.getY());
+			break;
+		case SETTINGS:
+			game.getSettings().mousePressed(e.getX(),e.getY());
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		switch(GameStates.gameState) {
+		case MENU:
+			game.getMenu().mouseReleased(e.getX(),e.getY());
+			break;
+		case PLAYING:
+			game.getPlaying().mouseReleased(e.getX(),e.getY());
+			break;
+		case SETTINGS:
+			game.getSettings().mouseReleased(e.getX(),e.getY());
+			break;
+		default:
+			break;
+		}
 	}
 
 	@Override
