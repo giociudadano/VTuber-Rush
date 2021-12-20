@@ -8,15 +8,20 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import com.vtuberrush.src.input.KeyboardInput;
+import com.vtuberrush.src.input.MouseInput;
+
 public class Game extends JFrame implements Runnable {
 	
 	private GameScreen gameScreen;
 	private BufferedImage image;
+	private Thread gameThread;
 	
 	private final double frameRateCap = 60.0;
 	private final double tickRateCap = 120.0;
 	
-	private Thread gameThread;
+	private KeyboardInput keyboardInput;
+	private MouseInput mouseInput;
 
 	public Game() {	
 		
@@ -37,6 +42,17 @@ public class Game extends JFrame implements Runnable {
 		setVisible(true);
 	}
 	
+	private void importInput() {
+		keyboardInput = new KeyboardInput();
+		mouseInput = new MouseInput();
+		
+		addKeyListener(keyboardInput);
+		addMouseListener(mouseInput);
+		addMouseMotionListener(mouseInput);
+		
+		requestFocus();
+	}
+	
 	private void importImage() {
 		InputStream imageStream = getClass().getResourceAsStream("/PomuRainpuff.png");
 		try {
@@ -51,14 +67,13 @@ public class Game extends JFrame implements Runnable {
 		gameThread.start();
 	}
 	
-	private void loopGame() {
-	}
 	
 	private void tickGame() {
 	} 
 	
 	public static void main(String[] args) {
 		Game game = new Game();	
+		game.importInput();
 		game.startGame();
 	}
 
