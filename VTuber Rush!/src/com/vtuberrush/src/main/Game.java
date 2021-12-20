@@ -8,42 +8,62 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import com.vtuberrush.src.input.KeyboardInput;
+import com.vtuberrush.src.input.MouseInput;
+import com.vtuberrush.src.scenes.Menu;
+import com.vtuberrush.src.scenes.Playing;
+import com.vtuberrush.src.scenes.Settings;
+
 public class Game extends JFrame implements Runnable {
 	
 	private GameScreen gameScreen;
-	private BufferedImage image;
+	private Thread gameThread;
 	
 	private final double frameRateCap = 60.0;
 	private final double tickRateCap = 120.0;
 	
-	private Thread gameThread;
+	private KeyboardInput keyboardInput;
+	private MouseInput mouseInput;
+	
+	private Render render;
+	private Menu menu;
+	private Playing playing;
+	private Settings settings;
 
 	public Game() {	
 		
-		//Resource Methods
-		importImage();
-		
 		//Window Initialization
-		setIconImage(new ImageIcon("/WindowIcon.png").getImage());
+		setIconImage(new ImageIcon("res/WindowIcon.png").getImage());
 		setTitle("Vtuber Rush!");
-		setSize(1280,720);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);	
 		
-		gameScreen = new GameScreen(image);
+		initClasses();
 		add(gameScreen);
 		
+		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
-	private void importImage() {
-		InputStream imageStream = getClass().getResourceAsStream("/PomuRainpuff.png");
-		try {
-			image = ImageIO.read(imageStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	
+	private void initClasses() {
+		render = new Render(this);
+		gameScreen = new GameScreen(this);
+		menu = new Menu(this);
+		playing = new Playing(this);
+		settings = new Settings(this);
+	}
+	
+	private void initInput() {
+		keyboardInput = new KeyboardInput();
+		mouseInput = new MouseInput();
+		
+		addKeyListener(keyboardInput);
+		addMouseListener(mouseInput);
+		addMouseMotionListener(mouseInput);
+		
+		requestFocus();
 	}
 
 	private void startGame() {
@@ -51,14 +71,13 @@ public class Game extends JFrame implements Runnable {
 		gameThread.start();
 	}
 	
-	private void loopGame() {
-	}
 	
 	private void tickGame() {
 	} 
 	
 	public static void main(String[] args) {
 		Game game = new Game();	
+		game.initInput();
 		game.startGame();
 	}
 
@@ -69,25 +88,30 @@ public class Game extends JFrame implements Runnable {
 		
 		double tickRate = 1000000000.0 / tickRateCap;
 		double frameRate = 1000000000.0 / frameRateCap;
+		
 		long frameRateTime = System.nanoTime();
 		long tickRateTime = System.nanoTime();
 		long time = System.currentTimeMillis();
+		
 		int frames = 0;
 		int ticks = 0;
 		
+		long timeNow;
 		
 		while(true) {
+			timeNow = System.nanoTime();
+			
 			//Renders graphics at 60 FPS
-			if(System.nanoTime() - frameRateTime >= frameRate) {
+			if(timeNow - frameRateTime >= frameRate) {
 				repaint();
-				frameRateTime = System.nanoTime();
+				frameRateTime = timeNow;
 				frames++;
 			}
 			
 			//Ticks game logic at 120 TPS
-			if(System.nanoTime() - tickRateTime >= tickRate) {
+			if(timeNow - tickRateTime >= tickRate) {
 				tickGame();
-				tickRateTime = System.nanoTime();
+				tickRateTime = timeNow;
 				ticks++;
 			}
 			
@@ -98,7 +122,24 @@ public class Game extends JFrame implements Runnable {
 				ticks = 0;
 				time = System.currentTimeMillis();
 			}
-		}
-		
+		}	
 	}
+	
+	//Getters and Setters
+	public Render getRender() {
+		return render;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public Playing getPlaying() {
+		return playing;
+	}
+
+	public Settings getSettings() {
+		return settings;
+	}
+
 }
