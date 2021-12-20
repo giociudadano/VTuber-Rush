@@ -20,23 +20,23 @@ public class GameScreen extends JPanel {
 	}
 	
 	private void loadSprites() {
-		for(int y = 0; y < 20; y++) {
-			for(int x = 0; x < 10; x++) {
-				sprites.add(image.getSubimage(x*64, y*64, 64, 64));
+		for(int y = 0; y < 40; y++) {
+			for(int x = 0; x < 20; x++) {
+				sprites.add(image.getSubimage(x*32, y*32, 32, 32));
 			}
 		}
 	}
 
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		for(int y = 0; y < 10; y++) {
-			for(int x = 0; x < 20; x++) {
-				graphics.drawImage(sprites.get(getRandomInt()), x*64, y*64, null);
+		for(int y = 0; y < 20; y++) {
+			for(int x = 0; x < 40; x++) {
+				graphics.drawImage(sprites.get(getRandomInt()), x*32, y*32, null);
 			}
 		}
 	}
 	
 	private int getRandomInt() {
-		return random.nextInt(200);
+		return random.nextInt(400);
 	}
 }
