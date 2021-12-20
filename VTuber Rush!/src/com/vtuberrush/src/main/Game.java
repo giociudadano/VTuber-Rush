@@ -12,6 +12,9 @@ public class Game extends JFrame{
 	
 	private GameScreen gameScreen;
 	private BufferedImage image;
+
+	private double frameDuration = 1000000000.0 / 60.0;
+	private long frameTime = System.nanoTime();
 	
 	public Game() {
 		
@@ -28,6 +31,7 @@ public class Game extends JFrame{
 		
 		gameScreen = new GameScreen(image);
 		add(gameScreen);
+		
 		setVisible(true);
 	}
 	
@@ -40,7 +44,17 @@ public class Game extends JFrame{
 		}
 	}
 
+	private void loopGame() {
+		while(true) {
+			if(System.nanoTime() - frameTime >= frameDuration) {
+				frameTime = System.nanoTime();
+				repaint();
+			} else {}
+		}
+	}
+	
 	public static void main(String[] args) {
 		Game game = new Game();	
+		game.loopGame();
 	}
 }
