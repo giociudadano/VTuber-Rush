@@ -8,15 +8,17 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-public class Game extends JFrame{
+public class Game extends JFrame implements Runnable {
 	
 	private GameScreen gameScreen;
 	private BufferedImage image;
-
-	private double frameDuration = 1000000000.0 / 60.0;
-	private long frameTime = System.nanoTime();
 	
-	public Game() {
+	private final double frameRateCap = 60.0;
+	private final double tickRateCap = 120.0;
+	
+	private Thread gameThread;
+
+	public Game() {	
 		
 		//Resource Methods
 		importImage();
@@ -44,17 +46,59 @@ public class Game extends JFrame{
 		}
 	}
 
-	private void loopGame() {
-		while(true) {
-			if(System.nanoTime() - frameTime >= frameDuration) {
-				frameTime = System.nanoTime();
-				repaint();
-			} else {}
-		}
+	private void startGame() {
+		gameThread = new Thread(this){};
+		gameThread.start();
 	}
+	
+	private void loopGame() {
+	}
+	
+	private void tickGame() {
+	} 
 	
 	public static void main(String[] args) {
 		Game game = new Game();	
-		game.loopGame();
+		game.startGame();
+	}
+
+
+
+	@Override
+	public void run() {
+		
+		double tickRate = 1000000000.0 / tickRateCap;
+		double frameRate = 1000000000.0 / frameRateCap;
+		long frameRateTime = System.nanoTime();
+		long tickRateTime = System.nanoTime();
+		long time = System.currentTimeMillis();
+		int frames = 0;
+		int ticks = 0;
+		
+		
+		while(true) {
+			//Renders graphics at 60 FPS
+			if(System.nanoTime() - frameRateTime >= frameRate) {
+				repaint();
+				frameRateTime = System.nanoTime();
+				frames++;
+			}
+			
+			//Ticks game logic at 120 TPS
+			if(System.nanoTime() - tickRateTime >= tickRate) {
+				tickGame();
+				tickRateTime = System.nanoTime();
+				ticks++;
+			}
+			
+			//Prints tick rate and frame rate
+			if(System.currentTimeMillis() - time >= 1000) {
+				System.out.println("FPS: " + frames + " | TPS: " + ticks);
+				frames = 0;
+				ticks = 0;
+				time = System.currentTimeMillis();
+			}
+		}
+		
 	}
 }
