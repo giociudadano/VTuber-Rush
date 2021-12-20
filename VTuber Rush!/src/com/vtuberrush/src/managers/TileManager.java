@@ -22,9 +22,9 @@ public class TileManager {
 	}
 	
 	private void createTiles() {
-		tiles.add(GRASS = new Tile(getSprite(0,1)));
-		tiles.add(WATER = new Tile(getSprite(0,2)));
-		tiles.add(ROAD = new Tile(getSprite(0,3)));
+		tiles.add(GRASS = new Tile(getSprite(0,0)));
+		tiles.add(WATER = new Tile(getSprite(1,0)));
+		tiles.add(ROAD = new Tile(getSprite(2,0)));
 	}
 	
 	public BufferedImage getSprite(int id) {
@@ -32,7 +32,7 @@ public class TileManager {
 	}
 	
 	private BufferedImage getSprite(int x, int y) {
-		return atlas.getSubimage(x*32, y*32, 32, 32);
+		return atlas.getSubimage(x*64, y*64, 64, 64);
 	}
 
 }
