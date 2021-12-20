@@ -26,7 +26,6 @@ public class Game extends JFrame implements Runnable {
 		//Window Initialization
 		setIconImage(new ImageIcon("/WindowIcon.png").getImage());
 		setTitle("Vtuber Rush!");
-		setSize(1280,720);
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);	
@@ -34,6 +33,7 @@ public class Game extends JFrame implements Runnable {
 		gameScreen = new GameScreen(image);
 		add(gameScreen);
 		
+		pack();
 		setVisible(true);
 	}
 	
@@ -69,25 +69,30 @@ public class Game extends JFrame implements Runnable {
 		
 		double tickRate = 1000000000.0 / tickRateCap;
 		double frameRate = 1000000000.0 / frameRateCap;
+		
 		long frameRateTime = System.nanoTime();
 		long tickRateTime = System.nanoTime();
 		long time = System.currentTimeMillis();
+		
 		int frames = 0;
 		int ticks = 0;
 		
+		long timeNow;
 		
 		while(true) {
+			timeNow = System.nanoTime();
+			
 			//Renders graphics at 60 FPS
-			if(System.nanoTime() - frameRateTime >= frameRate) {
+			if(timeNow - frameRateTime >= frameRate) {
 				repaint();
-				frameRateTime = System.nanoTime();
+				frameRateTime = timeNow;
 				frames++;
 			}
 			
 			//Ticks game logic at 120 TPS
-			if(System.nanoTime() - tickRateTime >= tickRate) {
+			if(timeNow - tickRateTime >= tickRate) {
 				tickGame();
-				tickRateTime = System.nanoTime();
+				tickRateTime = timeNow;
 				ticks++;
 			}
 			
