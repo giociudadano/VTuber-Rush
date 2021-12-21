@@ -26,15 +26,20 @@ public class Playing extends GameScene implements SceneMethods {
 		level = LevelBuilder.getLevelData();
 		tileManager = new TileManager();
 		bottomBar = new BottomBar(0,550,1280,200,this);
-		createDefaultLevel();
+		createLevelDefault();
+		loadLevelDefault();
 	}
 
-	private void createDefaultLevel() {
+	private void createLevelDefault() {
 		int[] array = new int[400];
 		for(int i = 0; i < array.length; i++) {
 			array[i] = 0;
 		}
 		LoadSave.createLevel("new_level", array);
+	}
+	
+	private void loadLevelDefault() {
+		level = LoadSave.readLevel("new_level");
 	}
 
 	@Override
@@ -117,5 +122,9 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public TileManager getTileManager() {
 		return tileManager;
+	}
+	
+	public void saveLevel() {
+		LoadSave.saveLevel("new_level", level);
 	}
 }
