@@ -109,5 +109,11 @@ public class Menu extends GameScene implements SceneMethods {
 		buttonQuit.resetButtons();
 	}
 
+	@Override
+	public void mouseDragged(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

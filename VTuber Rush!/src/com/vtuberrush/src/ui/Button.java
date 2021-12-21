@@ -71,6 +71,14 @@ public class Button {
 		this.mousePressed = false;
 	}
 	
+	public boolean isMouseOver() {
+		return mouseOver;
+	}
+	
+	public boolean isMousePressed() {
+		return mousePressed;
+	}
+	
 	public void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}

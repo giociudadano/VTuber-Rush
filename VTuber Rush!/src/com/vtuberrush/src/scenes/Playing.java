@@ -6,13 +6,19 @@ import java.awt.Graphics;
 import com.vtuberrush.src.helpers.LevelBuilder;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.TileManager;
+import com.vtuberrush.src.objects.Tile;
 import com.vtuberrush.src.ui.BottomBar;
 
 public class Playing extends GameScene implements SceneMethods {
 
 	private int[][] level;
 	private TileManager tileManager;
+	private Tile selectedTile;
 	private BottomBar bottomBar;
+	
+	private int mouseX, mouseY;
+	private int tileXLast, tileYLast;
+	private boolean drawSelectedTile = false;
 	
 	public Playing(Game game) {
 		super(game);
@@ -32,12 +38,21 @@ public class Playing extends GameScene implements SceneMethods {
 			}
 		}
 		bottomBar.draw(graphics);
+		drawSelectedTile(graphics);
+	}
+
+	private void drawSelectedTile(Graphics graphics) {
+		if(selectedTile != null && drawSelectedTile) {
+			graphics.drawImage(selectedTile.getSprite(), mouseX, mouseY, 64, 64, null);
+		}
 	}
 
 	@Override
 	public void mouseClicked(int x, int y) {
 		if (y > 550) {
 			bottomBar.mouseClicked(x, y);
+		} else {
+			changeTile(mouseX, mouseY);
 		}
 	}
 
@@ -45,6 +60,11 @@ public class Playing extends GameScene implements SceneMethods {
 	public void mouseMoved(int x, int y) {
 		if (y > 550) {
 			bottomBar.mouseMoved(x, y);
+			drawSelectedTile = false;
+		} else {
+			mouseX = (x / 64) * 64;
+			mouseY = (y / 64) * 64;
+			drawSelectedTile = true;
 		}
 	}
 
@@ -60,8 +80,33 @@ public class Playing extends GameScene implements SceneMethods {
 		bottomBar.mouseReleased(x, y);
 	}
 	
+	public void setSelectedTile(Tile tile) {
+		this.selectedTile = tile;
+		drawSelectedTile = true;
+	}
+	
+	private void changeTile(int x, int y) {
+		if (selectedTile != null) {
+			int tileX = x / 64;
+			int tileY = y / 64;
+			if (tileXLast == tileX && tileYLast == tileY) {
+				return;
+			}
+			tileXLast = tileX;
+			tileYLast = tileY;
+			level[tileY][tileX] = selectedTile.getId();
+		}
+	}
+	
 	public TileManager getTileManager() {
 		return tileManager;
+	}
+
+	@Override
+	public void mouseDragged(int x, int y) {
+		if (y < 550) {
+			changeTile(x, y);
+		}
 	}
 
 }
