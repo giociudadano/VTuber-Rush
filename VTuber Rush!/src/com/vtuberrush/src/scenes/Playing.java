@@ -18,7 +18,7 @@ public class Playing extends GameScene implements SceneMethods {
 		super(game);
 		level = LevelBuilder.getLevelData();
 		tileManager = new TileManager();
-		bottomBar = new BottomBar(0,550,1280,200);
+		bottomBar = new BottomBar(0,550,1280,200,this);
 	}
 
 	@Override
@@ -58,6 +58,10 @@ public class Playing extends GameScene implements SceneMethods {
 	@Override
 	public void mouseReleased(int x, int y) {
 		bottomBar.mouseReleased(x, y);
+	}
+	
+	public TileManager getTileManager() {
+		return tileManager;
 	}
 
 }
