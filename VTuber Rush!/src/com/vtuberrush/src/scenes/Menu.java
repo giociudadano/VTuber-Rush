@@ -45,6 +45,8 @@ public class Menu extends GameScene implements SceneMethods {
 	@Override
 	public void mouseMoved(int x, int y) {
 		buttonPlaying.setMouseOver(false);
+		buttonSettings.setMouseOver(false);
+		buttonQuit.setMouseOver(false);
 		if (buttonPlaying.getBounds().contains(x, y)) {
 			buttonPlaying.setMouseOver(true);
 		} else if (buttonSettings.getBounds().contains(x, y)) {
@@ -75,7 +77,7 @@ public class Menu extends GameScene implements SceneMethods {
 	private void initButtons() {
 		buttonPlaying = new Button("Play", 550, 250, 200, 60);
 		buttonSettings = new Button("Settings", 550, 320, 200, 60);
-		buttonQuit = new Button("Exit", 550, 400, 200, 60);
+		buttonQuit = new Button("Exit", 550, 390, 200, 60);
 	}
 
 	private void drawButtons(Graphics graphics) {

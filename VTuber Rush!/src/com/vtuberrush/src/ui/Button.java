@@ -10,9 +10,6 @@ public class Button {
 	private Rectangle bounds;
 	private boolean mouseOver, mousePressed;
 	
-	private static Color colorOver = new Color(235,235,235);
-	private static Color colorPressed = new Color(150,150,150);
-	
 	public Button(String text, int x, int y, int width, int height) {
 		this.text = text;
 		this.x = x;
@@ -30,7 +27,7 @@ public class Button {
 	
 	private void drawBody(Graphics graphics) {
 		if(mouseOver) {
-			graphics.setColor(colorOver);
+			graphics.setColor(new Color(235,235,235));
 		} else {
 			graphics.setColor(Color.white);
 		}
@@ -39,7 +36,7 @@ public class Button {
 	
 	private void drawBorder(Graphics graphics) {
 		if(mousePressed) {
-			graphics.setColor(colorPressed);
+			graphics.setColor(new Color(150,150,150));
 		} else {
 			graphics.setColor(Color.black);
 		}
