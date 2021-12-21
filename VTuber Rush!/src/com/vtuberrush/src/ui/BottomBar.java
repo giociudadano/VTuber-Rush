@@ -5,6 +5,8 @@ import static com.vtuberrush.src.main.GameStates.setGameState;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.vtuberrush.src.objects.Tile;
@@ -36,17 +38,25 @@ public class BottomBar {
 		
 		int i = 0;
 		for(Tile tile : playing.getTileManager().tiles) {
-			tileButtons.add(new Button(tile.getName(), 100 + (60 * i++), 560, 50, 50));
+			tileButtons.add(new Button(tile.getName(), 100 + (60 * i), 560, 50, 50, i++));
 		}
 	}
 	
 	private void drawButtons(Graphics graphics) {
 		buttonMenu.draw(graphics);
-		for(Button button : tileButtons) {
-			button.draw(graphics);
-		}
+		drawTileButtons(graphics);
 	}
 	
+	private void drawTileButtons(Graphics graphics) {
+		for (Button button : tileButtons) {
+			graphics.drawImage(getButtonImage(button.getId()), button.x, button.y, button.width, button.height, null);
+		}
+	}
+
+	private BufferedImage getButtonImage(int id) {
+		return playing.getTileManager().getSprite(id);
+	}
+
 	private void resetButtons() {
 		buttonMenu.resetButtons();
 	}
