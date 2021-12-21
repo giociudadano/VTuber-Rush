@@ -15,7 +15,7 @@ import com.vtuberrush.src.scenes.Playing;
 public class BottomBar {
 	private int x, y, width, height;
 	private Playing playing;
-	private Button buttonMenu;
+	private Button buttonMenu, buttonSave;
 	private ArrayList<Button>tileButtons = new ArrayList<>();
 	private Tile selectedTile;
 	
@@ -29,13 +29,14 @@ public class BottomBar {
 	}
 	
 	public void draw(Graphics graphics) {
-		graphics.setColor(new Color(0,0,0,200));
+		graphics.setColor(Color.black);
 		graphics.fillRect(x, y, width, height);
 		drawButtons(graphics);
 	}
 	
 	private void initButtons() {
 		buttonMenu = new Button("Menu", 10, 560, 80, 25);
+		buttonSave = new Button("Save", 10, 590, 80, 25);
 		
 		int i = 0;
 		for(Tile tile : playing.getTileManager().tiles) {
@@ -45,6 +46,7 @@ public class BottomBar {
 	
 	private void drawButtons(Graphics graphics) {
 		buttonMenu.draw(graphics);
+		buttonSave.draw(graphics);
 		drawTileButtons(graphics);
 		drawSelectedTile(graphics);
 	}
@@ -85,6 +87,8 @@ public class BottomBar {
 	public void mouseClicked(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			setGameState(MENU);
+		} else if (buttonSave.getBounds().contains(x, y)) {
+			saveLevel();
 		} else {
 			for (Button button : tileButtons) {
 				if (button.getBounds().contains(x, y)) {
@@ -104,6 +108,8 @@ public class BottomBar {
 		
 		if (buttonMenu.getBounds().contains(x, y)) {
 			buttonMenu.setMouseOver(true);
+		} else if (buttonSave.getBounds().contains(x, y)) {
+			buttonSave.setMouseOver(true);
 		} else {
 			for (Button button : tileButtons) {
 				if(button.getBounds().contains(x, y)) {
@@ -117,6 +123,8 @@ public class BottomBar {
 	public void mousePressed(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			buttonMenu.setMousePressed(true);
+		} else if (buttonSave.getBounds().contains(x, y)) {
+			buttonSave.setMousePressed(true);
 		} else {
 			for (Button button : tileButtons) {
 				if(button.getBounds().contains(x, y)) {
@@ -136,8 +144,13 @@ public class BottomBar {
 	
 	private void resetButtons() {
 		buttonMenu.resetButtons();
+		buttonSave.resetButtons();
 		for (Button button : tileButtons) {
 			button.resetButtons();
 		}
+	}
+	
+	private void saveLevel() {
+		playing.saveLevel();
 	}
 }

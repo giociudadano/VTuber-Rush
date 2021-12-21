@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.vtuberrush.src.helpers.LevelBuilder;
+import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.TileManager;
 import com.vtuberrush.src.objects.Tile;
@@ -25,6 +26,20 @@ public class Playing extends GameScene implements SceneMethods {
 		level = LevelBuilder.getLevelData();
 		tileManager = new TileManager();
 		bottomBar = new BottomBar(0,550,1280,200,this);
+		createLevelDefault();
+		loadLevelDefault();
+	}
+
+	private void createLevelDefault() {
+		int[] array = new int[400];
+		for(int i = 0; i < array.length; i++) {
+			array[i] = 0;
+		}
+		LoadSave.createLevel("new_level", array);
+	}
+	
+	private void loadLevelDefault() {
+		level = LoadSave.readLevel("new_level");
 	}
 
 	@Override
@@ -80,6 +95,13 @@ public class Playing extends GameScene implements SceneMethods {
 		bottomBar.mouseReleased(x, y);
 	}
 	
+	@Override
+	public void mouseDragged(int x, int y) {
+		if (y < 550) {
+			changeTile(x, y);
+		}
+	}
+
 	public void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;
 		drawSelectedTile = true;
@@ -101,12 +123,8 @@ public class Playing extends GameScene implements SceneMethods {
 	public TileManager getTileManager() {
 		return tileManager;
 	}
-
-	@Override
-	public void mouseDragged(int x, int y) {
-		if (y < 550) {
-			changeTile(x, y);
-		}
+	
+	public void saveLevel() {
+		LoadSave.saveLevel("new_level", level);
 	}
-
 }
