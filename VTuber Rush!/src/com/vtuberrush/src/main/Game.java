@@ -3,6 +3,9 @@ package com.vtuberrush.src.main;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import com.vtuberrush.src.helpers.LoadSave;
+import com.vtuberrush.src.managers.TileManager;
+import com.vtuberrush.src.scenes.Editing;
 import com.vtuberrush.src.scenes.Menu;
 import com.vtuberrush.src.scenes.Playing;
 import com.vtuberrush.src.scenes.Settings;
@@ -16,10 +19,14 @@ public class Game extends JFrame implements Runnable {
 	private final double tickRateCap = 120.0;
 	
 	private Render render;
+	
 	private Menu menu;
+	private Editing editing;
 	private Playing playing;
 	private Settings settings;
 
+	private TileManager tileManager;
+	
 	public Game() {	
 		
 		//Window Initialization
@@ -29,6 +36,7 @@ public class Game extends JFrame implements Runnable {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		initClasses();
+		createLevelDefault();
 		add(gameScreen);
 		
 		pack();
@@ -38,13 +46,23 @@ public class Game extends JFrame implements Runnable {
 	
 	
 	private void initClasses() {
+		tileManager = new TileManager();
 		render = new Render(this);
 		gameScreen = new GameScreen(this);
 		menu = new Menu(this);
 		playing = new Playing(this);
+		editing = new Editing(this);
 		settings = new Settings(this);
 	}
 
+	private void createLevelDefault() {
+		int[] array = new int[400];
+		for(int i = 0; i < array.length; i++) {
+			array[i] = 0;
+		}
+		LoadSave.createLevel("new_level", array);
+	}
+	
 	private void startGame() {
 		gameThread = new Thread(this){};
 		gameThread.start();
@@ -117,8 +135,17 @@ public class Game extends JFrame implements Runnable {
 		return playing;
 	}
 
+	
+	public Editing getEditing() {
+		return editing;
+	}
+	
 	public Settings getSettings() {
 		return settings;
+	}
+	
+	public TileManager getTileManager() {
+		return tileManager;
 	}
 
 }
