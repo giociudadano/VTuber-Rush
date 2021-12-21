@@ -13,16 +13,11 @@ import com.vtuberrush.src.ui.Button;
 import static com.vtuberrush.src.main.GameStates.*;
 
 public class Menu extends GameScene implements SceneMethods {
-
-	private BufferedImage image;
-	private ArrayList<BufferedImage> sprites = new ArrayList<>();
 	
 	private Button buttonPlaying, buttonSettings, buttonQuit;
 	
 	public Menu(Game game) {
 		super(game);
-		importImage();
-		loadSprites();
 		initButtons();
 	}
 
@@ -73,6 +68,9 @@ public class Menu extends GameScene implements SceneMethods {
 		resetButtons();
 	}
 	
+	@Override
+	public void mouseDragged(int x, int y) {
+	}
 	
 	private void initButtons() {
 		buttonPlaying = new Button("Play", 550, 250, 200, 60);
@@ -85,23 +83,6 @@ public class Menu extends GameScene implements SceneMethods {
 		buttonSettings.draw(graphics);
 		buttonQuit.draw(graphics);
 	}
-
-	private void importImage() {
-		InputStream imageStream = getClass().getResourceAsStream("/PomuRainpuff.png");
-		try {
-			image = ImageIO.read(imageStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void loadSprites() {
-		for(int y = 0; y < 10; y++) {
-			for(int x = 0; x < 10; x++) {
-				sprites.add(image.getSubimage(x*32, y*32, 32, 32));
-			}
-		}
-	}
 	
 	private void resetButtons() {
 		buttonPlaying.resetButtons();
@@ -109,11 +90,7 @@ public class Menu extends GameScene implements SceneMethods {
 		buttonQuit.resetButtons();
 	}
 
-	@Override
-	public void mouseDragged(int x, int y) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	
 }

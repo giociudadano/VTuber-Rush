@@ -23,7 +23,7 @@ public class Game extends JFrame implements Runnable {
 	public Game() {	
 		
 		//Window Initialization
-		setIconImage(new ImageIcon("res/WindowIcon.png").getImage());
+		setIconImage(new ImageIcon("res/icon.png").getImage());
 		setTitle("Vtuber Rush!");
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -52,6 +52,12 @@ public class Settings extends GameScene implements SceneMethods {
 		resetButtons();
 	}
 	
+	@Override
+	public void mouseDragged(int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private void initButtons() {
 		buttonMenu = new Button("Menu", 10, 10, 80, 25);
 	}
@@ -62,12 +68,6 @@ public class Settings extends GameScene implements SceneMethods {
 	
 	private void resetButtons() {
 		buttonMenu.resetButtons();
-	}
-
-	@Override
-	public void mouseDragged(int x, int y) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
