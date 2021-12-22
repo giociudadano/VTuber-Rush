@@ -5,11 +5,13 @@ import java.awt.image.BufferedImage;
 
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
+import com.vtuberrush.src.managers.EnemyManager;
 import com.vtuberrush.src.ui.ActionBar;
 
 public class Playing extends GameScene implements SceneMethods {
 
 	private int[][] level;
+	private EnemyManager enemyManager;
 	private ActionBar bottomBar;
 	private int mouseX, mouseY;
 	
@@ -17,6 +19,7 @@ public class Playing extends GameScene implements SceneMethods {
 		super(game);
 		loadLevelDefault();
 		bottomBar = new ActionBar(0,550,1280,200,this);
+		enemyManager = new EnemyManager(this);
 	}
 
 	private void loadLevelDefault() {
@@ -27,6 +30,7 @@ public class Playing extends GameScene implements SceneMethods {
 	public void render(Graphics graphics) {
 		drawLevel(graphics);
 		bottomBar.draw(graphics);
+		enemyManager.draw(graphics);
 	}
 	
 	private void drawLevel(Graphics graphics) {
@@ -38,10 +42,15 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	public void tick() {
+		enemyManager.tick();
+	}
+	
 	private BufferedImage getSprite(int id) {
 		return game.getTileManager().getSprite(id);
 	}
 
+	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
 		if (y > 550) {
