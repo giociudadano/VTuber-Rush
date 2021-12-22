@@ -3,12 +3,16 @@ package com.vtuberrush.src.input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import static com.vtuberrush.src.main.GameStates.*;
-
+import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.main.GameStates;
 
 public class KeyboardInput implements KeyListener {
 
+	private Game game;
+	public KeyboardInput(Game game) {
+		this.game = game;
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		
@@ -16,12 +20,12 @@ public class KeyboardInput implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_1) {
-			GameStates.gameState = MENU;
-		} else if (e.getKeyCode() == KeyEvent.VK_2) {
-			GameStates.gameState = PLAYING;
-		} else if (e.getKeyCode() == KeyEvent.VK_3) {
-			GameStates.gameState = SETTINGS;
+		switch(GameStates.gameState) {
+		case EDITING:
+			game.getEditing().keyPressed(e);
+			break;
+		default:
+			break;
 		}
 	}
 
