@@ -71,9 +71,28 @@ public class TileManager {
 		return atlas.getSubimage(x*32, y*32, 32, 32);
 	}
 	
+	public BufferedImage getSpriteAnimated(int id, int frame) {
+		return tiles.get(id).getSprite(frame);
+	}
+	
+	private BufferedImage[] getSpriteArray(int x, int y) {
+		BufferedImage[] array = new BufferedImage[4];
+		for(int i = 0; i < 4; i++) {
+			array[i] = getSprite(x+i, y);
+		}
+		return array;
+	}
+	
+	public boolean isAnimated(int id) {
+		return tiles.get(id).isAnimated();
+	}
+	
+	
+	@SuppressWarnings("unused") //TODO Future use
 	private BufferedImage[] getSpriteArray(int x1, int y1, int x2, int y2) {
 		return new BufferedImage[] {getSprite(x1, y1), getSprite(x2, y2)};
 	}
+	
 
 	public ArrayList<Tile> getTilesGrassVariants() {
 		return tilesGrassVariants;
@@ -92,6 +111,7 @@ public class TileManager {
 	public ArrayList<Tile> getTilesWaterCorners() {
 		return tilesWaterCorners;
 	}
+
 	
 	
 
