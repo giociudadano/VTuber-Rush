@@ -1,6 +1,5 @@
 package com.vtuberrush.src.scenes;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -39,12 +38,10 @@ public class Editing extends GameScene implements SceneMethods{
 	}
 	
 	private void drawLevel(Graphics graphics) {
-		graphics.setColor(new Color(138,212,79));
-		graphics.fillRect(0, 0, 1280, 720);
 		for(int y = 0; y < level.length; y++) {
 			for (int x = 0; x < level[y].length; x++) {
 				int id = level[y][x];
-				graphics.drawImage(getSprite(id), x*64, y*64, null);
+				graphics.drawImage(getSprite(id), x*32, y*32, null);
 			}
 		}
 	}
@@ -59,7 +56,7 @@ public class Editing extends GameScene implements SceneMethods{
 	
 	private void drawSelectedTile(Graphics graphics) {
 		if(selectedTile != null && drawSelectedTile) {
-			graphics.drawImage(selectedTile.getSprite(), mouseX, mouseY, 64, 64, null);
+			graphics.drawImage(selectedTile.getSprite(), mouseX, mouseY, 32, 32, null);
 		}
 	}
 
@@ -70,8 +67,8 @@ public class Editing extends GameScene implements SceneMethods{
 	
 	private void changeTile(int x, int y) {
 		if (selectedTile != null) {
-			int tileX = x / 64;
-			int tileY = y / 64;
+			int tileX = x / 32;
+			int tileY = y / 32;
 			if (tileXLast == tileX && tileYLast == tileY) {
 				return;
 			}
@@ -96,8 +93,8 @@ public class Editing extends GameScene implements SceneMethods{
 			toolBar.mouseMoved(x, y);
 			drawSelectedTile = false;
 		} else {
-			mouseX = (x / 64) * 64;
-			mouseY = (y / 64) * 64;
+			mouseX = (x / 32) * 32;
+			mouseY = (y / 32) * 32;
 			drawSelectedTile = true;
 		}
 	}
