@@ -19,6 +19,7 @@ public class Editing extends GameScene implements SceneMethods{
 	private int tileXLast, tileYLast;
 	private boolean drawSelectedTile = false;
 	
+	private int frame, frameNext;
 
 	public Editing(Game game) {
 		super(game);
@@ -33,22 +34,42 @@ public class Editing extends GameScene implements SceneMethods{
 
 	@Override
 	public void render(Graphics graphics) {
+		tickAnimation();
 		drawLevel(graphics);
 		toolBar.draw(graphics);
 		drawSelectedTile(graphics);
 	}
 	
+	private void tickAnimation() {
+		frameNext = (frameNext + 1) % 20;
+		if (frameNext == 0) {
+			frame = (frame + 1) % 4;
+		}
+	}
+
 	private void drawLevel(Graphics graphics) {
 		for(int y = 0; y < level.length; y++) {
 			for (int x = 0; x < level[y].length; x++) {
 				int id = level[y][x];
-				graphics.drawImage(getSprite(id), x*32, y*32, null);
+				if(isAnimated(id)) {
+					graphics.drawImage(getSprite(id, frame), x*32, y*32, null);
+				} else {
+					graphics.drawImage(getSprite(id), x*32, y*32, null);
+				}
 			}
 		}
 	}
 	
+	private boolean isAnimated(int id) {
+		return game.getTileManager().isAnimated(id);
+	}
+
 	private BufferedImage getSprite(int id) {
 		return game.getTileManager().getSprite(id);
+	}
+	
+	private BufferedImage getSprite(int id, int frame) {
+		return game.getTileManager().getSpriteAnimated(id, frame);
 	}
 	
 	public void saveLevel() {
@@ -84,6 +105,7 @@ public class Editing extends GameScene implements SceneMethods{
 	public void mouseClicked(int x, int y) {
 		if (y > 540) {
 			toolBar.mouseClicked(x, y);
+			drawSelectedTile = false;
 		} else {
 			changeTile(mouseX, mouseY);
 		}

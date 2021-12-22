@@ -52,7 +52,24 @@ public class ImageBuilder {
 		}
 		
 		graphics2d.dispose();
-		
 		return newImage;
+	}
+	
+	public static BufferedImage[] stackRotateAnimated(BufferedImage[] images, BufferedImage overlay, int rotation) {
+		int width = images[0].getWidth();
+		int height = images[0].getHeight();
+		
+		BufferedImage[] array = new BufferedImage[images.length];
+		
+		for (int i = 0; i < images.length; i++) {
+			BufferedImage newImage = new BufferedImage(width, height, images[0].getType());
+			Graphics2D graphics2d = newImage.createGraphics();		
+			graphics2d.drawImage(images[i], 0, 0, null);
+			graphics2d.rotate(Math.toRadians(rotation), width/2, height/2);
+			graphics2d.drawImage(overlay, 0, 0, null);
+			graphics2d.dispose();
+			array[i] = newImage;
+		}
+		return array;
 	}
 }
