@@ -56,7 +56,7 @@ public class Game extends JFrame implements Runnable {
 	}
 
 	private void createLevelDefault() {
-		int[] array = new int[400];
+		int[] array = new int[800];
 		for(int i = 0; i < array.length; i++) {
 			array[i] = 0;
 		}

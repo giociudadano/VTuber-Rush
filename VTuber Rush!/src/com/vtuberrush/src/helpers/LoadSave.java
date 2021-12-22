@@ -54,7 +54,7 @@ public class LoadSave {
 		File level = new File("res/" + name + ".txt");
 		if(level.exists()) {
 			ArrayList<Integer> array = ReadFile(level);
-			return ArrayBuilder.array1Dto2D(array,20, 9);
+			return ArrayBuilder.array1Dto2D(array, 40, 18);
 		} else {
 			System.out.println("Level" + name + "does not exist!");
 			return null;
