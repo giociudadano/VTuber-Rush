@@ -15,6 +15,11 @@ public class TileManager {
 	public BufferedImage atlas;
 	public ArrayList<Tile> tiles = new ArrayList<>();
 	
+	public ArrayList<Tile> tilesGrassVariants = new ArrayList<>();
+	public ArrayList<Tile> tilesRoadEdges = new ArrayList<>();
+	public ArrayList<Tile> tilesWaterEdges = new ArrayList<>();
+	public ArrayList<Tile> tilesWaterCorners = new ArrayList<>();
+	
 	public TileManager() {
 		loadAtlas();
 		createTiles();
@@ -31,21 +36,27 @@ public class TileManager {
 		tiles.add(ROAD = new Tile(getSprite(7,12),id++,"Road"));
 		tiles.add(WATER = new Tile(getSprite(0,13),id++,"Water"));
 		
-		tiles.add(WATER_EDGE_BL = new Tile(getSprite(0,12),id++,"Water Edge Bottom Left"));
-		tiles.add(WATER_EDGE_TL = new Tile(getSprite(2,11), id++, "Water Edge Top Left"));
-		tiles.add(WATER_EDGE_TR = new Tile(getSprite(4,11), id++, "Water Edge Top Right"));
-		tiles.add(WATER_EDGE_BR = new Tile(getSprite(6,11), id++, "Water Edge Bottom Right"));
-		tiles.add(WATER_EDGE_B = new Tile(getSprite(4, 10), id++, "Water Edge Bottom"));
-		tiles.add(WATER_EDGE_T = new Tile(getSprite(4, 9), id++, "Water Edge Top"));
-		tiles.add(WATER_EDGE_L = new Tile(getSprite(0, 9), id++, "Water Edge Left"));
-		tiles.add(WATER_EDGE_R = new Tile(getSprite(0, 10), id++, "Water Edge Right"));
+		tilesWaterCorners.add(WATER_EDGE_BL = new Tile(getSprite(0,12),id++,"Water Edge Bottom Left"));
+		tilesWaterCorners.add(WATER_EDGE_TL = new Tile(getSprite(2,11), id++, "Water Edge Top Left"));
+		tilesWaterCorners.add(WATER_EDGE_TR = new Tile(getSprite(4,11), id++, "Water Edge Top Right"));
+		tilesWaterCorners.add(WATER_EDGE_BR = new Tile(getSprite(6,11), id++, "Water Edge Bottom Right"));
 		
-		tiles.add(GRASS_A = new Tile(getSprite(1,6),id++,"Grass B"));
-		tiles.add(GRASS_B = new Tile(getSprite(2,6),id++,"Grass C"));
-		tiles.add(GRASS_C = new Tile(getSprite(3,6),id++,"Grass D"));
+		tilesWaterEdges.add(WATER_EDGE_B = new Tile(getSprite(4, 10), id++, "Water Edge Bottom"));
+		tilesWaterEdges.add(WATER_EDGE_T = new Tile(getSprite(4, 9), id++, "Water Edge Top"));
+		tilesWaterEdges.add(WATER_EDGE_L = new Tile(getSprite(0, 9), id++, "Water Edge Left"));
+		tilesWaterEdges.add(WATER_EDGE_R = new Tile(getSprite(0, 10), id++, "Water Edge Right"));
 		
-		tiles.add(ROAD_EDGE_T = new Tile(getSprite(4,3),id++,"Road Edge Top"));
-		tiles.add(ROAD_EDGE_B = new Tile(getSprite(4,2),id++,"Road Edge Bottom"));
+		tilesGrassVariants.add(GRASS_A = new Tile(getSprite(1,6),id++,"Grass Variant A"));
+		tilesGrassVariants.add(GRASS_B = new Tile(getSprite(2,6),id++,"Grass Variant B"));
+		tilesGrassVariants.add(GRASS_C = new Tile(getSprite(3,6),id++,"Grass Variant C"));
+		
+		tilesRoadEdges.add(ROAD_EDGE_T = new Tile(getSprite(4,3),id++,"Road Edge Top"));
+		tilesRoadEdges.add(ROAD_EDGE_B = new Tile(getSprite(4,2),id++,"Road Edge Bottom"));
+		
+		tiles.addAll(tilesWaterCorners);
+		tiles.addAll(tilesWaterEdges);
+		tiles.addAll(tilesGrassVariants);
+		tiles.addAll(tilesRoadEdges);
 	}
 	
 	public Tile getTile(int id) {
@@ -63,5 +74,25 @@ public class TileManager {
 	private BufferedImage[] getSpriteArray(int x1, int y1, int x2, int y2) {
 		return new BufferedImage[] {getSprite(x1, y1), getSprite(x2, y2)};
 	}
+
+	public ArrayList<Tile> getTilesGrassVariants() {
+		return tilesGrassVariants;
+	}
+
+	public ArrayList<Tile> getTilesRoadEdges() {
+		return tilesRoadEdges;
+	}
+
+
+	public ArrayList<Tile> getTilesWaterEdges() {
+		return tilesWaterEdges;
+	}
+
+
+	public ArrayList<Tile> getTilesWaterCorners() {
+		return tilesWaterCorners;
+	}
+	
+	
 
 }

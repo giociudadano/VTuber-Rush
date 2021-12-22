@@ -1,6 +1,7 @@
 package com.vtuberrush.src.scenes;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import com.vtuberrush.src.helpers.LoadSave;
@@ -78,9 +79,10 @@ public class Editing extends GameScene implements SceneMethods{
 		}
 	}
 
+	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
-		if (y > 550) {
+		if (y > 540) {
 			toolBar.mouseClicked(x, y);
 		} else {
 			changeTile(mouseX, mouseY);
@@ -89,7 +91,7 @@ public class Editing extends GameScene implements SceneMethods{
 
 	@Override
 	public void mouseMoved(int x, int y) {
-		if (y > 550) {
+		if (y > 540) {
 			toolBar.mouseMoved(x, y);
 			drawSelectedTile = false;
 		} else {
@@ -101,20 +103,27 @@ public class Editing extends GameScene implements SceneMethods{
 
 	@Override
 	public void mousePressed(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		if (y > 540) {
+			toolBar.mousePressed(x, y);
+		}
 	}
 
 	@Override
 	public void mouseReleased(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		toolBar.mouseReleased(x, y);
 	}
 
 	@Override
 	public void mouseDragged(int x, int y) {
-		if (y < 550) {
+		if (y < 540) {
 			changeTile(x, y);
+		}
+	}
+	
+	//Keyboard Methods
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_R) {
+			toolBar.getVariant();
 		}
 	}
 
