@@ -70,6 +70,14 @@ public class Game extends JFrame implements Runnable {
 	
 	
 	private void tickGame() {
+		switch(GameStates.gameState) {
+		case PLAYING:
+			playing.tick();
+			break;
+		default:
+			break;
+		
+		}
 	} 
 	
 	public static void main(String[] args) {
