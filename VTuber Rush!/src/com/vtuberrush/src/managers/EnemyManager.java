@@ -9,6 +9,7 @@ import com.vtuberrush.src.enemies.SlimeBlue;
 import com.vtuberrush.src.enemies.SlimeGreen;
 import com.vtuberrush.src.enemies.SlimeRed;
 import com.vtuberrush.src.helpers.LoadSave;
+import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.scenes.Playing;
 
 import static com.vtuberrush.src.helpers.Constants.Direction.*;
@@ -21,14 +22,17 @@ public class EnemyManager {
 	private BufferedImage[] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
 	
-	private float speed = 0.5f;
+	private float speed = 2.5f;
+	private Flag start, end;
 	
-	public EnemyManager(Playing playing) {
+	public EnemyManager(Playing playing, Flag start, Flag end) {
 		this.playing = playing;
+		this.start = start;
+		this.end = end;
 		enemySprites = new BufferedImage[4];
-		addEnemy(0, 32*13, SLIME_GREEN);
-		addEnemy(32, 32*13, SLIME_BLUE);
-		addEnemy(64, 32*13, SLIME_RED);
+		addEnemy(SLIME_GREEN);
+		addEnemy(SLIME_BLUE);
+		addEnemy(SLIME_RED);
 		loadEnemies();
 	}
 	
@@ -56,7 +60,7 @@ public class EnemyManager {
 		
 		if (getTileType(x, y) == ROAD) {
 			enemy.move(speed, enemy.getDirection());
-		} else if (isEnd()){
+		} else if (isEnd(enemy)) {
 			
 		} else {
 			setDirection(enemy);
@@ -66,6 +70,9 @@ public class EnemyManager {
 	private void setDirection(Enemy enemy) {
 		int direction = enemy.getDirection();
 		checkOffset(enemy, direction, (int)(enemy.getX()/32), (int)(enemy.getY()/32));
+		if (isEnd(enemy)) {
+			return;
+		}
 		if (direction == LEFT || direction == RIGHT) {
 			int y = (int)(enemy.getY() + getSpeedY(UP));
 			if (getTileType((int)enemy.getX(), y) == ROAD) {
@@ -97,7 +104,12 @@ public class EnemyManager {
 		enemy.setPosition(x*32, y*32);
 	}
 
-	private boolean isEnd() {
+	private boolean isEnd(Enemy enemy) {
+		if (enemy.getX() == end.getX()*32) {
+			if (enemy.getY() == end.getY()*32) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -128,7 +140,9 @@ public class EnemyManager {
 		}	
 	}
 	
-	public void addEnemy(int x, int y, int type) {
+	public void addEnemy(int type) {
+		int x = start.getX() * 32;
+		int y = start.getY() * 32;
 		switch(type) {
 		case SLIME_GREEN:
 			enemies.add(new SlimeGreen(x, y, 0));

@@ -246,4 +246,12 @@ public class ToolBar extends Bar {
 		}
 	}
 
+	public BufferedImage getImageStart() {
+		return imageStart;
+	}
+
+	public BufferedImage getImageEnd() {
+		return imageEnd;
+	}
+	
 }

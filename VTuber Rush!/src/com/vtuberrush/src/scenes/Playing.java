@@ -1,11 +1,12 @@
 package com.vtuberrush.src.scenes;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.EnemyManager;
+import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.ui.ActionBar;
 
 public class Playing extends GameScene implements SceneMethods {
@@ -15,15 +16,20 @@ public class Playing extends GameScene implements SceneMethods {
 	private ActionBar bottomBar;
 	private int mouseX, mouseY;
 	
+	private Flag start, end;
+	
 	public Playing(Game game) {
 		super(game);
 		loadLevelDefault();
 		bottomBar = new ActionBar(0,550,1280,200,this);
-		enemyManager = new EnemyManager(this);
+		enemyManager = new EnemyManager(this, start, end);
 	}
 
 	private void loadLevelDefault() {
 		level = LoadSave.readLevel("new_level");
+		ArrayList<Flag> flags = LoadSave.readFlags("new_level");
+		start = flags.get(0);
+		end = flags.get(1);
 	}
 
 	public void tick() {
