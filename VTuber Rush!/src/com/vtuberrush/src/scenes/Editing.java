@@ -18,8 +18,6 @@ public class Editing extends GameScene implements SceneMethods{
 	private int mouseX, mouseY;
 	private int tileXLast, tileYLast;
 	private boolean drawSelectedTile = false;
-	
-	private int frame, frameNext;
 
 	public Editing(Game game) {
 		super(game);
@@ -31,20 +29,16 @@ public class Editing extends GameScene implements SceneMethods{
 		level = LoadSave.readLevel("new_level");
 		game.getPlaying().setLevel(level);
 	}
+	
+	public void tick() {
+		tickAnimation();
+	}
 
 	@Override
 	public void render(Graphics graphics) {
-		tickAnimation();
 		drawLevel(graphics);
 		toolBar.draw(graphics);
 		drawSelectedTile(graphics);
-	}
-	
-	private void tickAnimation() {
-		frameNext = (frameNext + 1) % 20;
-		if (frameNext == 0) {
-			frame = (frame + 1) % 4;
-		}
 	}
 
 	private void drawLevel(Graphics graphics) {
@@ -58,18 +52,6 @@ public class Editing extends GameScene implements SceneMethods{
 				}
 			}
 		}
-	}
-	
-	private boolean isAnimated(int id) {
-		return game.getTileManager().isAnimated(id);
-	}
-
-	private BufferedImage getSprite(int id) {
-		return game.getTileManager().getSprite(id);
-	}
-	
-	private BufferedImage getSprite(int id, int frame) {
-		return game.getTileManager().getSpriteAnimated(id, frame);
 	}
 	
 	public void saveLevel() {
