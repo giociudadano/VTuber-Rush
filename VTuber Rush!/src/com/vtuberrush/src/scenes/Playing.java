@@ -113,5 +113,7 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	
-	
+	public UnitManager getUnitManager() {
+		return unitManager;
+	}
 }

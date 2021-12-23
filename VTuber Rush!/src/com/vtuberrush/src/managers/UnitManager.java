@@ -13,31 +13,34 @@ public class UnitManager {
 	
 	private Playing playing;
 	private BufferedImage[] unitSprites;
+	private BufferedImage[] unitIcons;
 	private Unit unit;
 	
 	public UnitManager(Playing playing) {
 		this.playing = playing;
 		loadUnits();
-		initUnits();
 	}
 	
 	public void tick() {
 		
 	}
-	
-	private void initUnits() {
-		unit = new Unit(32, 32, 0, POMU);
-	}
 
 	private void loadUnits() {
-		BufferedImage atlas = LoadSave.getSpriteAtlas();
-		unitSprites = new BufferedImage[1];
-		for (int i = 0; i < 1; i++) {
-			unitSprites[i] = atlas.getSubimage(i*32, 160, 48, 48);
+		BufferedImage spriteAtlas = LoadSave.getSpriteAtlas();
+		BufferedImage iconAtlas = LoadSave.getUnitIconsAtlas();
+		unitSprites = new BufferedImage[3];
+		unitIcons = new BufferedImage[3];
+		for (int i = 0; i < 3; i++) {
+			unitSprites[i] = spriteAtlas.getSubimage(i*32, 160, 32, 48);
+			unitIcons[i] = iconAtlas.getSubimage(i*112, 0, 112, 136);
 		}
+		
 	}
 	
 	public void draw(Graphics graphics) {
-		graphics.drawImage(unitSprites[POMU], unit.getX(), unit.getY()-16, null);
+	}
+	
+	public BufferedImage[] getUnitIcons() {
+		return unitIcons;
 	}
 }

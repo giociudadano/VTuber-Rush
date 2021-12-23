@@ -2,6 +2,7 @@ package com.vtuberrush.src.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Button {
@@ -58,7 +59,6 @@ public class Button {
 	private void drawText(Graphics graphics) {
 		int textWidth = graphics.getFontMetrics().stringWidth(text);
 		int textHeight = graphics.getFontMetrics().getHeight();
-		
 		graphics.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight) / 2);
 	}
 

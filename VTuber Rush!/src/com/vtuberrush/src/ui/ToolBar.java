@@ -83,7 +83,7 @@ public class ToolBar extends Bar {
 	
 	private void drawButtonsSingle(Graphics graphics, Button button) {
 		graphics.drawImage(getButtonImage(button.getId()), button.x, button.y, button.width, button.height, null);
-		drawButtonsMouseInput(graphics, button);
+		drawButtonsFeedback(graphics, button);
 	}
 	
 	private void drawButtonsMap(Graphics graphics) {
@@ -91,17 +91,17 @@ public class ToolBar extends Bar {
 			Button button = entry.getKey();
 			BufferedImage image = entry.getValue().get(0).getSprite();
 			graphics.drawImage(image, button.x, button.y, button.width, button.height, null);
-			drawButtonsMouseInput(graphics, button);
+			drawButtonsFeedback(graphics, button);
 		}
 	}
 	
 	private void drawButtonsUtility(Graphics graphics, Button button, BufferedImage image) {
 		graphics.drawImage(image, button.x, button.y, button.width, button.height, null);
-		drawButtonsMouseInput(graphics, button);
+		drawButtonsFeedback(graphics, button);
 	}
 	
 	
-	private void drawButtonsMouseInput(Graphics graphics, Button button) {
+	private void drawButtonsFeedback(Graphics graphics, Button button) {
 		//mouseOver
 		if(button.isMouseOver()) {
 			graphics.setColor(Color.white);

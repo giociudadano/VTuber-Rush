@@ -32,5 +32,7 @@ public class Constants {
 	
 	public static class Units {
 		public static final int POMU = 0;
+		public static final int FINANA = 1;
+		public static final int ELIRA = 2;
 	}
 }
