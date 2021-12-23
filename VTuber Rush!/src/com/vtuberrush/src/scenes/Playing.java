@@ -26,6 +26,11 @@ public class Playing extends GameScene implements SceneMethods {
 		level = LoadSave.readLevel("new_level");
 	}
 
+	public void tick() {
+		tickAnimation();
+		enemyManager.tick();
+	}
+	
 	@Override
 	public void render(Graphics graphics) {
 		drawLevel(graphics);
@@ -37,19 +42,25 @@ public class Playing extends GameScene implements SceneMethods {
 		for(int y = 0; y < level.length; y++) {
 			for (int x = 0; x < level[y].length; x++) {
 				int id = level[y][x];
-				graphics.drawImage(getSprite(id), x*32, y*32, null);
+				if(isAnimated(id)) {
+					graphics.drawImage(getSprite(id, frame), x*32, y*32, null);
+				} else {
+					graphics.drawImage(getSprite(id), x*32, y*32, null);
+				}
 			}
 		}
 	}
-	
-	public void tick() {
-		enemyManager.tick();
-	}
-	
-	private BufferedImage getSprite(int id) {
-		return game.getTileManager().getSprite(id);
-	}
 
+	public int getTileType(int x, int y) {
+		x = x / 32;
+		y = y / 32;
+		if (x < 0 || y < 0 || x > 39 || y > 17) {
+			return 0;
+		}
+		int id = level[y][x];
+		return game.getTileManager().getTile(id).getTileType();
+	}
+	
 	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
@@ -84,8 +95,11 @@ public class Playing extends GameScene implements SceneMethods {
 	public void mouseDragged(int x, int y) {
 	}
 
+	//Setters
 	public void setLevel(int[][] level) {
 		this.level = level;
 	}
+
+	
 	
 }

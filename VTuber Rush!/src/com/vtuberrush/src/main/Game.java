@@ -74,9 +74,11 @@ public class Game extends JFrame implements Runnable {
 		case PLAYING:
 			playing.tick();
 			break;
+		case EDITING:
+			editing.tick();
+			break;
 		default:
 			break;
-		
 		}
 	} 
 	
