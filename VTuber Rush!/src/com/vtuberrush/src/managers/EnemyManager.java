@@ -22,7 +22,6 @@ public class EnemyManager {
 	private BufferedImage[] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
 	
-	private float speed = 2.5f;
 	private Flag start, end;
 	
 	public EnemyManager(Playing playing, Flag start, Flag end) {
@@ -55,11 +54,11 @@ public class EnemyManager {
 			setDirection(enemy);
 		}
 		
-		int x = (int)(enemy.getX() + getSpeedX(enemy.getDirection()));
-		int y = (int)(enemy.getY() + getSpeedY(enemy.getDirection()));
+		int x = (int)(enemy.getX() + getSpeedX(enemy.getDirection(), enemy.getEnemyType()));
+		int y = (int)(enemy.getY() + getSpeedY(enemy.getDirection(), enemy.getEnemyType()));
 		
 		if (getTileType(x, y) == ROAD) {
-			enemy.move(speed, enemy.getDirection());
+			enemy.move(getSpeed(enemy.getEnemyType()), enemy.getDirection());
 		} else if (isEnd(enemy)) {
 			
 		} else {
@@ -74,18 +73,18 @@ public class EnemyManager {
 			return;
 		}
 		if (direction == LEFT || direction == RIGHT) {
-			int y = (int)(enemy.getY() + getSpeedY(UP));
+			int y = (int)(enemy.getY() + getSpeedY(UP, enemy.getEnemyType()));
 			if (getTileType((int)enemy.getX(), y) == ROAD) {
-				enemy.move(speed, UP);
+				enemy.move(getSpeed(enemy.getEnemyType()), UP);
 			} else {
-				enemy.move(speed, DOWN);
+				enemy.move(getSpeed(enemy.getEnemyType()), DOWN);
 			}
 		} else {
-			int x = (int)(enemy.getX() + getSpeedX(RIGHT));
+			int x = (int)(enemy.getX() + getSpeedX(RIGHT, enemy.getEnemyType()));
 			if (getTileType(x, (int)enemy.getY()) == ROAD) {
-				enemy.move(speed, RIGHT);
+				enemy.move(getSpeed(enemy.getEnemyType()), RIGHT);
 			} else {
-				enemy.move(speed, LEFT);
+				enemy.move(getSpeed(enemy.getEnemyType()), LEFT);
 			}
 		}
 	}
@@ -113,18 +112,18 @@ public class EnemyManager {
 		return false;
 	}
 
-	private float getSpeedX(int direction) {
+	private float getSpeedX(int direction, int enemyType) {
 		switch (direction) {
-		case LEFT: return -speed;
-		case RIGHT: return speed + 32;
+		case LEFT: return -getSpeed(enemyType);
+		case RIGHT: return getSpeed(enemyType) + 32;
 		default: return 0;
 		}
 	}
 
-	private float getSpeedY(int direction) {
+	private float getSpeedY(int direction, int enemyType) {
 		switch (direction) {
-		case UP: return -speed;
-		case DOWN: return speed + 32;
+		case UP: return -getSpeed(enemyType);
+		case DOWN: return getSpeed(enemyType) + 32;
 		default: return 0;
 		}
 	}

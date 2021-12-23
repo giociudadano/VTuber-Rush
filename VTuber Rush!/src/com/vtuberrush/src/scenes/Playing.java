@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.EnemyManager;
+import com.vtuberrush.src.managers.UnitManager;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.ui.ActionBar;
 
@@ -14,6 +15,8 @@ public class Playing extends GameScene implements SceneMethods {
 	private int[][] level;
 	private EnemyManager enemyManager;
 	private ActionBar bottomBar;
+	
+	private UnitManager unitManager;
 	private int mouseX, mouseY;
 	
 	private Flag start, end;
@@ -23,6 +26,7 @@ public class Playing extends GameScene implements SceneMethods {
 		loadLevelDefault();
 		bottomBar = new ActionBar(0,550,1280,200,this);
 		enemyManager = new EnemyManager(this, start, end);
+		unitManager = new UnitManager(this);
 	}
 
 	private void loadLevelDefault() {
@@ -35,6 +39,7 @@ public class Playing extends GameScene implements SceneMethods {
 	public void tick() {
 		tickAnimation();
 		enemyManager.tick();
+		unitManager.tick();
 	}
 	
 	@Override
@@ -42,6 +47,7 @@ public class Playing extends GameScene implements SceneMethods {
 		drawLevel(graphics);
 		bottomBar.draw(graphics);
 		enemyManager.draw(graphics);
+		unitManager.draw(graphics);
 	}
 	
 	private void drawLevel(Graphics graphics) {
