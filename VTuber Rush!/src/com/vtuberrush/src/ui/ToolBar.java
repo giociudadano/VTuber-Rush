@@ -23,7 +23,8 @@ public class ToolBar extends Bar {
 	private Tile selectedTile;
 	
 	private Map<Button, ArrayList<Tile>> map = new HashMap<Button, ArrayList<Tile>>();
-	private Button buttonGrass, buttonRoad, buttonWater, buttonWaterCorners, buttonWaterEdges, buttonGrassVariants, buttonRoadEdges;
+	private Button buttonGrass, buttonRoad, buttonWater;
+	private Button buttonWaterCorners, buttonWaterEdges, buttonGrassVariants, buttonGrassEdges, buttonGrassCorners;
 	private Button currentButton;
 	private int variantIndex = 0;
 	
@@ -45,7 +46,8 @@ public class ToolBar extends Bar {
 		initButtonsMap(buttonWaterCorners, editing.getGame().getTileManager().getTilesWaterCorners(), 100, 560, 50, 50, i++);
 		initButtonsMap(buttonWaterEdges, editing.getGame().getTileManager().getTilesWaterEdges(), 100, 560, 50, 50, i++);
 		initButtonsMap(buttonGrassVariants, editing.getGame().getTileManager().getTilesGrassVariants(), 100, 560, 50, 50, i++);
-		initButtonsMap(buttonRoadEdges, editing.getGame().getTileManager().getTilesRoadEdges(), 100, 560, 50, 50, i++);
+		initButtonsMap(buttonGrassEdges, editing.getGame().getTileManager().getTilesGrassEdges(), 100, 560, 50, 50, i++);
+		initButtonsMap(buttonGrassCorners, editing.getGame().getTileManager().getTilesGrassCorners(), 100, 560, 50, 50, i++);
 		
 		buttonStart = new Button("Start", 100, 620, 50, 50);
 		buttonEnd = new Button("End", 160, 620, 50, 50);
@@ -77,7 +79,6 @@ public class ToolBar extends Bar {
 		drawButtonsSingle(graphics, buttonRoad);
 		drawButtonsSingle(graphics, buttonWater);
 		drawButtonsMap(graphics);
-		drawSelectedTile(graphics);
 	}
 	
 	private void drawButtonsSingle(Graphics graphics, Button button) {
@@ -116,31 +117,6 @@ public class ToolBar extends Bar {
 			graphics.drawRect(button.x, button.y, button.width, button.height);
 		}
 	}
-
-	private void drawSelectedTile(Graphics graphics) {
-		if (selectedTile != null) {
-			graphics.setColor(Color.yellow);
-			switch (selectedTile.getId()) {
-			case 0, 1, 2:
-				graphics.drawRect(100 + (60 * selectedTile.getId()), 560, 50, 50);
-				break;
-			case 3, 4, 5, 6:
-				graphics.drawRect(280, 560, 50, 50);
-				break;
-			case 7, 8, 9, 10:
-				graphics.drawRect(340, 560, 50, 50);
-				break;
-			case 11, 12, 13:
-				graphics.drawRect(400, 560, 50, 50);
-				break;
-			case 14, 15, 16, 17:
-				graphics.drawRect(460, 560, 50, 50);
-				break;
-			default:
-				break;
-			}
-		}
-	}
 	
 	public void getVariant() {
 		variantIndex = (variantIndex + 1) % map.get(currentButton).size();
@@ -174,7 +150,7 @@ public class ToolBar extends Bar {
 			selectedTile = new Tile(imageStart, -1, -1);
 			editing.setSelectedTile(selectedTile);
 			return;
-		} else if (buttonWater.getBounds().contains(x, y)) {
+		} else if (buttonEnd.getBounds().contains(x, y)) {
 			selectedTile = new Tile(imageEnd, -2, -2);
 			editing.setSelectedTile(selectedTile);
 			return;

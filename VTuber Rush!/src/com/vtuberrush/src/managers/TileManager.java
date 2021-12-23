@@ -12,13 +12,15 @@ import static com.vtuberrush.src.helpers.Constants.Tiles.*;
 public class TileManager {
 	
 	public Tile GRASS_BASE, GRASS_VAR_A, GRASS_VAR_B, GRASS_VAR_C;
-	public Tile ROAD_BASE, ROAD_EDGE_T, ROAD_EDGE_B, ROAD_EDGE_L, ROAD_EDGE_R;
+	public Tile GRASS_EDGE_T, GRASS_EDGE_B, GRASS_EDGE_L, GRASS_EDGE_R, GRASS_EDGE_TL, GRASS_EDGE_TR, GRASS_EDGE_BL, GRASS_EDGE_BR;
+	public Tile ROAD_BASE;
 	public Tile WATER_BASE, WATER_EDGE_TL, WATER_EDGE_TR, WATER_EDGE_BL, WATER_EDGE_BR, WATER_EDGE_T, WATER_EDGE_B, WATER_EDGE_L, WATER_EDGE_R; 
 	public BufferedImage atlas;
 	public ArrayList<Tile> tiles = new ArrayList<>();
 	
 	public ArrayList<Tile> tilesGrassVariants = new ArrayList<>();
-	public ArrayList<Tile> tilesRoadEdges = new ArrayList<>();
+	public ArrayList<Tile> tilesGrassEdges = new ArrayList<>();
+	public ArrayList<Tile> tilesGrassCorners = new ArrayList<>();
 	public ArrayList<Tile> tilesWaterEdges = new ArrayList<>();
 	public ArrayList<Tile> tilesWaterCorners = new ArrayList<>();
 	
@@ -52,15 +54,21 @@ public class TileManager {
 		tilesGrassVariants.add(GRASS_VAR_B = new Tile(getSprite(2,0),id++, GRASS));
 		tilesGrassVariants.add(GRASS_VAR_C = new Tile(getSprite(3,0),id++, GRASS));
 		
-		tilesRoadEdges.add(ROAD_EDGE_T = new Tile(getSprite(2,1),id++, GRASS));
-		tilesRoadEdges.add(ROAD_EDGE_B = new Tile(getSprite(1,1),id++, GRASS));
-		tilesRoadEdges.add(ROAD_EDGE_L = new Tile(getSprite(3,1),id++, GRASS));
-		tilesRoadEdges.add(ROAD_EDGE_R = new Tile(getSprite(4,1),id++, GRASS));
+		tilesGrassEdges.add(GRASS_EDGE_T = new Tile(getSprite(2,1),id++, GRASS));
+		tilesGrassEdges.add(GRASS_EDGE_B = new Tile(getSprite(1,1),id++, GRASS));
+		tilesGrassEdges.add(GRASS_EDGE_L = new Tile(getSprite(3,1),id++, GRASS));
+		tilesGrassEdges.add(GRASS_EDGE_R = new Tile(getSprite(4,1),id++, GRASS));
+		
+		tilesGrassCorners.add(GRASS_EDGE_TL = new Tile(getSprite(4,3), id++, GRASS));
+		tilesGrassCorners.add(GRASS_EDGE_TR = new Tile(getSprite(5,3), id++, GRASS));
+		tilesGrassCorners.add(GRASS_EDGE_BL = new Tile(getSprite(6,3), id++, GRASS));
+		tilesGrassCorners.add(GRASS_EDGE_BR = new Tile(getSprite(7,3), id++, GRASS));
 		
 		tiles.addAll(tilesWaterCorners);
 		tiles.addAll(tilesWaterEdges);
 		tiles.addAll(tilesGrassVariants);
-		tiles.addAll(tilesRoadEdges);
+		tiles.addAll(tilesGrassEdges);
+		tiles.addAll(tilesGrassCorners);
 	}
 	
 	public Tile getTile(int id) {
@@ -99,21 +107,20 @@ public class TileManager {
 		return tilesGrassVariants;
 	}
 
-	public ArrayList<Tile> getTilesRoadEdges() {
-		return tilesRoadEdges;
+	public ArrayList<Tile> getTilesGrassEdges() {
+		return tilesGrassEdges;
 	}
 
+	public ArrayList<Tile> getTilesGrassCorners() {
+		return tilesGrassCorners;
+	}
 
 	public ArrayList<Tile> getTilesWaterEdges() {
 		return tilesWaterEdges;
 	}
 
-
 	public ArrayList<Tile> getTilesWaterCorners() {
 		return tilesWaterCorners;
-	}
-
-	
-	
+	}	
 
 }
