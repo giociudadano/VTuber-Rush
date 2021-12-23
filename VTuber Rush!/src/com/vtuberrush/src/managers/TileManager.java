@@ -121,6 +121,6 @@ public class TileManager {
 
 	public ArrayList<Tile> getTilesWaterCorners() {
 		return tilesWaterCorners;
-	}	
+	}
 
 }

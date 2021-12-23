@@ -2,12 +2,15 @@ package com.vtuberrush.src.scenes;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
+import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.objects.Tile;
 import com.vtuberrush.src.ui.ToolBar;
+
+import static com.vtuberrush.src.helpers.Constants.Tiles.ROAD;
 
 public class Editing extends GameScene implements SceneMethods{
 	
@@ -16,8 +19,10 @@ public class Editing extends GameScene implements SceneMethods{
 	private ToolBar toolBar;
 
 	private int mouseX, mouseY;
-	private int tileXLast, tileYLast;
+	private int xLast, yLast;
 	private boolean drawSelectedTile = false;
+	
+	private Flag start, end;
 
 	public Editing(Game game) {
 		super(game);
@@ -27,7 +32,9 @@ public class Editing extends GameScene implements SceneMethods{
 	
 	private void loadLevelDefault() {
 		level = LoadSave.readLevel("new_level");
-		game.getPlaying().setLevel(level);
+		ArrayList<Flag> flags = LoadSave.readFlags("new_level");
+		start = flags.get(0);
+		end = flags.get(1);
 	}
 	
 	public void tick() {
@@ -39,6 +46,7 @@ public class Editing extends GameScene implements SceneMethods{
 		drawLevel(graphics);
 		toolBar.draw(graphics);
 		drawSelectedTile(graphics);
+		drawFlags(graphics);
 	}
 
 	private void drawLevel(Graphics graphics) {
@@ -55,7 +63,18 @@ public class Editing extends GameScene implements SceneMethods{
 	}
 	
 	public void saveLevel() {
-		LoadSave.saveLevel("new_level", level);
+		LoadSave.saveLevel("new_level", level, start, end);
+		game.getPlaying().setLevel(level);
+	}
+	
+	private void drawFlags(Graphics graphics) {
+		if (start != null) {
+			graphics.drawImage(toolBar.getImageStart(), start.getX() * 32, start.getY() * 32, 32, 32, null);
+		}
+		
+		if (end != null) {
+			graphics.drawImage(toolBar.getImageEnd(), end.getX() * 32, end.getY() * 32, 32, 32, null);
+		}
 	}
 	
 	private void drawSelectedTile(Graphics graphics) {
@@ -71,14 +90,25 @@ public class Editing extends GameScene implements SceneMethods{
 	
 	private void changeTile(int x, int y) {
 		if (selectedTile != null) {
-			int tileX = x / 32;
-			int tileY = y / 32;
-			if (tileXLast == tileX && tileYLast == tileY) {
-				return;
+			x = x / 32;
+			y = y / 32;
+			if (selectedTile.getId() > 0) {
+				if (xLast == x && yLast == y) {
+					return;
+				}
+				xLast = x;
+				yLast = y;
+				level[y][x] = selectedTile.getId();
+			} else {
+				int id = level[y][x];
+				if (game.getTileManager().getTile(id).getTileType() == ROAD) {
+					if(selectedTile.getId() == -1) {
+						start = new Flag(x, y);
+					} else {
+						end = new Flag(x, y);
+					}
+				}
 			}
-			tileXLast = tileX;
-			tileYLast = tileY;
-			level[tileY][tileX] = selectedTile.getId();
 		}
 	}
 
