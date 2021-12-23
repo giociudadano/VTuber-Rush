@@ -1,32 +1,44 @@
 package com.vtuberrush.src.main;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.util.Random;
-
 import javax.swing.JPanel;
+
+import com.vtuberrush.src.input.KeyboardInput;
+import com.vtuberrush.src.input.MouseInput;
 
 public class GameScreen extends JPanel {
 	
-	private Random random;
-	private BufferedImage image;
+	private Dimension windowSize = new Dimension(1280,720);
+	private Game game;
 	
-	public GameScreen(BufferedImage image) {
-		this.image = image;
-		random = new Random();
+	private KeyboardInput keyboardInput;
+	private MouseInput mouseInput;
+	
+	public GameScreen(Game game) {
+		this.game = game;
+		setWindowSize();
+	}
+	
+	private void setWindowSize() {
+		setMinimumSize(windowSize);
+		setPreferredSize(windowSize);
+		setMaximumSize(windowSize);	
+	}
+
+	public void initInput() {
+		keyboardInput = new KeyboardInput(game);
+		mouseInput = new MouseInput(game);
+		
+		addKeyListener(keyboardInput);
+		addMouseListener(mouseInput);
+		addMouseMotionListener(mouseInput);
+		
+		requestFocus();
 	}
 	
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		graphics.drawImage(image, 0, 0, null);
-	}
-	
-	private Color getRandomColor() {
-		int r = random.nextInt(256);
-		int g = random.nextInt(256);
-		int b = random.nextInt(256);
-		
-		return new Color(r, g, b);
+		game.getRender().render(graphics);
 	}
 }

@@ -1,0 +1,111 @@
+package com.vtuberrush.src.helpers;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+
+import com.vtuberrush.src.objects.Flag;
+
+public class LoadSave {
+	public static BufferedImage getSpriteAtlas() {
+		BufferedImage image = null;
+		InputStream imageStream = LoadSave.class.getClassLoader().getResourceAsStream("tileset.png");
+		try {
+			image = ImageIO.read(imageStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
+	
+	public static void createLevel(String name, int[] idArray) {
+		File level = new File("res/" + name + ".txt");
+		if(level.exists()) {
+			System.out.println("Level" + name + "already exists!");
+			return;
+		} else {
+			try {
+				level.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			writeLevel(level, idArray, new Flag(0, 0), new Flag(0, 0));
+		}
+	}
+	
+	private static void writeLevel(File file, int[] idArray, Flag start, Flag end) {
+		try {
+			PrintWriter printWriter = new PrintWriter(file);
+			for(Integer i : idArray) {
+				printWriter.println(i);
+			}
+			
+			printWriter.println(start.getX());
+			printWriter.println(start.getY());
+			printWriter.println(end.getX());
+			printWriter.println(end.getY());
+			
+			printWriter.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static int[][] readLevel(String name) {
+		File level = new File("res/" + name + ".txt");
+		if(level.exists()) {
+			ArrayList<Integer> array = readFile(level);
+			return ArrayBuilder.array1Dto2D(array, 40, 18);
+		} else {
+			System.out.println("Level" + name + "does not exist!");
+			return null;
+		}
+		
+	}
+	
+	public static ArrayList<Flag> readFlags(String name) {
+		File level = new File("res/" + name + ".txt");
+		if(level.exists()) {
+			ArrayList<Integer> array = readFile(level);
+			ArrayList<Flag> flags = new ArrayList<>();
+			flags.add(new Flag(array.get(720), array.get(721))); //Reads starting coordinates
+			flags.add(new Flag(array.get(722), array.get(723))); //Reads ending coordinates
+			return flags;
+		} else {
+			System.out.println("Level" + name + "does not exist!");
+			return null;
+		}
+	}
+	
+
+	private static ArrayList<Integer> readFile(File file) {
+		ArrayList<Integer> array = new ArrayList<>();
+		try {
+			Scanner scanner = new Scanner(file);
+			while (scanner.hasNextLine()) {
+				array.add(Integer.parseInt(scanner.nextLine()));
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return array;
+	}
+	
+	public static void saveLevel(String name, int[][] idArray, Flag start, Flag end) {
+		File level = new File("res/" + name + ".txt");
+		if(level.exists()) {
+			writeLevel(level, ArrayBuilder.array2Dto1D(idArray), start, end);
+		} else {
+			System.out.println("Level" + name + "does not exist!");
+			return;
+		}
+	}
+}
