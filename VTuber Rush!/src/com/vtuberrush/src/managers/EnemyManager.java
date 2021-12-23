@@ -5,11 +5,15 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.vtuberrush.src.enemies.Enemy;
+import com.vtuberrush.src.enemies.SlimeBlue;
+import com.vtuberrush.src.enemies.SlimeGreen;
+import com.vtuberrush.src.enemies.SlimeRed;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.scenes.Playing;
 
 import static com.vtuberrush.src.helpers.Constants.Direction.*;
 import static com.vtuberrush.src.helpers.Constants.Tiles.*;
+import static com.vtuberrush.src.helpers.Constants.Enemies.*;
 
 public class EnemyManager {
 	
@@ -17,26 +21,39 @@ public class EnemyManager {
 	private BufferedImage[] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
 	
-	private float speed = 2.5f;
+	private float speed = 0.5f;
 	
 	public EnemyManager(Playing playing) {
 		this.playing = playing;
 		enemySprites = new BufferedImage[4];
-		addEnemy(0, 32*13);
+		addEnemy(0, 32*13, SLIME_GREEN);
+		addEnemy(32, 32*13, SLIME_BLUE);
+		addEnemy(64, 32*13, SLIME_RED);
 		loadEnemies();
+	}
+	
+	public void loadEnemies() {
+		BufferedImage atlas = LoadSave.getSpriteAtlas();
+		for (int i = 0; i < 4; i++) {
+			enemySprites[i] = atlas.getSubimage(32 * i, 128, 32, 32);
+		}
 	}
 	
 	public void tick() {
 		for (Enemy enemy : enemies) {
-			if (isPathable(enemy)) {
-				
-			}
+			tickMove(enemy);
 		}	
 	}
 	
-	private boolean isPathable(Enemy enemy) {
+	//Pathfinding AI
+	private void tickMove(Enemy enemy) {
+		if (enemy.getDirection() == NONE) {
+			setDirection(enemy);
+		}
+		
 		int x = (int)(enemy.getX() + getSpeedX(enemy.getDirection()));
 		int y = (int)(enemy.getY() + getSpeedY(enemy.getDirection()));
+		
 		if (getTileType(x, y) == ROAD) {
 			enemy.move(speed, enemy.getDirection());
 		} else if (isEnd()){
@@ -44,7 +61,6 @@ public class EnemyManager {
 		} else {
 			setDirection(enemy);
 		}
-		return false;
 	}
 
 	private void setDirection(Enemy enemy) {
@@ -85,7 +101,6 @@ public class EnemyManager {
 		return false;
 	}
 
-	//Pathfinding
 	private float getSpeedX(int direction) {
 		switch (direction) {
 		case LEFT: return -speed;
@@ -106,25 +121,28 @@ public class EnemyManager {
 		return playing.getTileType(x, y);
 	}
 
+	//
 	public void draw(Graphics graphics) {
 		for (Enemy enemy : enemies) {
 			drawEnemy(graphics, enemy);
 		}	
 	}
 	
-	public void loadEnemies() {
-		BufferedImage atlas = LoadSave.getSpriteAtlas();
-		enemySprites[0] = atlas.getSubimage(0, 128, 32, 32);
-		enemySprites[1] = atlas.getSubimage(32, 128, 32, 32);
-		enemySprites[2] = atlas.getSubimage(64, 128, 32, 32);
-		enemySprites[3] = atlas.getSubimage(96, 128, 32, 32);
-	}
-	
-	public void addEnemy(int x, int y) {
-		enemies.add(new Enemy(x, y, 0, 0));
+	public void addEnemy(int x, int y, int type) {
+		switch(type) {
+		case SLIME_GREEN:
+			enemies.add(new SlimeGreen(x, y, 0));
+			break;
+		case SLIME_BLUE:
+			enemies.add(new SlimeBlue(x, y, 0));
+			break;
+		case SLIME_RED:
+			enemies.add(new SlimeRed(x, y, 0));
+			break;
+		}
 	}
 		
 	private void drawEnemy(Graphics graphics, Enemy enemy) {
-		graphics.drawImage(enemySprites[0], (int)enemy.getX(), (int)enemy.getY(), null);
+		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
 	}
 }
