@@ -19,5 +19,30 @@ public class Constants {
 		public static final int SLIME_GREEN = 0;
 		public static final int SLIME_BLUE = 1;
 		public static final int SLIME_RED = 2;
+		
+		public static float getSpeed(int enemyType) {
+			switch (enemyType) {
+			case SLIME_GREEN: return 0.5f; 
+			case SLIME_BLUE: return 0.7f;
+			case SLIME_RED: return 0.3f;
+			default: return 0;
+			}
+		}
+	}
+	
+	public static class Units {
+		public static final int POMU = 0;
+		public static final int FINANA = 1;
+		public static final int ELIRA = 2;
+		
+		public static String getName(int unitType) {
+			switch (unitType) {
+			case POMU: return "Pomu Rainpuff";
+			case FINANA: return "Finana Ryugu";
+			case ELIRA: return "Elira Pendora";
+			default: return "";
+			}
+		}
+		
 	}
 }

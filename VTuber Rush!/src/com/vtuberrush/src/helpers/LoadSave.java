@@ -25,6 +25,17 @@ public class LoadSave {
 		return image;
 	}
 	
+	public static BufferedImage getUnitIconsAtlas() {
+		BufferedImage image = null;
+		InputStream imageStream = LoadSave.class.getClassLoader().getResourceAsStream("uniticons.png");
+		try {
+			image = ImageIO.read(imageStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
+	
 	public static void createLevel(String name, int[] idArray) {
 		File level = new File("res/" + name + ".txt");
 		if(level.exists()) {
