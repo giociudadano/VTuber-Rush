@@ -34,5 +34,15 @@ public class Constants {
 		public static final int POMU = 0;
 		public static final int FINANA = 1;
 		public static final int ELIRA = 2;
+		
+		public static String getName(int unitType) {
+			switch (unitType) {
+			case POMU: return "Pomu Rainpuff";
+			case FINANA: return "Finana Ryugu";
+			case ELIRA: return "Elira Pendora";
+			default: return "";
+			}
+		}
+		
 	}
 }

@@ -1,5 +1,6 @@
 package com.vtuberrush.src.managers;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -156,6 +157,8 @@ public class EnemyManager {
 	}
 		
 	private void drawEnemy(Graphics graphics, Enemy enemy) {
+		graphics.setColor(new Color(0, 0, 0, 50));
+		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
 		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
 	}
 }

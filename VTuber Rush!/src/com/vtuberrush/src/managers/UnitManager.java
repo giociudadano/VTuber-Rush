@@ -1,20 +1,21 @@
 package com.vtuberrush.src.managers;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
-
-import static com.vtuberrush.src.helpers.Constants.Units.*;
 
 public class UnitManager {
 	
 	private Playing playing;
 	private BufferedImage[] unitSprites;
 	private BufferedImage[] unitIcons;
-	private Unit unit;
+	private ArrayList<Unit> units = new ArrayList<>();
+	private int id = 0;
 	
 	public UnitManager(Playing playing) {
 		this.playing = playing;
@@ -38,9 +39,35 @@ public class UnitManager {
 	}
 	
 	public void draw(Graphics graphics) {
+		graphics.setColor(new Color(0, 0, 0, 50));
+		for (Unit unit : units) {
+			graphics.fillOval(unit.getX()+2, unit.getY()+12, 28, 8);
+			graphics.drawImage(unitSprites[unit.getUnitType()], unit.getX(), unit.getY()-32, null);
+		}
+	}
+	
+	public void addUnit(Unit selectedUnit, int x, int y) {
+		units.add(new Unit(x, y, id++, selectedUnit.getUnitType()));
+	}
+	
+	public BufferedImage[] getUnitSprites() {
+		return unitSprites;
 	}
 	
 	public BufferedImage[] getUnitIcons() {
 		return unitIcons;
 	}
+
+	public Unit getUnitAt(int x, int y) {
+		for (Unit unit : units) {
+			if (unit.getX() == x) {
+				if (unit.getY() == y) {
+					return unit;
+				}
+			}
+		}
+		return null;
+	}
+
+
 }

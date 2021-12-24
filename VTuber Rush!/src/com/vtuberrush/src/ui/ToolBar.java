@@ -146,6 +146,10 @@ public class ToolBar extends Bar {
 			selectedTile = editing.getGame().getTileManager().getTile(buttonRoad.getId());
 			editing.setSelectedTile(selectedTile);
 			return;
+		} else if (buttonWater.getBounds().contains(x, y)) {
+			selectedTile = editing.getGame().getTileManager().getTile(buttonWater.getId());
+			editing.setSelectedTile(selectedTile);
+			return;
 		} else if (buttonStart.getBounds().contains(x, y)) {
 			selectedTile = new Tile(imageStart, -1, -1);
 			editing.setSelectedTile(selectedTile);

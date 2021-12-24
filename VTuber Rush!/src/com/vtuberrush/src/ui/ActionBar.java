@@ -7,11 +7,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
 
 public class ActionBar extends Bar{
 	private Playing playing;
 	private Button buttonMenu;
+	private Unit selectedUnit;
 	
 	private Button[] unitButtons;
 	
@@ -46,20 +48,31 @@ public class ActionBar extends Bar{
 	private void drawButtonsFeedback(Graphics graphics, Button button) {
 		//mouseOver
 		
+		Graphics2D graphics2d = (Graphics2D) graphics;
 		if(button.isMouseOver()) {
-			Graphics2D graphics2d = (Graphics2D) graphics;
 			graphics.setColor(Color.white);
-			if (button.isMousePressed()) {
-				graphics.setColor(Color.yellow);
-			}
 			graphics2d.drawRoundRect(button.x, button.y, button.width, button.height,10,13);
 			graphics2d.drawRoundRect(button.x+1, button.y+1, button.width-2, button.height-2,6,10);
 		}
+		
+		if (button.isMousePressed()) {
+			graphics.setColor(new Color(255,255,255,100));
+			graphics2d.fillRoundRect(button.x, button.y, button.width, button.height, 10, 13);
+		}
+
 	}
 
 	public void mouseClicked(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			setGameState(MENU);
+		} else {
+			for (Button button : unitButtons) {
+				if (button.getBounds().contains(x, y)) {
+					selectedUnit = new Unit(0, 0, -1, button.getId());
+					playing.setSelectedUnit(selectedUnit);
+					return;
+				}
+			}
 		}
 	}
 
