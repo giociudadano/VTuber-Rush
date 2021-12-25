@@ -82,9 +82,9 @@ public class Constants {
 		
 		public static float getRange(int unitType) {
 			switch (unitType) {
-			case POMU: return 100; 
-			case FINANA: return 100;
-			case ELIRA: return 100;
+			case POMU: return 220; 
+			case FINANA: return 300;
+			case ELIRA: return 180;
 			default: return 0;
 			}
 		}
@@ -98,5 +98,20 @@ public class Constants {
 			}
 		}
 		
+	}
+
+	public static class Projectiles {
+		public static final int POMU_PROJ = 0;
+		public static final int FINANA_PROJ = 1;
+		public static final int ELIRA_PROJ = 2;
+		
+		public static float getSpeed(int projType) {
+			switch(projType) {
+			case POMU_PROJ: return 2f;
+			case FINANA_PROJ: return 3f;
+			case ELIRA_PROJ: return 1f;
+			default: return 0f;
+			}
+		}
 	}
 }

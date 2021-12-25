@@ -45,7 +45,9 @@ public class EnemyManager {
 	
 	public void tick() {
 		for (Enemy enemy : enemies) {
-			tickMove(enemy);
+			if (enemy.isAlive()) {
+				tickMove(enemy);
+			}
 		}	
 	}
 	
@@ -135,8 +137,10 @@ public class EnemyManager {
 
 	public void draw(Graphics graphics) {
 		for (Enemy enemy : enemies) {
-			drawEnemy(graphics, enemy);
-			drawHealthBar(graphics, enemy);
+			if (enemy.isAlive()) {
+				drawEnemy(graphics, enemy);
+				drawHealthBar(graphics, enemy);
+			}
 		}	
 	}
 	
@@ -169,5 +173,9 @@ public class EnemyManager {
 		graphics.setColor(new Color(0, 0, 0, 50));
 		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
 		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
+	}
+	
+	public ArrayList<Enemy> getEnemies() {
+		return enemies;
 	}
 }

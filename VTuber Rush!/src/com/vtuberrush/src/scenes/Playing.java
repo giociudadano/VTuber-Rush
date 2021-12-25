@@ -225,6 +225,10 @@ public class Playing extends GameScene implements SceneMethods {
 		return unitManager;
 	}
 	
+	public EnemyManager getEnemyManager() {
+		return enemyManager;
+	}
+	
 	public void setLevel(int[][] level) {
 		this.level = level;
 	}
