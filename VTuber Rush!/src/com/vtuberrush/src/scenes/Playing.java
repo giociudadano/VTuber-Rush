@@ -57,6 +57,7 @@ public class Playing extends GameScene implements SceneMethods {
 	@Override
 	public void render(Graphics graphics) {
 		drawLevel(graphics);
+		drawHighlights(graphics);
 		actionBar.draw(graphics);
 		enemyManager.draw(graphics);
 		unitManager.draw(graphics);
@@ -82,6 +83,15 @@ public class Playing extends GameScene implements SceneMethods {
 	private void drawSelectedUnit(Graphics graphics) {
 		if (getSelectedUnit() != null) {
 			graphics.drawImage(unitManager.getUnitSprites()[getSelectedUnit().getUnitType()], mouseX, mouseY-32, null);
+		}
+	}
+	
+	private void drawHighlights(Graphics graphics) {
+		graphics.setColor(Color.white);
+		graphics.drawRect(mouseX, mouseY, 32, 32);
+		if (displayedUnit != null) {
+			graphics.setColor(new Color(192, 252, 64));
+			graphics.drawRect(displayedUnit.getX(), displayedUnit.getY(), 32, 32);
 		}
 	}
 	

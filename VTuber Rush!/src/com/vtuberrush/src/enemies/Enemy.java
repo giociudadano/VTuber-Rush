@@ -18,6 +18,11 @@ public abstract class Enemy {
 		this.enemyType = enemyType;
 		bounds = new Rectangle((int)x, (int)y, 32, 32);
 		direction = NONE;
+		setHealth();
+	}
+	
+	private void setHealth() {
+		health = com.vtuberrush.src.helpers.Constants.Enemies.getHealth(enemyType);
 	}
 
 	public void move(float speed, int directionMove) {
