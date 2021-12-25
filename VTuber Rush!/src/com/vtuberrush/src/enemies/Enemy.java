@@ -4,12 +4,12 @@ import java.awt.Rectangle;
 import static com.vtuberrush.src.helpers.Constants.Direction.*;
 
 public abstract class Enemy {
-	private float x, y;
-	private Rectangle bounds;
-	private int health;
-	private int id;
-	private int enemyType;
-	private int direction;
+	protected float x, y;
+	protected Rectangle bounds;
+	protected int health, maxHealth;
+	protected int id;
+	protected int enemyType;
+	protected int direction;
 	
 	public Enemy(float x, float y, int id, int enemyType) {
 		this.x = x;
@@ -18,11 +18,12 @@ public abstract class Enemy {
 		this.enemyType = enemyType;
 		bounds = new Rectangle((int)x, (int)y, 32, 32);
 		direction = NONE;
-		setHealth();
+		setMaxHealth();
 	}
 	
-	private void setHealth() {
-		health = com.vtuberrush.src.helpers.Constants.Enemies.getHealth(enemyType);
+	private void setMaxHealth() {
+		maxHealth = com.vtuberrush.src.helpers.Constants.Enemies.getMaxHealth(enemyType);
+		health = maxHealth;
 	}
 
 	public void move(float speed, int directionMove) {
@@ -63,6 +64,10 @@ public abstract class Enemy {
 
 	public int getHealth() {
 		return health;
+	}
+	
+	public float getHealthPercent() {
+		return health / (float) maxHealth;
 	}
 
 	public int getId() {

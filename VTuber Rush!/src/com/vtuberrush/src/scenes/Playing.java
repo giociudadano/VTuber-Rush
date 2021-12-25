@@ -130,8 +130,18 @@ public class Playing extends GameScene implements SceneMethods {
 			for(String line : flavorText.split("\n")) {
 				graphics.drawString(line, 108, 64 + (16 * lines++));
 			}
+			
+			//Methods
+			drawDisplayedUnitRange(graphics);
 		}
 	}	
+	
+	private void drawDisplayedUnitRange(Graphics graphics) {
+		graphics.setColor(Color.white);
+		graphics.drawOval(displayedUnit.getX()+16 - (int)(displayedUnit.getRange()/2),
+			displayedUnit.getY()+16 - (int)(displayedUnit.getRange()/2),
+			(int)(displayedUnit.getRange()), (int)(displayedUnit.getRange()));
+	}
 	
 	public int getTileType(int x, int y) {
 		x = x / 32;

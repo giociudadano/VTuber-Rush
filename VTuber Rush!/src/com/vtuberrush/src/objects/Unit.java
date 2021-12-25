@@ -19,11 +19,11 @@ public class Unit {
 	}
 	
 	private void setRange() {
-		damage = com.vtuberrush.src.helpers.Constants.Units.getRange(unitType);
+		range = com.vtuberrush.src.helpers.Constants.Units.getRange(unitType);
 	}
 	
 	private void setCooldown() {
-		damage = com.vtuberrush.src.helpers.Constants.Units.getCooldown(unitType);
+		cooldown = com.vtuberrush.src.helpers.Constants.Units.getCooldown(unitType);
 	}
 
 	public int getX() {

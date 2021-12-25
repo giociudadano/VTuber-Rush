@@ -29,7 +29,7 @@ public class Constants {
 			}
 		}
 		
-		public static int getHealth(int enemyType) {
+		public static int getMaxHealth(int enemyType) {
 			switch (enemyType) {
 			case SLIME_GREEN: return 100; 
 			case SLIME_BLUE: return 60;
