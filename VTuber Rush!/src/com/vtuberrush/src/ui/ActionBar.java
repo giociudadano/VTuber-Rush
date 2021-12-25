@@ -4,6 +4,7 @@ import static com.vtuberrush.src.main.GameStates.MENU;
 import static com.vtuberrush.src.main.GameStates.setGameState;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -24,9 +25,10 @@ public class ActionBar extends Bar{
 	}
 	
 	public void draw(Graphics graphics) {
-		graphics.setColor(Color.black);
+		graphics.setColor(new Color(38, 50, 64, 100));
 		graphics.fillRect(x, y, width, height);
 		drawButtons(graphics);
+		drawSelectedTile(graphics);
 	}
 	
 	private void initButtons() {
@@ -45,6 +47,15 @@ public class ActionBar extends Bar{
 		}
 	}
 	
+	private void drawSelectedTile(Graphics graphics) {
+		if (playing.getSelectedUnit() != null) {
+			Graphics2D graphics2d = (Graphics2D) graphics;
+			graphics.setColor(new Color(192, 252, 64));
+			graphics2d.drawRoundRect(100 + (122 * selectedUnit.getUnitType()), 560, 112, 136, 10, 13);
+			graphics2d.drawRoundRect(101 + (122 * selectedUnit.getUnitType()), 561, 110, 134, 6, 10);
+		}
+	}
+	
 	private void drawButtonsFeedback(Graphics graphics, Button button) {
 		//mouseOver
 		
@@ -56,9 +67,9 @@ public class ActionBar extends Bar{
 		}
 		
 		if (button.isMousePressed()) {
-			graphics.setColor(new Color(255,255,255,100));
+			graphics.setColor(new Color(255,255,255,50));
 			graphics2d.fillRoundRect(button.x, button.y, button.width, button.height, 10, 13);
-		}
+		}	
 
 	}
 

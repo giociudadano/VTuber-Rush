@@ -44,5 +44,14 @@ public class Constants {
 			}
 		}
 		
+		public static String getFlavor(int unitType) {
+			switch (unitType) {
+			case POMU: return "A fairy who lives in a lush forest. Supple like a\nflower in the breeze, cheerful and optimistic.";
+			case FINANA: return "A mermaid spending time with tropical fish in\nthe sea of coral reefs. Has a heart as clear\nand pure as the calm and beautiful sea.";
+			case ELIRA: return "A sky dragon who came from the heavens closest\nto the sun. She has the kindness that makes the\nlight of a sunny day fall equally on all.";
+			default: return "";
+			}
+		}
+		
 	}
 }
