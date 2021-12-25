@@ -1,6 +1,8 @@
 package com.vtuberrush.src.managers;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -37,11 +39,11 @@ public class ProjectileManager {
 	public void addProjectile(Unit unit, Enemy enemy) {
 		int type = getProjectileType(unit);
 		
-		int xDistance = (int) Math.abs(unit.getX()-enemy.getX());
-		int yDistance = (int) Math.abs(unit.getY()-enemy.getY());
-		int distance = xDistance + yDistance;
+		int xDistance = (int) (unit.getX()-enemy.getX());
+		int yDistance = (int) (unit.getY()-enemy.getY());
+		int distance = Math.abs(xDistance) + Math.abs(yDistance);
 		
-		float xPercent = (float) xDistance / distance;
+		float xPercent = (float) Math.abs(xDistance) / distance;
 		
 		float xSpeed = xPercent * com.vtuberrush.src.helpers.Constants.Projectiles.getSpeed(type);
 		float ySpeed = com.vtuberrush.src.helpers.Constants.Projectiles.getSpeed(type) - xSpeed;
@@ -53,8 +55,14 @@ public class ProjectileManager {
 		if (unit.getY() > enemy.getY()) {
 			ySpeed *= -1;
 		}
+	
+		float rotation = (float) Math.toDegrees((float) Math.atan(yDistance / (float) xDistance));
 		
-		projectiles.add(new Projectile(unit.getX()+8, unit.getY()+8, xSpeed, ySpeed, unit.getDamage(), id++, type));
+		if (xDistance < 0) {
+			rotation += 180;
+		}
+		
+		projectiles.add(new Projectile(unit.getX()+16, unit.getY()+16, xSpeed, ySpeed, unit.getDamage(), rotation, id++, type));
 		
 	}
 
@@ -80,12 +88,19 @@ public class ProjectileManager {
 	}
 
 	public void draw(Graphics graphics) {
+		Graphics2D graphics2d = (Graphics2D) graphics;
 		for (Projectile projectile : projectiles) {
 			if (projectile.isActive()) {
-				graphics.drawImage(projectileSprites[projectile.getProjectileType()], (int) projectile.getPosition().x, 
-						(int) projectile.getPosition().y, null);
+				AffineTransform oldXForm = graphics2d.getTransform();
+				graphics2d.translate(projectile.getPosition().x, projectile.getPosition().y);
+				graphics2d.rotate(Math.toRadians(projectile.getRotation()));
+				graphics2d.drawImage(projectileSprites[projectile.getProjectileType()], -8, -8, null);
+				graphics2d.rotate(-Math.toRadians(-projectile.getRotation()));
+				graphics2d.translate(-projectile.getPosition().x, -projectile.getPosition().y);
+				graphics2d.setTransform(oldXForm);
 			}
 		}
+		
 	}
 	
 	private int getProjectileType(Unit unit) {

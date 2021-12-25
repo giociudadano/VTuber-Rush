@@ -73,27 +73,27 @@ public class Constants {
 		
 		public static int getDamage(int unitType) {
 			switch (unitType) {
-			case POMU: return 15; 
+			case POMU: return 10; 
 			case FINANA: return 5;
-			case ELIRA: return 25;
+			case ELIRA: return 15;
 			default: return 0;
 			}
 		}
 		
 		public static float getRange(int unitType) {
 			switch (unitType) {
-			case POMU: return 220; 
-			case FINANA: return 300;
-			case ELIRA: return 180;
+			case POMU: return 250; 
+			case FINANA: return 350;
+			case ELIRA: return 200;
 			default: return 0;
 			}
 		}
 		
 		public static float getCooldown(int unitType) {
 			switch (unitType) {
-			case POMU: return 10; 
-			case FINANA: return 10;
-			case ELIRA: return 10;
+			case POMU: return 60; 
+			case FINANA: return 100;
+			case ELIRA: return 100;
 			default: return 0;
 			}
 		}
@@ -107,9 +107,9 @@ public class Constants {
 		
 		public static float getSpeed(int projType) {
 			switch(projType) {
-			case POMU_PROJ: return 2f;
-			case FINANA_PROJ: return 3f;
-			case ELIRA_PROJ: return 1f;
+			case POMU_PROJ: return 2.5f;
+			case FINANA_PROJ: return 4f;
+			case ELIRA_PROJ: return 2f;
 			default: return 0f;
 			}
 		}

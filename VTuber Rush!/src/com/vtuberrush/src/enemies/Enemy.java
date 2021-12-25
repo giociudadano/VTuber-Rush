@@ -52,10 +52,10 @@ public abstract class Enemy {
 			break;
 		default: break;
 		}
-		updateHitbox();
+		tickHitbox();
 	}
 	
-	private void updateHitbox() {
+	private void tickHitbox() {
 		bounds.x = (int) x;
 		bounds.y = (int) y;
 	}
