@@ -4,7 +4,6 @@ import static com.vtuberrush.src.main.GameStates.MENU;
 import static com.vtuberrush.src.main.GameStates.setGameState;
 
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 

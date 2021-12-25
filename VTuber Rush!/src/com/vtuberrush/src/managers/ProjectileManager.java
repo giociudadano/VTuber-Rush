@@ -48,8 +48,8 @@ public class ProjectileManager {
 	public void addProjectile(Unit unit, Enemy enemy) {
 		int type = getProjectileType(unit);
 		
-		int xDistance = (int) (unit.getX()-enemy.getX()+16);
-		int yDistance = (int) (unit.getY()-enemy.getY()-32);
+		int xDistance = (int) (unit.getX()-enemy.getX());
+		int yDistance = (int) (unit.getY()-enemy.getY());
 		int distance = Math.abs(xDistance) + Math.abs(yDistance);
 		
 		float xPercent = (float) Math.abs(xDistance) / distance;
@@ -71,7 +71,7 @@ public class ProjectileManager {
 			rotation += 180;
 		}
 		
-		projectiles.add(new Projectile(unit.getX()+16, unit.getY()-24, xSpeed, ySpeed, unit.getDamage(), rotation, id++, type));
+		projectiles.add(new Projectile(unit.getX()+16, unit.getY()+16, xSpeed, ySpeed, unit.getDamage(), rotation, id++, type));
 		
 	}
 
@@ -103,6 +103,9 @@ public class ProjectileManager {
 			if (enemy.isAlive()) {
 				if(enemy.getBounds().contains(projectile.getPosition())) {
 					enemy.takeDamage(projectile.getDamage());
+					if(projectile.getProjectileType() == FINANA_PROJ) {
+						enemy.takeSlow();
+					}
 					return true;
 				}
 			}

@@ -22,6 +22,7 @@ public class EnemyManager {
 	private Playing playing;
 	private BufferedImage[] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
+	private BufferedImage effectSlowed;
 	
 	private Flag start, end;
 	
@@ -30,10 +31,15 @@ public class EnemyManager {
 		this.start = start;
 		this.end = end;
 		enemySprites = new BufferedImage[4];
+		loadEffects();
 		addEnemy(SLIME_GREEN);
 		addEnemy(SLIME_BLUE);
 		addEnemy(SLIME_RED);
 		loadEnemies();
+	}
+	
+	public void loadEffects() {
+		effectSlowed = LoadSave.getSpriteAtlas().getSubimage(192, 0, 32, 32);
 	}
 	
 	public void loadEnemies() {
@@ -140,13 +146,26 @@ public class EnemyManager {
 			if (enemy.isAlive()) {
 				drawEnemy(graphics, enemy);
 				drawHealthBar(graphics, enemy);
+				drawEffects(graphics, enemy);
 			}
 		}	
+	}
+	
+	private void drawEnemy(Graphics graphics, Enemy enemy) {
+		graphics.setColor(new Color(0, 0, 0, 50));
+		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
+		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
 	}
 	
 	private void drawHealthBar(Graphics graphics, Enemy enemy) {
 		graphics.setColor(new Color(254, 90, 89));
 		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, getHealthBarWidth(enemy), 3);
+	}
+	
+	private void drawEffects(Graphics graphics, Enemy enemy) {
+		if(enemy.isSlowed()) {
+			graphics.drawImage(effectSlowed, (int) enemy.getX(), (int) enemy.getY(), 32, 32, null);
+		}
 	}
 	
 	private int getHealthBarWidth(Enemy enemy) {
@@ -167,12 +186,6 @@ public class EnemyManager {
 			enemies.add(new SlimeRed(x, y, 0));
 			break;
 		}
-	}
-		
-	private void drawEnemy(Graphics graphics, Enemy enemy) {
-		graphics.setColor(new Color(0, 0, 0, 50));
-		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
-		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
 	}
 	
 	public ArrayList<Enemy> getEnemies() {

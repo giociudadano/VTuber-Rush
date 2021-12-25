@@ -11,6 +11,8 @@ public abstract class Enemy {
 	protected int id;
 	protected int enemyType;
 	protected int direction;
+	protected int tickSlowDuration = 300;
+	protected int tickSlow = tickSlowDuration;
 
 	
 	public Enemy(float x, float y, int id, int enemyType) {
@@ -34,9 +36,17 @@ public abstract class Enemy {
 			alive = false;
 		}
 	}
-
+	
+	public void takeSlow() {
+		tickSlow = 0;
+	}
+	
 	public void move(float speed, int directionMove) {
 		direction = directionMove;
+		if (tickSlow < tickSlowDuration) {
+			tickSlow++;
+			speed *= 0.5f;
+		}
 		switch (directionMove) {
 		case LEFT:
 			this.x -= speed;
@@ -79,6 +89,10 @@ public abstract class Enemy {
 
 	public boolean isAlive() {
 		return alive;
+	}
+	
+	public boolean isSlowed() {
+		return tickSlow < tickSlowDuration;
 	}
 	
 	public int getHealth() {
