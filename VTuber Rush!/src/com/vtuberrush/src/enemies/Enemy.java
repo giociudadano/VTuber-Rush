@@ -52,8 +52,14 @@ public abstract class Enemy {
 			break;
 		default: break;
 		}
+		updateHitbox();
 	}
 	
+	private void updateHitbox() {
+		bounds.x = (int) x;
+		bounds.y = (int) y;
+	}
+
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;

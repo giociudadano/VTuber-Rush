@@ -1,8 +1,8 @@
 package com.vtuberrush.src.objects;
 
 public class Unit {
-	private int x, y, id, unitType;
-	private float damage, range, cooldown;
+	private int x, y, id, damage, unitType, tickCooldown;
+	private float range, cooldown;
 	
 	public Unit(int x, int y, int id, int unitType) {
 		this.x = x;
@@ -14,6 +14,18 @@ public class Unit {
 		setCooldown();
 	}
 
+	public void tick() {
+		tickCooldown++;
+	}
+	
+	public boolean isOffCooldown() {
+		return tickCooldown > cooldown;
+	}
+
+	public void resetCooldown() {
+		tickCooldown = 0;
+	}
+	
 	private void setDamage() {
 		damage = com.vtuberrush.src.helpers.Constants.Units.getDamage(unitType);
 	}
@@ -42,7 +54,7 @@ public class Unit {
 		return unitType;
 	}
 
-	public float getDamage() {
+	public int getDamage() {
 		return damage;
 	}
 

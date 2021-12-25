@@ -71,11 +71,11 @@ public class Constants {
 			}
 		}
 		
-		public static float getDamage(int unitType) {
+		public static int getDamage(int unitType) {
 			switch (unitType) {
 			case POMU: return 15; 
-			case FINANA: return 15;
-			case ELIRA: return 15;
+			case FINANA: return 5;
+			case ELIRA: return 25;
 			default: return 0;
 			}
 		}

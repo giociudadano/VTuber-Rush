@@ -24,15 +24,19 @@ public class UnitManager {
 	}
 	
 	public void tick() {
-		attackEnemy();
+		for(Unit unit : units) {
+			unit.tick();
+			attackEnemy(unit);
+		}
 	}
 
-	private void attackEnemy() {
-		for(Unit unit : units) {
-			for(Enemy enemy : playing.getEnemyManager().getEnemies()) {
-				if (enemy.isAlive()) {
-					if (isNearby(unit, enemy)) {
-						enemy.takeDamage(1);
+	private void attackEnemy(Unit unit) {
+		for(Enemy enemy : playing.getEnemyManager().getEnemies()) {
+			if (enemy.isAlive()) {
+				if (isNearby(unit, enemy)) {
+					if(unit.isOffCooldown()) {
+						playing.shootEnemy(unit, enemy);
+						unit.resetCooldown();
 					}
 				}
 			}

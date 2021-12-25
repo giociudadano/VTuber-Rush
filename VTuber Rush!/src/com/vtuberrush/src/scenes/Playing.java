@@ -9,10 +9,12 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import com.vtuberrush.src.enemies.Enemy;
 import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.EnemyManager;
+import com.vtuberrush.src.managers.ProjectileManager;
 import com.vtuberrush.src.managers.UnitManager;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.objects.Unit;
@@ -24,10 +26,10 @@ import static com.vtuberrush.src.helpers.Constants.Units.FINANA;
 public class Playing extends GameScene implements SceneMethods {
 
 	private int[][] level;
-	private EnemyManager enemyManager;
 	private ActionBar actionBar;
-	
+	private EnemyManager enemyManager;
 	private UnitManager unitManager;
+	private ProjectileManager projectileManager;
 	private Unit selectedUnit, displayedUnit;
 	private int mouseX, mouseY;
 	
@@ -39,6 +41,7 @@ public class Playing extends GameScene implements SceneMethods {
 		actionBar = new ActionBar(0,550,1280,200,this);
 		enemyManager = new EnemyManager(this, start, end);
 		unitManager = new UnitManager(this);
+		projectileManager = new ProjectileManager(this);
 	}
 
 	private void loadLevelDefault() {
@@ -52,6 +55,7 @@ public class Playing extends GameScene implements SceneMethods {
 		tickAnimation();
 		enemyManager.tick();
 		unitManager.tick();
+		projectileManager.tick();
 	}
 	
 	@Override
@@ -61,6 +65,7 @@ public class Playing extends GameScene implements SceneMethods {
 		actionBar.draw(graphics);
 		enemyManager.draw(graphics);
 		unitManager.draw(graphics);
+		projectileManager.draw(graphics);
 		drawDisplayedUnit(graphics);
 		drawSelectedUnit(graphics);
 	}
@@ -163,6 +168,11 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	public void shootEnemy(Unit unit, Enemy enemy) {
+		projectileManager.addProjectile(unit, enemy);
+	}
+
+	
 	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
@@ -236,5 +246,6 @@ public class Playing extends GameScene implements SceneMethods {
 	public Unit getSelectedUnit() {
 		return selectedUnit;
 	}
+
 
 }
