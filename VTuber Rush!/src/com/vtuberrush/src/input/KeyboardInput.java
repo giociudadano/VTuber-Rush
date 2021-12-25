@@ -21,6 +21,8 @@ public class KeyboardInput implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		switch(GameStates.gameState) {
+		case PLAYING:
+			game.getPlaying().keyPressed(e);
 		case EDITING:
 			game.getEditing().keyPressed(e);
 			break;

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import com.vtuberrush.src.enemies.Enemy;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
@@ -23,7 +24,28 @@ public class UnitManager {
 	}
 	
 	public void tick() {
-		
+		for(Unit unit : units) {
+			unit.tick();
+			attackEnemy(unit);
+		}
+	}
+
+	private void attackEnemy(Unit unit) {
+		for(Enemy enemy : playing.getEnemyManager().getEnemies()) {
+			if (enemy.isAlive()) {
+				if (isNearby(unit, enemy)) {
+					if(unit.isOffCooldown()) {
+						playing.shootEnemy(unit, enemy);
+						unit.resetCooldown();
+					}
+				}
+			}
+		}
+	}
+
+	private boolean isNearby(Unit unit, Enemy enemy) {
+		int range = com.vtuberrush.src.helpers.MathFunctions.getDistance(unit.getX(), unit.getY(), enemy.getX(), enemy.getY());
+		return range < unit.getRange()/2;
 	}
 
 	private void loadUnits() {

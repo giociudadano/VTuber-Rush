@@ -73,7 +73,7 @@ public class LoadSave {
 		File level = new File("res/" + name + ".txt");
 		if(level.exists()) {
 			ArrayList<Integer> array = readFile(level);
-			return ArrayBuilder.array1Dto2D(array, 40, 18);
+			return MathFunctions.array1Dto2D(array, 40, 18);
 		} else {
 			System.out.println("Level" + name + "does not exist!");
 			return null;
@@ -113,7 +113,7 @@ public class LoadSave {
 	public static void saveLevel(String name, int[][] idArray, Flag start, Flag end) {
 		File level = new File("res/" + name + ".txt");
 		if(level.exists()) {
-			writeLevel(level, ArrayBuilder.array2Dto1D(idArray), start, end);
+			writeLevel(level, MathFunctions.array2Dto1D(idArray), start, end);
 		} else {
 			System.out.println("Level" + name + "does not exist!");
 			return;
