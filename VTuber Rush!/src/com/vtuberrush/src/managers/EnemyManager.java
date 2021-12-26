@@ -32,14 +32,11 @@ public class EnemyManager {
 		this.end = end;
 		enemySprites = new BufferedImage[4];
 		loadEffects();
-		addEnemy(SLIME_GREEN);
-		addEnemy(SLIME_BLUE);
-		addEnemy(SLIME_RED);
 		loadEnemies();
 	}
 	
 	public void loadEffects() {
-		effectSlowed = LoadSave.getSpriteAtlas().getSubimage(192, 0, 32, 32);
+		effectSlowed = LoadSave.getSpriteAtlas().getSubimage(192, 0, 16, 16);
 	}
 	
 	public void loadEnemies() {
@@ -50,13 +47,30 @@ public class EnemyManager {
 	}
 	
 	public void tick() {
+		playing.getWaveManager().tick();
+		if(isSpawnEnemy()) {
+			spawnEnemy();
+		}
 		for (Enemy enemy : enemies) {
 			if (enemy.isAlive()) {
 				tickMove(enemy);
 			}
 		}	
 	}
+
+	private boolean isSpawnEnemy() {
+		if (playing.getWaveManager().isSpawnEnemy()) {
+			if (playing.getWaveManager().isSpawnEnemyNext()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	private void spawnEnemy() {
+		addEnemy(playing.getWaveManager().getNextEnemy());
+	}
+
 	//Pathfinding AI
 	private void tickMove(Enemy enemy) {
 		if (enemy.getDirection() == NONE) {
@@ -164,7 +178,7 @@ public class EnemyManager {
 	
 	private void drawEffects(Graphics graphics, Enemy enemy) {
 		if(enemy.isSlowed()) {
-			graphics.drawImage(effectSlowed, (int) enemy.getX(), (int) enemy.getY(), 32, 32, null);
+			graphics.drawImage(effectSlowed, (int) enemy.getX(), (int) enemy.getY(), 16, 16, null);
 		}
 	}
 	

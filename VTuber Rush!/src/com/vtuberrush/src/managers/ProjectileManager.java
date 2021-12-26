@@ -118,7 +118,7 @@ public class ProjectileManager {
 			if (enemy.isAlive()) {
 				float distance = MathFunctions.getDistance(projectile.getPosition().x,
 						projectile.getPosition().y, enemy.getX(), enemy.getY());
-				if(distance <= 30) {
+				if(distance <= 48) {
 					enemy.takeDamage(projectile.getDamage());
 				}
 			}

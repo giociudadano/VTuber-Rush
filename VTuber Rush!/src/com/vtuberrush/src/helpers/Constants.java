@@ -22,8 +22,8 @@ public class Constants {
 		
 		public static float getSpeed(int enemyType) {
 			switch (enemyType) {
-			case SLIME_GREEN: return 0.4f; 
-			case SLIME_BLUE: return 0.55f;
+			case SLIME_GREEN: return 0.3f; 
+			case SLIME_BLUE: return 0.3f;
 			case SLIME_RED: return 0.3f;
 			default: return 0;
 			}
@@ -32,8 +32,8 @@ public class Constants {
 		public static int getMaxHealth(int enemyType) {
 			switch (enemyType) {
 			case SLIME_GREEN: return 100; 
-			case SLIME_BLUE: return 60;
-			case SLIME_RED: return 250;
+			case SLIME_BLUE: return 200;
+			case SLIME_RED: return 300;
 			default: return 0;
 			}
 		}
@@ -73,9 +73,9 @@ public class Constants {
 		
 		public static int getDamage(int unitType) {
 			switch (unitType) {
-			case POMU: return 10; 
-			case FINANA: return 4;
-			case ELIRA: return 15;
+			case POMU: return 20; 
+			case FINANA: return 20;
+			case ELIRA: return 35;
 			default: return 0;
 			}
 		}
@@ -83,7 +83,7 @@ public class Constants {
 		public static float getRange(int unitType) {
 			switch (unitType) {
 			case POMU: return 300; 
-			case FINANA: return 270;
+			case FINANA: return 240;
 			case ELIRA: return 240;
 			default: return 0;
 			}
@@ -91,9 +91,9 @@ public class Constants {
 		
 		public static float getCooldown(int unitType) {
 			switch (unitType) {
-			case POMU: return 60; 
-			case FINANA: return 120;
-			case ELIRA: return 180;
+			case POMU: return 100; 
+			case FINANA: return 200;
+			case ELIRA: return 200;
 			default: return 0;
 			}
 		}

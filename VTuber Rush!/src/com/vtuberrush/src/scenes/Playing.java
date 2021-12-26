@@ -15,6 +15,7 @@ import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.EnemyManager;
 import com.vtuberrush.src.managers.ProjectileManager;
 import com.vtuberrush.src.managers.UnitManager;
+import com.vtuberrush.src.managers.WaveManager;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.ui.ActionBar;
@@ -28,6 +29,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private ActionBar actionBar;
 	private EnemyManager enemyManager;
 	private UnitManager unitManager;
+	private WaveManager waveManager;
 	private ProjectileManager projectileManager;
 	private Unit selectedUnit, displayedUnit;
 	private int mouseX, mouseY;
@@ -40,6 +42,7 @@ public class Playing extends GameScene implements SceneMethods {
 		actionBar = new ActionBar(0,550,1280,200,this);
 		enemyManager = new EnemyManager(this, start, end);
 		unitManager = new UnitManager(this);
+		waveManager = new WaveManager(this);
 		projectileManager = new ProjectileManager(this);
 	}
 
@@ -110,7 +113,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private void drawDisplayedUnit(Graphics graphics) {
 		if (displayedUnit != null) {
 			
-			//Frame
+		//Frame
 			Graphics2D graphics2d = (Graphics2D) graphics;
 			graphics.setColor(new Color(72, 79, 95));
 			graphics.fillRect(16, 12, 400, 30);
@@ -119,14 +122,18 @@ public class Playing extends GameScene implements SceneMethods {
 			graphics.setColor(new Color(212, 205, 197, 30));
 			graphics.drawRect(18, 14, 396, 26);
 			
-			//Image
+		//Image
 			graphics.drawImage(getUnitManager().getUnitSprites()[displayedUnit.getUnitType()], 32, 48, 64, 96, null);
 			
-			//Text
+		//Text
 			graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			
+			//Unit Name
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 15));
 			graphics.setColor(new Color(211, 186, 145));
 			graphics.drawString(Units.getName(displayedUnit.getUnitType()), 32, 32);
+			
+			//Unit Flavor
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
 			graphics.setColor(new Color(236, 230, 218));
 			String flavorText = new String(Units.getFlavor(displayedUnit.getUnitType()));
@@ -232,6 +239,10 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public UnitManager getUnitManager() {
 		return unitManager;
+	}
+	
+	public WaveManager getWaveManager() {
+		return waveManager;
 	}
 	
 	public EnemyManager getEnemyManager() {
