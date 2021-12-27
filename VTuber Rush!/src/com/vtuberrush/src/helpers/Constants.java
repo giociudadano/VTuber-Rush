@@ -22,8 +22,8 @@ public class Constants {
 		
 		public static float getSpeed(int enemyType) {
 			switch (enemyType) {
-			case SLIME_GREEN: return 0.5f; 
-			case SLIME_BLUE: return 0.7f;
+			case SLIME_GREEN: return 0.3f; 
+			case SLIME_BLUE: return 0.3f;
 			case SLIME_RED: return 0.3f;
 			default: return 0;
 			}
@@ -32,8 +32,17 @@ public class Constants {
 		public static int getMaxHealth(int enemyType) {
 			switch (enemyType) {
 			case SLIME_GREEN: return 100; 
-			case SLIME_BLUE: return 60;
-			case SLIME_RED: return 250;
+			case SLIME_BLUE: return 250;
+			case SLIME_RED: return 500;
+			default: return 0;
+			}
+		}
+		
+		public static int getReward(int enemyType) {
+			switch (enemyType) {
+			case SLIME_GREEN: return 10; 
+			case SLIME_BLUE: return 20;
+			case SLIME_RED: return 30;
 			default: return 0;
 			}
 		}
@@ -44,12 +53,40 @@ public class Constants {
 		public static final int FINANA = 1;
 		public static final int ELIRA = 2;
 		
+
+		
 		public static String getName(int unitType) {
 			switch (unitType) {
 			case POMU: return "Pomu Rainpuff";
 			case FINANA: return "Finana Ryugu";
 			case ELIRA: return "Elira Pendora";
 			default: return "";
+			}
+		}
+		
+		public static int getCost(int unitType) {
+			switch (unitType) {
+			case POMU: return 100;
+			case FINANA: return 70;
+			case ELIRA: return 150;
+			default: return 0;
+			}
+		}
+		
+		public static String getInfo(int unitType) {
+			switch (unitType) {
+			case POMU:
+				return "Deals moderate damage to enemies.\n";
+			case FINANA: 
+				return "Deals light damage to enemies. Enemies hit\n"
+					+ "are slowed by 50% for 2.5 seconds. Can only\n"
+					+ "be placed in water.";
+			case ELIRA: 
+				return "Deals heavy damage to enemies. Fireballs\n"
+					+ "explode on-hit, dealing 50% of the damage to\n"
+					+ "surrounding enemies.";
+			default:
+				return "";
 			}
 		}
 		
@@ -73,27 +110,27 @@ public class Constants {
 		
 		public static int getDamage(int unitType) {
 			switch (unitType) {
-			case POMU: return 10; 
-			case FINANA: return 5;
-			case ELIRA: return 15;
+			case POMU: return 35; 
+			case FINANA: return 15;
+			case ELIRA: return 50;
 			default: return 0;
 			}
 		}
 		
 		public static float getRange(int unitType) {
 			switch (unitType) {
-			case POMU: return 250; 
-			case FINANA: return 350;
-			case ELIRA: return 200;
+			case POMU: return 320; 
+			case FINANA: return 250;
+			case ELIRA: return 250;
 			default: return 0;
 			}
 		}
 		
 		public static float getCooldown(int unitType) {
 			switch (unitType) {
-			case POMU: return 60; 
-			case FINANA: return 100;
-			case ELIRA: return 100;
+			case POMU: return 100; 
+			case FINANA: return 200;
+			case ELIRA: return 250;
 			default: return 0;
 			}
 		}

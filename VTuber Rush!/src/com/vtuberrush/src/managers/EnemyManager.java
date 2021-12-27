@@ -22,6 +22,7 @@ public class EnemyManager {
 	private Playing playing;
 	private BufferedImage[] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
+	private BufferedImage effectSlowed;
 	
 	private Flag start, end;
 	
@@ -30,10 +31,12 @@ public class EnemyManager {
 		this.start = start;
 		this.end = end;
 		enemySprites = new BufferedImage[4];
-		addEnemy(SLIME_GREEN);
-		addEnemy(SLIME_BLUE);
-		addEnemy(SLIME_RED);
+		loadEffects();
 		loadEnemies();
+	}
+	
+	public void loadEffects() {
+		effectSlowed = LoadSave.getSpriteAtlas().getSubimage(192, 0, 16, 16);
 	}
 	
 	public void loadEnemies() {
@@ -50,7 +53,7 @@ public class EnemyManager {
 			}
 		}	
 	}
-	
+
 	//Pathfinding AI
 	private void tickMove(Enemy enemy) {
 		if (enemy.getDirection() == NONE) {
@@ -63,7 +66,8 @@ public class EnemyManager {
 		if (getTileType(x, y) == ROAD) {
 			enemy.move(getSpeed(enemy.getEnemyType()), enemy.getDirection());
 		} else if (isEnd(enemy)) {
-			
+			enemy.takePurge();
+			System.out.println("Purged");
 		} else {
 			setDirection(enemy);
 		}
@@ -140,13 +144,26 @@ public class EnemyManager {
 			if (enemy.isAlive()) {
 				drawEnemy(graphics, enemy);
 				drawHealthBar(graphics, enemy);
+				drawEffects(graphics, enemy);
 			}
 		}	
+	}
+	
+	private void drawEnemy(Graphics graphics, Enemy enemy) {
+		graphics.setColor(new Color(0, 0, 0, 50));
+		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
+		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
 	}
 	
 	private void drawHealthBar(Graphics graphics, Enemy enemy) {
 		graphics.setColor(new Color(254, 90, 89));
 		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, getHealthBarWidth(enemy), 3);
+	}
+	
+	private void drawEffects(Graphics graphics, Enemy enemy) {
+		if(enemy.isSlowed()) {
+			graphics.drawImage(effectSlowed, (int) enemy.getX(), (int) enemy.getY(), 16, 16, null);
+		}
 	}
 	
 	private int getHealthBarWidth(Enemy enemy) {
@@ -158,24 +175,32 @@ public class EnemyManager {
 		int y = start.getY() * 32;
 		switch(type) {
 		case SLIME_GREEN:
-			enemies.add(new SlimeGreen(x, y, 0));
+			enemies.add(new SlimeGreen(x, y, 0, this));
 			break;
 		case SLIME_BLUE:
-			enemies.add(new SlimeBlue(x, y, 0));
+			enemies.add(new SlimeBlue(x, y, 0, this));
 			break;
 		case SLIME_RED:
-			enemies.add(new SlimeRed(x, y, 0));
+			enemies.add(new SlimeRed(x, y, 0, this));
 			break;
 		}
 	}
-		
-	private void drawEnemy(Graphics graphics, Enemy enemy) {
-		graphics.setColor(new Color(0, 0, 0, 50));
-		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
-		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
+	
+	public void addGold(int type) {
+		playing.addGold(type);
 	}
 	
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
+	}
+
+	public int getRemainingEnemies() {
+		int size = 0;
+		for (Enemy enemy : enemies) {
+			if (enemy.isAlive()) {
+				size++;
+			}
+		}
+		return enemies.size() - size;
 	}
 }
