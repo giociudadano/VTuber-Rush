@@ -1,6 +1,7 @@
 package com.vtuberrush.src.scenes;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import com.vtuberrush.src.managers.WaveManager;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.ui.ActionBar;
+import com.vtuberrush.src.ui.Button;
 
 import static com.vtuberrush.src.helpers.Constants.Tiles.*;
 import static com.vtuberrush.src.helpers.Constants.Units.FINANA;
@@ -34,7 +36,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private int tickGold;
 	
 	private Flag start, end;
-
+	private Button buttonUpgrade, buttonSell;
 	
 	public Playing(Game game) {
 		super(game);
@@ -44,6 +46,9 @@ public class Playing extends GameScene implements SceneMethods {
 		unitManager = new UnitManager(this);
 		waveManager = new WaveManager(this);
 		projectileManager = new ProjectileManager(this);
+		
+		buttonUpgrade = new Button("Upgrade", 420, 12, 80, 30);
+		buttonSell = new Button("Sell", 420, 44, 80, 30);
 	}
 
 	private void loadLevelDefault() {
@@ -86,7 +91,9 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager.draw(graphics);
 		drawSelectedUnit(graphics);
 		actionBar.draw(graphics);
+		drawButtons(graphics);
 	}
+
 
 	private void drawLevel(Graphics graphics) {
 		graphics.setColor(new Color(114, 195, 122));
@@ -128,6 +135,22 @@ public class Playing extends GameScene implements SceneMethods {
 		}	
 	}
 	
+	private void drawButtons(Graphics graphics) {
+		Unit displayedUnit = actionBar.getDisplayedUnit();
+		if (displayedUnit != null) {
+			if (displayedUnit.getId() != -1) {
+				buttonUpgrade.draw(graphics);
+				buttonSell.draw(graphics);
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 11));
+				graphics.setColor(new Color(192, 252, 64));
+				graphics.drawString("Upgrade \uFFE5" + getUpgradePrice(actionBar.getDisplayedUnit()), 245, 32);
+				graphics.setColor(new Color(250, 95, 64));
+				graphics.drawString("Sell \uFFE5" + getSellPrice(actionBar.getDisplayedUnit()), 345, 32);
+
+			}
+		}
+	}
+
 	private void addEnemy() {
 		enemyManager.addEnemy(waveManager.getNextEnemy());
 	}
@@ -142,6 +165,21 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	private void subtractGold(int amount) {
 		actionBar.subtractGold(Units.getCost(amount));
+	}
+	
+	private void sellUnit(Unit unit) {
+		unitManager.removeUnit(unit);
+		actionBar.addGold(getSellPrice(unit));
+	}
+	
+	private void upgradeUnit() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void cancelSelection() {
+		setSelectedUnit(null);
+		actionBar.setDisplayedUnit(null);
 	}
 	
 	private boolean isAddEnemy() {
@@ -192,13 +230,21 @@ public class Playing extends GameScene implements SceneMethods {
 		if (y > 540) {
 			actionBar.mouseClicked(x, y);
 		} else {
+			Unit displayedUnit = actionBar.getDisplayedUnit();
+			if (displayedUnit != null) {
+				if (displayedUnit.getId() != -1) {
+					if(buttonSell.getBounds().contains(x, y)) {
+						sellUnit(displayedUnit);
+					}
+				}
+			}
 			if (getSelectedUnit() != null) {
 				if (isPlacable(getSelectedUnit().getUnitType(), mouseX, mouseY)) {
 					if (getUnitAt(mouseX, mouseY) == null) {
 						if (isPurchasable(selectedUnit)) {
 							unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
 							subtractGold(selectedUnit.getUnitType());
-							selectedUnit = null;
+							cancelSelection();
 						}
 					}
 				}
@@ -208,16 +254,25 @@ public class Playing extends GameScene implements SceneMethods {
 			}
 		}
 	}
-	
+
 	private boolean isPurchasable(Unit unit) {
 		return actionBar.isPurchasable(unit);
 	}
 
 	@Override
 	public void mouseMoved(int x, int y) {
+		buttonSell.setMouseOver(false);
+		buttonUpgrade.setMouseOver(false);
 		if (y > 540) {
 			actionBar.mouseMoved(x, y);
 		} else {
+			if (actionBar.getDisplayedUnit() != null) {
+				if(buttonSell.getBounds().contains(x, y)) {
+					buttonSell.setMouseOver(true);
+				} else if (buttonUpgrade.getBounds().contains(x, y)) {
+					buttonUpgrade.setMouseOver(true);
+				}
+			}
 			mouseX = (x / 32) * 32;
 			mouseY = (y / 32) * 32;
 		}
@@ -226,7 +281,7 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			selectedUnit = null;
+			cancelSelection();
 		}
 	}
 	
@@ -234,12 +289,22 @@ public class Playing extends GameScene implements SceneMethods {
 	public void mousePressed(int x, int y) {
 		if (y > 540) {
 			actionBar.mousePressed(x, y);
+		} else {
+			if (actionBar.getDisplayedUnit() != null) {
+				if(buttonSell.getBounds().contains(x, y)) {
+					buttonSell.setMousePressed(true);
+				} else if (buttonUpgrade.getBounds().contains(x, y)) {
+					buttonUpgrade.setMousePressed(true);
+				}
+			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(int x, int y) {
 		actionBar.mouseReleased(x, y);
+		buttonSell.resetButtons();
+		buttonUpgrade.resetButtons();
 	}
 	
 	@Override
@@ -265,6 +330,14 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public Unit getSelectedUnit() {
 		return selectedUnit;
+	}
+	
+	private int getSellPrice(Unit unit) {
+		return (int) Units.getCost(unit.getUnitType())/2;
+	}
+	
+	private int getUpgradePrice(Unit displayedUnit) {
+		return 0;
 	}
 	
 	public int getTileType(int x, int y) {

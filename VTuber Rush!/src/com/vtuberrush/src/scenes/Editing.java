@@ -1,5 +1,6 @@
 package com.vtuberrush.src.scenes;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class Editing extends GameScene implements SceneMethods{
 	}
 
 	private void drawLevel(Graphics graphics) {
+		graphics.setColor(new Color(114, 195, 122));
+		graphics.fillRect(0, 0, 1280, 720);
 		for(int y = 0; y < level.length; y++) {
 			for (int x = 0; x < level[y].length; x++) {
 				int id = level[y][x];

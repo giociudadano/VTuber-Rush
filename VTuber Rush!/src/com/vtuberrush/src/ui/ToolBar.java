@@ -36,8 +36,8 @@ public class ToolBar extends Bar {
 	}
 	
 	private void initButtons() {
-		buttonMenu = new Button("Menu", 10, 560, 80, 25);
-		buttonSave = new Button("Save", 10, 590, 80, 25);
+		buttonMenu = new Button("Menu", 10, 560, 80, 30);
+		buttonSave = new Button("Save", 10, 595, 80, 30);
 		int i = 0;
 		
 		buttonGrass = new Button("Grass", 100, 560, 50, 50, i++);
@@ -65,7 +65,7 @@ public class ToolBar extends Bar {
 	
 
 	public void draw(Graphics graphics) {
-		graphics.setColor(Color.black);
+		graphics.setColor(new Color(36, 48, 61, 200));
 		graphics.fillRect(x, y, width, height);
 		drawButtons(graphics);
 	}

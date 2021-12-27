@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 
-import com.vtuberrush.src.helpers.Constants.Enemies;
 import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
@@ -41,7 +40,7 @@ public class ActionBar extends Bar{
 	}
 
 	private void initButtons() {
-		buttonMenu = new Button("Menu", 10, 560, 80, 25);
+		buttonMenu = new Button("Menu", 10, 560, 80, 30);
 		unitButtons = new Button[3];
 		for(int i = 0; i < unitButtons.length; i++) {
 			unitButtons[i] = new Button("", 100 + (122 * i), 560, 112, 136, i);
@@ -65,9 +64,7 @@ public class ActionBar extends Bar{
 		}
 	}
 	
-	private void drawButtonsFeedback(Graphics graphics, Button button) {
-		//mouseOver
-		
+	public void drawButtonsFeedback(Graphics graphics, Button button) {
 		Graphics2D graphics2d = (Graphics2D) graphics;
 		if(button.isMouseOver()) {
 			graphics.setColor(Color.white);
@@ -105,12 +102,15 @@ public class ActionBar extends Bar{
 			graphics.drawString(Units.getName(type), 32, 32);
 			
 			//Unit Cost
-			if (isPurchasable(displayedUnit)) {
-				graphics.setColor(new Color(211, 186, 145));
-			} else {
-				graphics.setColor(new Color(250, 95, 64));
+			if (displayedUnit.getId() == -1) {
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 11));
+				if (isPurchasable(displayedUnit)) {
+					graphics.setColor(new Color(211, 186, 145));
+				} else {
+					graphics.setColor(new Color(250, 95, 64));
+				}
+					graphics.drawString("Buy \uFFE5" + Units.getCost(type), 345, 32);
 			}
-				graphics.drawString("\uFFE5" + Units.getCost(type), 360, 32);
 			
 			//Unit Info
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
@@ -126,10 +126,9 @@ public class ActionBar extends Bar{
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.ITALIC, 11));
 			graphics.setColor(new Color(236, 230, 218, 100));
 			String flavorText = new String(Units.getFlavor(type));
-			
 			for(String line : flavorText.split("\n")) {
 				graphics.drawString(line, 108, 122 + (12 * lines++));
-			}	
+			}
 		}
 	}	
 	

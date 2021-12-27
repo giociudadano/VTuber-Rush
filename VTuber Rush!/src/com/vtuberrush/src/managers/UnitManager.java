@@ -72,6 +72,14 @@ public class UnitManager {
 		units.add(new Unit(x, y, id++, selectedUnit.getUnitType()));
 	}
 	
+	public void removeUnit(Unit unit) {
+		for (int i = 0; i < units.size(); i++) {
+			if (units.get(i).getId() == unit.getId()) {
+				units.remove(i);
+			}
+		}
+	}
+	
 	public BufferedImage[] getUnitSprites() {
 		return unitSprites;
 	}
