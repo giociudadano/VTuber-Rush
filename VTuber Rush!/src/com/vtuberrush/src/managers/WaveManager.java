@@ -50,6 +50,7 @@ public class WaveManager {
 	
 	public void initNextWave() {
 		waveIndex++;
+		tickWave = 0;
 		waveDelayStart = false;
 		waveDelayEnd = false;
 		enemyIndex = 0;

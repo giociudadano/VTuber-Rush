@@ -1,25 +1,31 @@
 package com.vtuberrush.src.enemies;
 
 import java.awt.Rectangle;
+
+import com.vtuberrush.src.managers.EnemyManager;
+
 import static com.vtuberrush.src.helpers.Constants.Direction.*;
 
 public abstract class Enemy {
+	
 	protected float x, y;
 	protected Rectangle bounds;
 	protected boolean alive = true;
 	protected int health, maxHealth;
 	protected int id;
 	protected int enemyType;
+	protected EnemyManager enemyManager;
 	protected int direction;
 	protected int tickSlowDuration = 300;
 	protected int tickSlow = tickSlowDuration;
 
 	
-	public Enemy(float x, float y, int id, int enemyType) {
+	public Enemy(float x, float y, int id, int enemyType, EnemyManager enemyManager) {
 		this.x = x;
 		this.y = y;
 		this.id = id;
 		this.enemyType = enemyType;
+		this.enemyManager = enemyManager;
 		bounds = new Rectangle((int)x, (int)y, 32, 32);
 		direction = NONE;
 		setMaxHealth();
@@ -34,6 +40,7 @@ public abstract class Enemy {
 		this.health -= damage;
 		if (health <= 0) {
 			alive = false;
+			enemyManager.addGold(enemyType);
 		}
 	}
 	

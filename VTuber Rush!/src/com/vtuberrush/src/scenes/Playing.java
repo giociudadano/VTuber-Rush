@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import com.vtuberrush.src.enemies.Enemy;
 import com.vtuberrush.src.helpers.LoadSave;
+import com.vtuberrush.src.helpers.Constants.Enemies;
+import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.EnemyManager;
 import com.vtuberrush.src.managers.ProjectileManager;
@@ -29,6 +31,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private ProjectileManager projectileManager;
 	private Unit selectedUnit;
 	private int mouseX, mouseY;
+	private int tickGold;
 	
 	private Flag start, end;
 
@@ -53,6 +56,10 @@ public class Playing extends GameScene implements SceneMethods {
 	public void tick() {
 		tickAnimation();
 		waveManager.tick();
+		tickGold++;
+		if (tickGold % 180 == 0) {
+			actionBar.addGold(1);
+		}
 		if (isWaveNext()) {
 			if (isAddWaveNext()) {
 				waveManager.delayWaveStart();
@@ -69,45 +76,6 @@ public class Playing extends GameScene implements SceneMethods {
 		unitManager.tick();
 		projectileManager.tick();
 	}
-
-	private boolean isAddEnemy() {
-		if(isAddWaveNext()) {
-			if (waveManager.isAddEnemy()) {
-				if (waveManager.isAddEnemyNext()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private void addEnemy() {
-		enemyManager.addEnemy(waveManager.getNextEnemy());
-	}
-	
-	public void shootEnemy(Unit unit, Enemy enemy) {
-		projectileManager.addProjectile(unit, enemy);
-	}
-	
-	private boolean isWaveNext() {
-		if(waveManager.isAddEnemyNext()) {
-			return false;
-		}
-		for (Enemy enemy : enemyManager.getEnemies()) {
-			if(enemy.isAlive()) {
-				return false;
-			}
-		}
-		return true;	
-	}
-	
-	private boolean isAddWaveNext() {
-		return waveManager.isAddWaveNext();
-	}
-	
-	private boolean isWaveDelayEnd() {
-		return waveManager.isWaveDelayEnd();
-	}
 	
 	@Override
 	public void render(Graphics graphics) {
@@ -116,8 +84,8 @@ public class Playing extends GameScene implements SceneMethods {
 		enemyManager.draw(graphics);
 		unitManager.draw(graphics);
 		projectileManager.draw(graphics);
-		actionBar.draw(graphics);
 		drawSelectedUnit(graphics);
+		actionBar.draw(graphics);
 	}
 
 	private void drawLevel(Graphics graphics) {
@@ -146,21 +114,67 @@ public class Playing extends GameScene implements SceneMethods {
 		graphics.drawRect(mouseX, mouseY, 32, 32);
 		Unit displayedUnit = actionBar.getDisplayedUnit();
 		if (displayedUnit != null) {
-			//Selected Unit
-			graphics.setColor(new Color(192, 252, 64));
-			graphics.drawRect(displayedUnit.getX(), displayedUnit.getY(), 32, 32);
-			//Range of Selected Unit
-			graphics.setColor(Color.white);
-			graphics.drawOval(displayedUnit.getX()+16 - (int)(displayedUnit.getRange()/2),
-				displayedUnit.getY()+16 - (int)(displayedUnit.getRange()/2),
-				(int)(displayedUnit.getRange()), (int)(displayedUnit.getRange()));
-		}
-		
+			if (displayedUnit.getId() != -1) {
+				//Selected Unit
+				graphics.setColor(new Color(192, 252, 64));
+				graphics.drawRect(displayedUnit.getX(), displayedUnit.getY(), 32, 32);
+				
+				//Range of Selected Unit
+				graphics.setColor(Color.white);
+				graphics.drawOval(displayedUnit.getX()+16 - (int)(displayedUnit.getRange()/2),
+					displayedUnit.getY()+16 - (int)(displayedUnit.getRange()/2),
+					(int)(displayedUnit.getRange()), (int)(displayedUnit.getRange()));
+			}
+		}	
 	}
 	
-	public void setSelectedUnit(Unit selectedUnit) {
-		this.selectedUnit = selectedUnit;
+	private void addEnemy() {
+		enemyManager.addEnemy(waveManager.getNextEnemy());
 	}
+	
+	public void shootEnemy(Unit unit, Enemy enemy) {
+		projectileManager.addProjectile(unit, enemy);
+	}
+	
+	public void addGold(int amount) {
+		actionBar.addGold(Enemies.getReward(amount));
+	}
+	
+	private void subtractGold(int amount) {
+		actionBar.subtractGold(Units.getCost(amount));
+	}
+	
+	private boolean isAddEnemy() {
+		if(isAddWaveNext()) {
+			if (waveManager.isAddEnemy()) {
+				if (waveManager.isAddEnemyNext()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean isWaveNext() {
+		if(waveManager.isAddEnemyNext()) {
+			return false;
+		}
+		for (Enemy enemy : enemyManager.getEnemies()) {
+			if(enemy.isAlive()) {
+				return false;
+			}
+		}
+		return true;	
+	}
+	
+	private boolean isAddWaveNext() {
+		return waveManager.isAddWaveNext();
+	}
+	
+	private boolean isWaveDelayEnd() {
+		return waveManager.isWaveDelayEnd();
+	}
+	
 	
 	private boolean isPlacable(int type, int x, int y) {
 		int id = level[y/32][x/32];
@@ -181,8 +195,11 @@ public class Playing extends GameScene implements SceneMethods {
 			if (getSelectedUnit() != null) {
 				if (isPlacable(getSelectedUnit().getUnitType(), mouseX, mouseY)) {
 					if (getUnitAt(mouseX, mouseY) == null) {
-						unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
-						selectedUnit = null;
+						if (isPurchasable(selectedUnit)) {
+							unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
+							subtractGold(selectedUnit.getUnitType());
+							selectedUnit = null;
+						}
 					}
 				}
 			} else {
@@ -192,6 +209,10 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	private boolean isPurchasable(Unit unit) {
+		return actionBar.isPurchasable(unit);
+	}
+
 	@Override
 	public void mouseMoved(int x, int y) {
 		if (y > 540) {
@@ -242,8 +263,8 @@ public class Playing extends GameScene implements SceneMethods {
 		return enemyManager;
 	}
 	
-	public void setLevel(int[][] level) {
-		this.level = level;
+	public Unit getSelectedUnit() {
+		return selectedUnit;
 	}
 	
 	public int getTileType(int x, int y) {
@@ -256,9 +277,11 @@ public class Playing extends GameScene implements SceneMethods {
 		return game.getTileManager().getTile(id).getTileType();
 	}
 
-	public Unit getSelectedUnit() {
-		return selectedUnit;
+	public void setLevel(int[][] level) {
+		this.level = level;
 	}
-
-
+	
+	public void setSelectedUnit(Unit selectedUnit) {
+		this.selectedUnit = selectedUnit;
+	}
 }

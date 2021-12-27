@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
 
+import com.vtuberrush.src.helpers.Constants.Enemies;
 import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
@@ -20,6 +21,8 @@ public class ActionBar extends Bar{
 	
 	private Button[] unitButtons;
 	private DecimalFormat formatter;
+	
+	private int gold = 150;
 	
 	public ActionBar(int x, int y, int width, int height, Playing playing) {
 		super(x, y, width, height);
@@ -34,9 +37,9 @@ public class ActionBar extends Bar{
 		drawButtons(graphics);
 		drawSelectedUnit(graphics);
 		drawDisplayedUnit(graphics);
-		drawWaveStats(graphics);
+		drawStats(graphics);
 	}
-	
+
 	private void initButtons() {
 		buttonMenu = new Button("Menu", 10, 560, 80, 25);
 		unitButtons = new Button[3];
@@ -101,6 +104,14 @@ public class ActionBar extends Bar{
 			graphics.setColor(new Color(211, 186, 145));
 			graphics.drawString(Units.getName(type), 32, 32);
 			
+			//Unit Cost
+			if (isPurchasable(displayedUnit)) {
+				graphics.setColor(new Color(211, 186, 145));
+			} else {
+				graphics.setColor(new Color(250, 95, 64));
+			}
+				graphics.drawString("\uFFE5" + Units.getCost(type), 360, 32);
+			
 			//Unit Info
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
 			graphics.setColor(new Color(236, 230, 218));
@@ -122,10 +133,10 @@ public class ActionBar extends Bar{
 		}
 	}	
 	
-	private void drawWaveStats(Graphics graphics) {
+	private void drawStats(Graphics graphics) {
 		graphics.setColor(new Color(236, 230, 218));
 		graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
-		
+
 		//Wave Number
 		int currentWave = playing.getWaveManager().getWaveIndex() + 1;
 		int totalWaves = playing.getWaveManager().getWaves().size();
@@ -141,9 +152,21 @@ public class ActionBar extends Bar{
 			graphics.drawString("Enemies Left: " + remainingEnemies, 1160, 585);
 		}
 		
+		//Gold
+		graphics.drawString("Gold: \uFFE5" + gold, 1160, 600);
 	}
 	
-
+	public void addGold(int amount) {
+		this.gold += amount;
+	}
+	
+	public void subtractGold(int amount) {
+		this.gold -= amount;
+	}
+	
+	public boolean isPurchasable(Unit unit) {
+		return gold >= Units.getCost(unit.getUnitType());
+	}
 
 	public void mouseClicked(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {

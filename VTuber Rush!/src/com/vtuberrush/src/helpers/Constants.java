@@ -37,6 +37,15 @@ public class Constants {
 			default: return 0;
 			}
 		}
+		
+		public static int getReward(int enemyType) {
+			switch (enemyType) {
+			case SLIME_GREEN: return 10; 
+			case SLIME_BLUE: return 20;
+			case SLIME_RED: return 30;
+			default: return 0;
+			}
+		}
 	}
 	
 	public static class Units {
@@ -44,12 +53,23 @@ public class Constants {
 		public static final int FINANA = 1;
 		public static final int ELIRA = 2;
 		
+
+		
 		public static String getName(int unitType) {
 			switch (unitType) {
 			case POMU: return "Pomu Rainpuff";
 			case FINANA: return "Finana Ryugu";
 			case ELIRA: return "Elira Pendora";
 			default: return "";
+			}
+		}
+		
+		public static int getCost(int unitType) {
+			switch (unitType) {
+			case POMU: return 100;
+			case FINANA: return 70;
+			case ELIRA: return 150;
+			default: return 0;
 			}
 		}
 		
@@ -87,8 +107,6 @@ public class Constants {
 				return "";
 			}
 		}
-		
-
 		
 		public static int getDamage(int unitType) {
 			switch (unitType) {

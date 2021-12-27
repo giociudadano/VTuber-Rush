@@ -175,15 +175,19 @@ public class EnemyManager {
 		int y = start.getY() * 32;
 		switch(type) {
 		case SLIME_GREEN:
-			enemies.add(new SlimeGreen(x, y, 0));
+			enemies.add(new SlimeGreen(x, y, 0, this));
 			break;
 		case SLIME_BLUE:
-			enemies.add(new SlimeBlue(x, y, 0));
+			enemies.add(new SlimeBlue(x, y, 0, this));
 			break;
 		case SLIME_RED:
-			enemies.add(new SlimeRed(x, y, 0));
+			enemies.add(new SlimeRed(x, y, 0, this));
 			break;
 		}
+	}
+	
+	public void addGold(int type) {
+		playing.addGold(type);
 	}
 	
 	public ArrayList<Enemy> getEnemies() {
@@ -197,6 +201,6 @@ public class EnemyManager {
 				size++;
 			}
 		}
-		return size;
+		return enemies.size() - size;
 	}
 }
