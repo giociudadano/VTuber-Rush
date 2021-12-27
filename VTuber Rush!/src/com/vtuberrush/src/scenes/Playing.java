@@ -1,14 +1,11 @@
 package com.vtuberrush.src.scenes;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.vtuberrush.src.enemies.Enemy;
-import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.managers.EnemyManager;
@@ -30,11 +27,11 @@ public class Playing extends GameScene implements SceneMethods {
 	private UnitManager unitManager;
 	private WaveManager waveManager;
 	private ProjectileManager projectileManager;
-	private Unit selectedUnit, displayedUnit;
+	private Unit selectedUnit;
 	private int mouseX, mouseY;
 	
 	private Flag start, end;
-	private DecimalFormat formatter;
+
 	
 	public Playing(Game game) {
 		super(game);
@@ -44,7 +41,6 @@ public class Playing extends GameScene implements SceneMethods {
 		unitManager = new UnitManager(this);
 		waveManager = new WaveManager(this);
 		projectileManager = new ProjectileManager(this);
-		formatter = new DecimalFormat("0.0");
 	}
 
 	private void loadLevelDefault() {
@@ -117,12 +113,10 @@ public class Playing extends GameScene implements SceneMethods {
 	public void render(Graphics graphics) {
 		drawLevel(graphics);
 		drawHighlights(graphics);
-		drawWaveStats(graphics);
 		enemyManager.draw(graphics);
 		unitManager.draw(graphics);
 		projectileManager.draw(graphics);
 		actionBar.draw(graphics);
-		drawDisplayedUnit(graphics);
 		drawSelectedUnit(graphics);
 	}
 
@@ -150,82 +144,22 @@ public class Playing extends GameScene implements SceneMethods {
 	private void drawHighlights(Graphics graphics) {
 		graphics.setColor(Color.white);
 		graphics.drawRect(mouseX, mouseY, 32, 32);
+		Unit displayedUnit = actionBar.getDisplayedUnit();
 		if (displayedUnit != null) {
+			//Selected Unit
 			graphics.setColor(new Color(192, 252, 64));
 			graphics.drawRect(displayedUnit.getX(), displayedUnit.getY(), 32, 32);
+			//Range of Selected Unit
+			graphics.setColor(Color.white);
+			graphics.drawOval(displayedUnit.getX()+16 - (int)(displayedUnit.getRange()/2),
+				displayedUnit.getY()+16 - (int)(displayedUnit.getRange()/2),
+				(int)(displayedUnit.getRange()), (int)(displayedUnit.getRange()));
 		}
-	}
-	
-	private void drawWaveStats(Graphics graphics) {
-		
-		//Wave Timer and Enemy Number
-		graphics.setColor(new Color(38, 50, 64, 100));
-		graphics.fillRect(8, 500, 120, 40);
-		graphics.setColor(new Color(236, 230, 218));
-		if (waveManager.isTimerStart()) {
-			float timeLeft = waveManager.getTimeLeft();
-			String timeLeftString = formatter.format(timeLeft);	
-			graphics.drawString("Time Left: " + timeLeftString, 16, 530);				
-		} else {
-			int remainingEnemies = getEnemyManager().getRemainingEnemies();
-			graphics.drawString("Enemies Left: " + remainingEnemies, 16, 530);
-		}
-		
-		//Wave Number
-		int currentWave = getWaveManager().getWaveIndex() + 1;
-		int totalWaves = getWaveManager().getWaves().size();
-		graphics.drawString("Wave: " + currentWave + " / " + totalWaves, 16, 515);
 		
 	}
 	
 	public void setSelectedUnit(Unit selectedUnit) {
 		this.selectedUnit = selectedUnit;
-	}
-
-	private void displayUnit(Unit unit) {
-		displayedUnit = unit;
-	}
-	
-	private void drawDisplayedUnit(Graphics graphics) {
-		if (displayedUnit != null) {
-			
-		//Frame
-			graphics.setColor(new Color(72, 79, 95));
-			graphics.fillRect(16, 12, 400, 30);
-			graphics.setColor(new Color(38, 50, 64, 100));
-			graphics.fillRect(16, 42, 400, 120);
-			graphics.setColor(new Color(212, 205, 197, 30));
-			graphics.drawRect(18, 14, 396, 26);
-			
-		//Image
-			graphics.drawImage(getUnitManager().getUnitSprites()[displayedUnit.getUnitType()], 32, 48, 64, 96, null);
-			
-		//Text
-			
-			//Unit Name
-			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 15));
-			graphics.setColor(new Color(211, 186, 145));
-			graphics.drawString(Units.getName(displayedUnit.getUnitType()), 32, 32);
-			
-			//Unit Flavor
-			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
-			graphics.setColor(new Color(236, 230, 218));
-			String flavorText = new String(Units.getFlavor(displayedUnit.getUnitType()));
-			int lines = 0;
-			for(String line : flavorText.split("\n")) {
-				graphics.drawString(line, 108, 64 + (16 * lines++));
-			}
-			
-			//Methods
-			drawDisplayedUnitRange(graphics);
-		}
-	}	
-	
-	private void drawDisplayedUnitRange(Graphics graphics) {
-		graphics.setColor(Color.white);
-		graphics.drawOval(displayedUnit.getX()+16 - (int)(displayedUnit.getRange()/2),
-			displayedUnit.getY()+16 - (int)(displayedUnit.getRange()/2),
-			(int)(displayedUnit.getRange()), (int)(displayedUnit.getRange()));
 	}
 	
 	private boolean isPlacable(int type, int x, int y) {
@@ -253,7 +187,7 @@ public class Playing extends GameScene implements SceneMethods {
 				}
 			} else {
 				Unit unit = getUnitAt(mouseX, mouseY);
-				displayUnit(unit);
+				actionBar.setDisplayedUnit(unit);
 			}
 		}
 	}

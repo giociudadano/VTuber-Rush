@@ -53,6 +53,23 @@ public class Constants {
 			}
 		}
 		
+		public static String getInfo(int unitType) {
+			switch (unitType) {
+			case POMU:
+				return "Deals moderate damage to enemies.\n";
+			case FINANA: 
+				return "Deals light damage to enemies. Enemies hit\n"
+					+ "are slowed by 50% for 2.5 seconds. Can only\n"
+					+ "be placed in water.";
+			case ELIRA: 
+				return "Deals heavy damage to enemies. Fireballs\n"
+					+ "explode on-hit, dealing 50% of the damage to\n"
+					+ "surrounding enemies.";
+			default:
+				return "";
+			}
+		}
+		
 		public static String getFlavor(int unitType) {
 			switch (unitType) {
 			case POMU:
@@ -70,6 +87,8 @@ public class Constants {
 				return "";
 			}
 		}
+		
+
 		
 		public static int getDamage(int unitType) {
 			switch (unitType) {
