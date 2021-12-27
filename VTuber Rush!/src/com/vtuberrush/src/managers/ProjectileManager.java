@@ -119,7 +119,7 @@ public class ProjectileManager {
 				float distance = MathFunctions.getDistance(projectile.getPosition().x,
 						projectile.getPosition().y, enemy.getX(), enemy.getY());
 				if(distance <= 48) {
-					enemy.takeDamage(projectile.getDamage());
+					enemy.takeDamage(projectile.getDamage()/2);
 				}
 			}
 		}

@@ -47,28 +47,11 @@ public class EnemyManager {
 	}
 	
 	public void tick() {
-		playing.getWaveManager().tick();
-		if(isSpawnEnemy()) {
-			spawnEnemy();
-		}
 		for (Enemy enemy : enemies) {
 			if (enemy.isAlive()) {
 				tickMove(enemy);
 			}
 		}	
-	}
-
-	private boolean isSpawnEnemy() {
-		if (playing.getWaveManager().isSpawnEnemy()) {
-			if (playing.getWaveManager().isSpawnEnemyNext()) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private void spawnEnemy() {
-		addEnemy(playing.getWaveManager().getNextEnemy());
 	}
 
 	//Pathfinding AI
@@ -83,7 +66,8 @@ public class EnemyManager {
 		if (getTileType(x, y) == ROAD) {
 			enemy.move(getSpeed(enemy.getEnemyType()), enemy.getDirection());
 		} else if (isEnd(enemy)) {
-			
+			enemy.takePurge();
+			System.out.println("Purged");
 		} else {
 			setDirection(enemy);
 		}
@@ -204,5 +188,15 @@ public class EnemyManager {
 	
 	public ArrayList<Enemy> getEnemies() {
 		return enemies;
+	}
+
+	public int getRemainingEnemies() {
+		int size = 0;
+		for (Enemy enemy : enemies) {
+			if (enemy.isAlive()) {
+				size++;
+			}
+		}
+		return size;
 	}
 }

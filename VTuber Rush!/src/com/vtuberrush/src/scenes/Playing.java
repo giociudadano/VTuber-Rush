@@ -3,9 +3,8 @@ package com.vtuberrush.src.scenes;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.vtuberrush.src.enemies.Enemy;
@@ -35,6 +34,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private int mouseX, mouseY;
 	
 	private Flag start, end;
+	private DecimalFormat formatter;
 	
 	public Playing(Game game) {
 		super(game);
@@ -44,6 +44,7 @@ public class Playing extends GameScene implements SceneMethods {
 		unitManager = new UnitManager(this);
 		waveManager = new WaveManager(this);
 		projectileManager = new ProjectileManager(this);
+		formatter = new DecimalFormat("0.0");
 	}
 
 	private void loadLevelDefault() {
@@ -55,19 +56,72 @@ public class Playing extends GameScene implements SceneMethods {
 
 	public void tick() {
 		tickAnimation();
+		waveManager.tick();
+		if (isWaveNext()) {
+			if (isAddWaveNext()) {
+				waveManager.delayWaveStart();
+				if(isWaveDelayEnd()) {
+					waveManager.initNextWave();
+					enemyManager.getEnemies().clear();
+				}
+			}
+		}
+		if(isAddEnemy()) {
+			addEnemy();
+		}
 		enemyManager.tick();
 		unitManager.tick();
 		projectileManager.tick();
+	}
+
+	private boolean isAddEnemy() {
+		if(isAddWaveNext()) {
+			if (waveManager.isAddEnemy()) {
+				if (waveManager.isAddEnemyNext()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	private void addEnemy() {
+		enemyManager.addEnemy(waveManager.getNextEnemy());
+	}
+	
+	public void shootEnemy(Unit unit, Enemy enemy) {
+		projectileManager.addProjectile(unit, enemy);
+	}
+	
+	private boolean isWaveNext() {
+		if(waveManager.isAddEnemyNext()) {
+			return false;
+		}
+		for (Enemy enemy : enemyManager.getEnemies()) {
+			if(enemy.isAlive()) {
+				return false;
+			}
+		}
+		return true;	
+	}
+	
+	private boolean isAddWaveNext() {
+		return waveManager.isAddWaveNext();
+	}
+	
+	private boolean isWaveDelayEnd() {
+		return waveManager.isWaveDelayEnd();
 	}
 	
 	@Override
 	public void render(Graphics graphics) {
 		drawLevel(graphics);
 		drawHighlights(graphics);
-		actionBar.draw(graphics);
+		drawWaveStats(graphics);
 		enemyManager.draw(graphics);
 		unitManager.draw(graphics);
 		projectileManager.draw(graphics);
+		actionBar.draw(graphics);
 		drawDisplayedUnit(graphics);
 		drawSelectedUnit(graphics);
 	}
@@ -102,6 +156,28 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	private void drawWaveStats(Graphics graphics) {
+		
+		//Wave Timer and Enemy Number
+		graphics.setColor(new Color(38, 50, 64, 100));
+		graphics.fillRect(8, 500, 120, 40);
+		graphics.setColor(new Color(236, 230, 218));
+		if (waveManager.isTimerStart()) {
+			float timeLeft = waveManager.getTimeLeft();
+			String timeLeftString = formatter.format(timeLeft);	
+			graphics.drawString("Time Left: " + timeLeftString, 16, 530);				
+		} else {
+			int remainingEnemies = getEnemyManager().getRemainingEnemies();
+			graphics.drawString("Enemies Left: " + remainingEnemies, 16, 530);
+		}
+		
+		//Wave Number
+		int currentWave = getWaveManager().getWaveIndex() + 1;
+		int totalWaves = getWaveManager().getWaves().size();
+		graphics.drawString("Wave: " + currentWave + " / " + totalWaves, 16, 515);
+		
+	}
+	
 	public void setSelectedUnit(Unit selectedUnit) {
 		this.selectedUnit = selectedUnit;
 	}
@@ -114,7 +190,6 @@ public class Playing extends GameScene implements SceneMethods {
 		if (displayedUnit != null) {
 			
 		//Frame
-			Graphics2D graphics2d = (Graphics2D) graphics;
 			graphics.setColor(new Color(72, 79, 95));
 			graphics.fillRect(16, 12, 400, 30);
 			graphics.setColor(new Color(38, 50, 64, 100));
@@ -126,7 +201,6 @@ public class Playing extends GameScene implements SceneMethods {
 			graphics.drawImage(getUnitManager().getUnitSprites()[displayedUnit.getUnitType()], 32, 48, 64, 96, null);
 			
 		//Text
-			graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			
 			//Unit Name
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 15));
@@ -154,16 +228,6 @@ public class Playing extends GameScene implements SceneMethods {
 			(int)(displayedUnit.getRange()), (int)(displayedUnit.getRange()));
 	}
 	
-	public int getTileType(int x, int y) {
-		x = x / 32;
-		y = y / 32;
-		if (x < 0 || y < 0 || x > 39 || y > 17) {
-			return 0;
-		}
-		int id = level[y][x];
-		return game.getTileManager().getTile(id).getTileType();
-	}
-	
 	private boolean isPlacable(int type, int x, int y) {
 		int id = level[y/32][x/32];
 		int tileType = game.getTileManager().getTile(id).getTileType();
@@ -173,11 +237,6 @@ public class Playing extends GameScene implements SceneMethods {
 			return tileType == GRASS;
 		}
 	}
-	
-	public void shootEnemy(Unit unit, Enemy enemy) {
-		projectileManager.addProjectile(unit, enemy);
-	}
-
 	
 	//Mouse Methods
 	@Override
@@ -251,6 +310,16 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public void setLevel(int[][] level) {
 		this.level = level;
+	}
+	
+	public int getTileType(int x, int y) {
+		x = x / 32;
+		y = y / 32;
+		if (x < 0 || y < 0 || x > 39 || y > 17) {
+			return 0;
+		}
+		int id = level[y][x];
+		return game.getTileManager().getTile(id).getTileType();
 	}
 
 	public Unit getSelectedUnit() {

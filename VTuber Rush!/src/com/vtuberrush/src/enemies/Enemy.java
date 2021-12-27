@@ -41,6 +41,11 @@ public abstract class Enemy {
 		tickSlow = 0;
 	}
 	
+	public void takePurge() {
+		alive = false;
+		health = 0;
+	}
+	
 	public void move(float speed, int directionMove) {
 		direction = directionMove;
 		if (tickSlow < tickSlowDuration) {
@@ -70,9 +75,12 @@ public abstract class Enemy {
 		bounds.y = (int) y;
 	}
 
-	public void setPosition(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public boolean isAlive() {
+		return alive;
+	}
+	
+	public boolean isSlowed() {
+		return tickSlow < tickSlowDuration;
 	}
 	
 	public float getX() {
@@ -85,14 +93,6 @@ public abstract class Enemy {
 
 	public Rectangle getBounds() {
 		return bounds;
-	}
-
-	public boolean isAlive() {
-		return alive;
-	}
-	
-	public boolean isSlowed() {
-		return tickSlow < tickSlowDuration;
 	}
 	
 	public int getHealth() {
@@ -113,5 +113,10 @@ public abstract class Enemy {
 	
 	public int getDirection() {
 		return direction;
+	}
+	
+	public void setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 }
