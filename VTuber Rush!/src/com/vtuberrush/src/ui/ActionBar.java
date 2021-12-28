@@ -103,13 +103,13 @@ public class ActionBar extends Bar{
 			
 			//Unit Cost
 			if (displayedUnit.getId() == -1) {
-				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 11));
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 10));
 				if (isPurchasable(displayedUnit)) {
 					graphics.setColor(new Color(211, 186, 145));
 				} else {
 					graphics.setColor(new Color(250, 95, 64));
 				}
-					graphics.drawString("Buy \uFFE5" + Units.getCost(type), 345, 32);
+					graphics.drawString("Buy \uFFE5" + Units.getCost(type), 108, 60);
 			}
 			
 			//Unit Info
@@ -118,7 +118,7 @@ public class ActionBar extends Bar{
 			int lines = 0;
 			String infoText = new String(Units.getInfo(type));
 			for(String line : infoText.split("\n")) {
-				graphics.drawString(line, 108, 64 + (13 * lines++));
+				graphics.drawString(line, 108, 78 + (13 * lines++));
 			}
 			lines = 0;
 			
@@ -166,7 +166,7 @@ public class ActionBar extends Bar{
 	public boolean isPurchasable(Unit unit) {
 		return gold >= Units.getCost(unit.getUnitType());
 	}
-
+	
 	public void mouseClicked(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			setGameState(MENU);
@@ -225,5 +225,9 @@ public class ActionBar extends Bar{
 	
 	public Unit getDisplayedUnit() {
 		return displayedUnit;
+	}
+	
+	public int getGold() {
+		return gold;
 	}
 }

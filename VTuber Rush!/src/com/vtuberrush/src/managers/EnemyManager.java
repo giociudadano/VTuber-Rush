@@ -156,6 +156,8 @@ public class EnemyManager {
 	}
 	
 	private void drawHealthBar(Graphics graphics, Enemy enemy) {
+		graphics.setColor(new Color(156, 0, 0));
+		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, 32, 3);
 		graphics.setColor(new Color(254, 90, 89));
 		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, getHealthBarWidth(enemy), 3);
 	}

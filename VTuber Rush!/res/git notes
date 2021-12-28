@@ -1,4 +1,9 @@
 Minor Update 19
 
-- Update UI
-- Small quality-of-life changes
+- Added option to upgrade units
+    - Upgraded units have increased range, attack speed, and damage
+    - Upgrades cost 60% of the unit price
+- Added option to sell units
+    - Selling units refund 50% of the unit price including its upgrades
+- Updated UI
+- Updated healthbar

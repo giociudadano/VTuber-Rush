@@ -36,7 +36,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private int tickGold;
 	
 	private Flag start, end;
-	private Button buttonUpgrade, buttonSell;
+	private Button buttonUpgrade, buttonSell, buttonUpgradeMax;
 	
 	public Playing(Game game) {
 		super(game);
@@ -48,6 +48,7 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager = new ProjectileManager(this);
 		
 		buttonUpgrade = new Button("Upgrade", 420, 12, 80, 30);
+		buttonUpgradeMax = new Button("Max Level", 420, 12, 80, 30);
 		buttonSell = new Button("Sell", 420, 44, 80, 30);
 	}
 
@@ -91,7 +92,7 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager.draw(graphics);
 		drawSelectedUnit(graphics);
 		actionBar.draw(graphics);
-		drawButtons(graphics);
+		drawUnitInfo(graphics);
 	}
 
 
@@ -135,17 +136,29 @@ public class Playing extends GameScene implements SceneMethods {
 		}	
 	}
 	
-	private void drawButtons(Graphics graphics) {
+	private void drawUnitInfo(Graphics graphics) {
 		Unit displayedUnit = actionBar.getDisplayedUnit();
 		if (displayedUnit != null) {
 			if (displayedUnit.getId() != -1) {
-				buttonUpgrade.draw(graphics);
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 10));
+				graphics.setColor(new Color(211, 186, 145));
+				graphics.drawString("LV " + actionBar.getDisplayedUnit().getLevel(), 108, 60);
+				
+				int i = 0;
+				if (displayedUnit.getLevel() < 3) {
+					buttonUpgrade.draw(graphics);
+					graphics.setColor(new Color(192, 252, 64));
+					graphics.drawString("Upgrade \uFFE5" + getUpgradePrice(actionBar.getDisplayedUnit()), 158 + (100 * i++), 60);
+				} else {
+					buttonUpgradeMax.draw(graphics);
+				}
+				
+				//Sell	
 				buttonSell.draw(graphics);
-				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 11));
-				graphics.setColor(new Color(192, 252, 64));
-				graphics.drawString("Upgrade \uFFE5" + getUpgradePrice(actionBar.getDisplayedUnit()), 245, 32);
 				graphics.setColor(new Color(250, 95, 64));
-				graphics.drawString("Sell \uFFE5" + getSellPrice(actionBar.getDisplayedUnit()), 345, 32);
+				graphics.drawString("Sell \uFFE5" + getSellPrice(actionBar.getDisplayedUnit()), 158 + (100 * i++), 60);
+				
+			
 
 			}
 		}
@@ -172,9 +185,9 @@ public class Playing extends GameScene implements SceneMethods {
 		actionBar.addGold(getSellPrice(unit));
 	}
 	
-	private void upgradeUnit() {
-		// TODO Auto-generated method stub
-		
+	private void upgradeUnit(Unit unit) {
+		unitManager.upgradeUnit(unit);
+		actionBar.subtractGold(getUpgradePrice(unit));
 	}
 	
 	private void cancelSelection() {
@@ -235,6 +248,12 @@ public class Playing extends GameScene implements SceneMethods {
 				if (displayedUnit.getId() != -1) {
 					if(buttonSell.getBounds().contains(x, y)) {
 						sellUnit(displayedUnit);
+					} else if (buttonUpgrade.getBounds().contains(x,y)) {
+						if (displayedUnit.getLevel() < 3) {
+							if (actionBar.getGold() >= getUpgradePrice(displayedUnit)) {
+								upgradeUnit(displayedUnit);
+							}
+						}
 					}
 				}
 			}
@@ -333,11 +352,13 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 	
 	private int getSellPrice(Unit unit) {
-		return (int) Units.getCost(unit.getUnitType())/2;
+		
+		int upgradeCost = (unit.getLevel() - 1) * getUpgradePrice(unit);
+		return (int) ((Units.getCost(unit.getUnitType()) + upgradeCost)/2);
 	}
 	
-	private int getUpgradePrice(Unit displayedUnit) {
-		return 0;
+	private int getUpgradePrice(Unit unit) {
+		return (int) (Units.getCost(unit.getUnitType()) * 0.6);
 	}
 	
 	public int getTileType(int x, int y) {

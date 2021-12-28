@@ -1,14 +1,18 @@
 package com.vtuberrush.src.objects;
 
+import static com.vtuberrush.src.helpers.Constants.Units.*;
+
 public class Unit {
 	private int x, y, id, damage, unitType, tickCooldown;
 	private float range, cooldown;
+	private int level;
 	
 	public Unit(int x, int y, int id, int unitType) {
 		this.x = x;
 		this.y = y;
 		this.id = id;
 		this.unitType = unitType;
+		level = 1;
 		setDamage();
 		setRange();
 		setCooldown();
@@ -16,6 +20,28 @@ public class Unit {
 
 	public void tick() {
 		tickCooldown++;
+	}
+	
+	public void addLevel() {
+		this.level++;
+		switch(unitType) {
+		case POMU:
+			damage += 8;
+			range += 30;
+			cooldown -= 10;
+			break;
+		case FINANA:
+			damage += 3;
+			range += 20;
+			cooldown -= 15;
+			break;
+		case ELIRA:
+			damage += 10;
+			range += 15;
+			cooldown -= 15;
+			break;
+		default: return;
+		}
 	}
 	
 	public boolean isOffCooldown() {
@@ -64,5 +90,9 @@ public class Unit {
 
 	public float getCooldown() {
 		return cooldown;
+	}
+	
+	public int getLevel() {
+		return level;
 	}
 }

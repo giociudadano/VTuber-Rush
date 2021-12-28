@@ -68,8 +68,8 @@ public class UnitManager {
 		}
 	}
 	
-	public void addUnit(Unit selectedUnit, int x, int y) {
-		units.add(new Unit(x, y, id++, selectedUnit.getUnitType()));
+	public void addUnit(Unit unit, int x, int y) {
+		units.add(new Unit(x, y, id++, unit.getUnitType()));
 	}
 	
 	public void removeUnit(Unit unit) {
@@ -78,6 +78,14 @@ public class UnitManager {
 				units.remove(i);
 			}
 		}
+	}
+	
+	public void upgradeUnit(Unit unit) {
+		for (Unit u : units) {
+			if (u.getId() == unit.getId()) {
+				u.addLevel();
+			}
+		}	
 	}
 	
 	public BufferedImage[] getUnitSprites() {
@@ -98,6 +106,5 @@ public class UnitManager {
 		}
 		return null;
 	}
-
 
 }
