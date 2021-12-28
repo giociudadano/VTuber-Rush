@@ -1,3 +1,5 @@
+![](https://cdn.shopify.com/s/files/1/0577/1254/1891/files/MJKUNRes2r1y4bt1ytgd15v4y.jpg?v=1639965883)
+
 # VTuber Rush!
 _Battle through an endless wave of enemies and save the Virtual World!_ 
 
