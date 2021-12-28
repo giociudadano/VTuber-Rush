@@ -68,8 +68,29 @@ public class UnitManager {
 		}
 	}
 	
-	public void addUnit(Unit selectedUnit, int x, int y) {
-		units.add(new Unit(x, y, id++, selectedUnit.getUnitType()));
+	public void addUnit(Unit unit, int x, int y) {
+		units.add(new Unit(x, y, id++, unit.getUnitType()));
+	}
+	
+	public void removeUnit(Unit unit) {
+		for (int i = 0; i < units.size(); i++) {
+			if (units.get(i).getId() == unit.getId()) {
+				units.remove(i);
+			}
+		}
+	}
+	
+	public void upgradeUnit(Unit unit) {
+		for (Unit u : units) {
+			if (u.getId() == unit.getId()) {
+				u.addLevel();
+			}
+		}	
+	}
+	
+	public void resetGame() {
+		units.clear();
+		id = 0;
 	}
 	
 	public BufferedImage[] getUnitSprites() {
@@ -90,6 +111,5 @@ public class UnitManager {
 		}
 		return null;
 	}
-
 
 }

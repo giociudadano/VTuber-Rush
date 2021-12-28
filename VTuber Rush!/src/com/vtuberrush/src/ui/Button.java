@@ -39,25 +39,26 @@ public class Button {
 	
 	private void drawBody(Graphics graphics) {
 		if(mouseOver) {
-			graphics.setColor(new Color(235,235,235));
+			graphics.setColor(new Color(85, 94, 113));
 		} else {
-			graphics.setColor(Color.white);
+			graphics.setColor(new Color(72, 79, 95));
 		}
 		graphics.fillRect(x, y, width, height);
 	}
 	
 	private void drawBorder(Graphics graphics) {
 		if(mousePressed) {
-			graphics.setColor(new Color(150,150,150));
+			graphics.setColor(new Color(241, 239, 237, 100));
 		} else {
-			graphics.setColor(Color.black);
+			graphics.setColor(new Color(212, 205, 197, 30));
 		}
-		graphics.drawRect(x, y, width, height);
+		graphics.drawRect(x+2, y+2, width-4, height-4);
 	}
 
 	private void drawText(Graphics graphics) {
 		int textWidth = graphics.getFontMetrics().stringWidth(text);
 		int textHeight = graphics.getFontMetrics().getHeight();
+		graphics.setColor(new Color(211, 186, 145));
 		graphics.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight) / 2);
 	}
 
@@ -84,6 +85,10 @@ public class Button {
 	
 	public void setMouseOver(boolean mouseOver) {
 		this.mouseOver = mouseOver;
+	}
+	
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 	public Rectangle getBounds() {

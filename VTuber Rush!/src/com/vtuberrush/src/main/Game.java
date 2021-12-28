@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.managers.TileManager;
 import com.vtuberrush.src.scenes.Editing;
+import com.vtuberrush.src.scenes.GameOver;
 import com.vtuberrush.src.scenes.Menu;
 import com.vtuberrush.src.scenes.Playing;
 import com.vtuberrush.src.scenes.Settings;
@@ -24,13 +25,13 @@ public class Game extends JFrame implements Runnable {
 	private Editing editing;
 	private Playing playing;
 	private Settings settings;
+	private GameOver gameOver;
 
 	private TileManager tileManager;
 	
-	public Game() {	
-		
-		//Window Initialization
-		setIconImage(new ImageIcon("res/icon.png").getImage());
+	public Game() {
+		LoadSave.createFolder();
+		setIconImage(new ImageIcon(LoadSave.getGameIcon()).getImage());
 		setTitle("Vtuber Rush!");
 		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -53,6 +54,7 @@ public class Game extends JFrame implements Runnable {
 		playing = new Playing(this);
 		editing = new Editing(this);
 		settings = new Settings(this);
+		gameOver = new GameOver(this);
 	}
 
 	private void createLevelDefault() {
@@ -60,7 +62,7 @@ public class Game extends JFrame implements Runnable {
 		for(int i = 0; i < array.length; i++) {
 			array[i] = 0;
 		}
-		LoadSave.createLevel("new_level", array);
+		LoadSave.createLevel(array);
 	}
 	
 	private void startGame() {
@@ -145,13 +147,16 @@ public class Game extends JFrame implements Runnable {
 		return playing;
 	}
 
-	
 	public Editing getEditing() {
 		return editing;
 	}
 	
 	public Settings getSettings() {
 		return settings;
+	}
+	
+	public GameOver getGameOver() {
+		return gameOver;
 	}
 	
 	public TileManager getTileManager() {

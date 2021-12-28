@@ -67,7 +67,7 @@ public class EnemyManager {
 			enemy.move(getSpeed(enemy.getEnemyType()), enemy.getDirection());
 		} else if (isEnd(enemy)) {
 			enemy.takePurge();
-			System.out.println("Purged");
+			playing.subtractLives(1);
 		} else {
 			setDirection(enemy);
 		}
@@ -156,6 +156,8 @@ public class EnemyManager {
 	}
 	
 	private void drawHealthBar(Graphics graphics, Enemy enemy) {
+		graphics.setColor(new Color(156, 0, 0));
+		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, 32, 3);
 		graphics.setColor(new Color(254, 90, 89));
 		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, getHealthBarWidth(enemy), 3);
 	}
@@ -188,6 +190,10 @@ public class EnemyManager {
 	
 	public void addGold(int type) {
 		playing.addGold(type);
+	}
+	
+	public void resetGame() {
+		enemies.clear();
 	}
 	
 	public ArrayList<Enemy> getEnemies() {

@@ -1,6 +1,7 @@
 package com.vtuberrush.src.scenes;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import com.vtuberrush.src.managers.WaveManager;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.ui.ActionBar;
+import com.vtuberrush.src.ui.Button;
 
 import static com.vtuberrush.src.helpers.Constants.Tiles.*;
 import static com.vtuberrush.src.helpers.Constants.Units.FINANA;
@@ -32,9 +34,10 @@ public class Playing extends GameScene implements SceneMethods {
 	private Unit selectedUnit;
 	private int mouseX, mouseY;
 	private int tickGold;
+	private boolean gamePaused = false;
 	
 	private Flag start, end;
-
+	private Button buttonUpgrade, buttonSell, buttonUpgradeMax;
 	
 	public Playing(Game game) {
 		super(game);
@@ -44,37 +47,43 @@ public class Playing extends GameScene implements SceneMethods {
 		unitManager = new UnitManager(this);
 		waveManager = new WaveManager(this);
 		projectileManager = new ProjectileManager(this);
+		
+		buttonUpgrade = new Button("Upgrade", 420, 12, 80, 30);
+		buttonUpgradeMax = new Button("Max Level", 420, 12, 80, 30);
+		buttonSell = new Button("Sell", 420, 44, 80, 30);
 	}
 
 	private void loadLevelDefault() {
-		level = LoadSave.readLevel("new_level");
-		ArrayList<Flag> flags = LoadSave.readFlags("new_level");
+		level = LoadSave.readLevel("level");
+		ArrayList<Flag> flags = LoadSave.readFlags("level");
 		start = flags.get(0);
 		end = flags.get(1);
 	}
 
 	public void tick() {
-		tickAnimation();
-		waveManager.tick();
-		tickGold++;
-		if (tickGold % 180 == 0) {
-			actionBar.addGold(1);
-		}
-		if (isWaveNext()) {
-			if (isAddWaveNext()) {
-				waveManager.delayWaveStart();
-				if(isWaveDelayEnd()) {
-					waveManager.initNextWave();
-					enemyManager.getEnemies().clear();
+		if (!gamePaused) {
+			tickAnimation();
+			waveManager.tick();
+			tickGold++;
+			if (tickGold % 180 == 0) {
+				actionBar.addGold(1);
+			}
+			if (isWaveNext()) {
+				if (isAddWaveNext()) {
+					waveManager.delayWaveStart();
+					if(isWaveDelayEnd()) {
+						waveManager.initNextWave();
+						enemyManager.getEnemies().clear();
+					}
 				}
 			}
+			if(isAddEnemy()) {
+				addEnemy();
+			}
+			enemyManager.tick();
+			unitManager.tick();
+			projectileManager.tick();
 		}
-		if(isAddEnemy()) {
-			addEnemy();
-		}
-		enemyManager.tick();
-		unitManager.tick();
-		projectileManager.tick();
 	}
 	
 	@Override
@@ -86,7 +95,9 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager.draw(graphics);
 		drawSelectedUnit(graphics);
 		actionBar.draw(graphics);
+		drawUnitInfo(graphics);
 	}
+
 
 	private void drawLevel(Graphics graphics) {
 		graphics.setColor(new Color(114, 195, 122));
@@ -128,6 +139,34 @@ public class Playing extends GameScene implements SceneMethods {
 		}	
 	}
 	
+	private void drawUnitInfo(Graphics graphics) {
+		Unit displayedUnit = actionBar.getDisplayedUnit();
+		if (displayedUnit != null) {
+			if (displayedUnit.getId() != -1) {
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 10));
+				graphics.setColor(new Color(211, 186, 145));
+				graphics.drawString("LV " + actionBar.getDisplayedUnit().getLevel(), 108, 60);
+				
+				int i = 0;
+				if (displayedUnit.getLevel() < 3) {
+					buttonUpgrade.draw(graphics);
+					graphics.setColor(new Color(192, 252, 64));
+					graphics.drawString("Upgrade \uFFE5" + getUpgradePrice(actionBar.getDisplayedUnit()), 158 + (100 * i++), 60);
+				} else {
+					buttonUpgradeMax.draw(graphics);
+				}
+				
+				//Sell	
+				buttonSell.draw(graphics);
+				graphics.setColor(new Color(250, 95, 64));
+				graphics.drawString("Sell \uFFE5" + getSellPrice(actionBar.getDisplayedUnit()), 158 + (100 * i++), 60);
+				
+			
+
+			}
+		}
+	}
+
 	private void addEnemy() {
 		enemyManager.addEnemy(waveManager.getNextEnemy());
 	}
@@ -136,12 +175,31 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager.addProjectile(unit, enemy);
 	}
 	
-	public void addGold(int amount) {
-		actionBar.addGold(Enemies.getReward(amount));
+	public void addGold(int type) {
+		actionBar.addGold(Enemies.getReward(type));
 	}
 	
-	private void subtractGold(int amount) {
-		actionBar.subtractGold(Units.getCost(amount));
+	private void subtractGold(int type) {
+		actionBar.subtractGold(Units.getCost(type));
+	}
+	
+	public void subtractLives(int amount) {
+		actionBar.subtractLives(amount);
+	}
+	
+	private void sellUnit(Unit unit) {
+		unitManager.removeUnit(unit);
+		actionBar.addGold(getSellPrice(unit));
+	}
+	
+	private void upgradeUnit(Unit unit) {
+		unitManager.upgradeUnit(unit);
+		actionBar.subtractGold(getUpgradePrice(unit));
+	}
+	
+	private void cancelSelection() {
+		setSelectedUnit(null);
+		actionBar.setDisplayedUnit(null);
 	}
 	
 	private boolean isAddEnemy() {
@@ -186,38 +244,82 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	private boolean isPurchasable(Unit unit) {
+		return actionBar.isPurchasable(unit);
+	}
+	
+	private void checkDisplayedUnit(Unit displayedUnit, int x, int y) {
+		if (displayedUnit != null) {
+			if (displayedUnit.getId() != -1) {
+				if(buttonSell.getBounds().contains(x, y)) {
+					sellUnit(displayedUnit);
+				} else if (buttonUpgrade.getBounds().contains(x,y)) {
+					if (displayedUnit.getLevel() < 3) {
+						if (actionBar.getGold() >= getUpgradePrice(displayedUnit)) {
+							upgradeUnit(displayedUnit);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void checkSelectedUnit(int x, int y) {
+		if (getSelectedUnit() != null) {
+			if (isPlacable(getSelectedUnit().getUnitType(), mouseX, mouseY)) {
+				if (getUnitAt(mouseX, mouseY) == null) {
+					if (isPurchasable(selectedUnit)) {
+						unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
+						subtractGold(selectedUnit.getUnitType());
+						cancelSelection();
+					}
+				}
+			}
+		} else {
+			Unit unit = getUnitAt(mouseX, mouseY);
+			actionBar.setDisplayedUnit(unit);
+		}
+	}
+	
+	public void resetGame() {
+		actionBar.resetGame();
+		enemyManager.resetGame();
+		unitManager.resetGame();
+		waveManager.resetGame();
+		projectileManager.resetGame();
+		mouseX = 0;
+		mouseY = 0;
+		selectedUnit = null;
+		tickGold = 0;
+		gamePaused = false;
+	}
+	
 	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
 		if (y > 540) {
 			actionBar.mouseClicked(x, y);
 		} else {
-			if (getSelectedUnit() != null) {
-				if (isPlacable(getSelectedUnit().getUnitType(), mouseX, mouseY)) {
-					if (getUnitAt(mouseX, mouseY) == null) {
-						if (isPurchasable(selectedUnit)) {
-							unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
-							subtractGold(selectedUnit.getUnitType());
-							selectedUnit = null;
-						}
-					}
-				}
-			} else {
-				Unit unit = getUnitAt(mouseX, mouseY);
-				actionBar.setDisplayedUnit(unit);
-			}
+			Unit displayedUnit = actionBar.getDisplayedUnit();
+			checkDisplayedUnit(displayedUnit, x, y);
+			checkSelectedUnit(x, y);
 		}
-	}
-	
-	private boolean isPurchasable(Unit unit) {
-		return actionBar.isPurchasable(unit);
 	}
 
 	@Override
 	public void mouseMoved(int x, int y) {
+		buttonSell.setMouseOver(false);
+		buttonUpgrade.setMouseOver(false);
 		if (y > 540) {
 			actionBar.mouseMoved(x, y);
 		} else {
+			if (actionBar.getDisplayedUnit() != null) {
+				if(buttonSell.getBounds().contains(x, y)) {
+					buttonSell.setMouseOver(true);
+				} else if (buttonUpgrade.getBounds().contains(x, y)) {
+					buttonUpgrade.setMouseOver(true);
+				}
+			}
 			mouseX = (x / 32) * 32;
 			mouseY = (y / 32) * 32;
 		}
@@ -226,7 +328,7 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			selectedUnit = null;
+			cancelSelection();
 		}
 	}
 	
@@ -234,12 +336,22 @@ public class Playing extends GameScene implements SceneMethods {
 	public void mousePressed(int x, int y) {
 		if (y > 540) {
 			actionBar.mousePressed(x, y);
+		} else {
+			if (actionBar.getDisplayedUnit() != null) {
+				if(buttonSell.getBounds().contains(x, y)) {
+					buttonSell.setMousePressed(true);
+				} else if (buttonUpgrade.getBounds().contains(x, y)) {
+					buttonUpgrade.setMousePressed(true);
+				}
+			}
 		}
 	}
 
 	@Override
 	public void mouseReleased(int x, int y) {
 		actionBar.mouseReleased(x, y);
+		buttonSell.resetButtons();
+		buttonUpgrade.resetButtons();
 	}
 	
 	@Override
@@ -267,6 +379,15 @@ public class Playing extends GameScene implements SceneMethods {
 		return selectedUnit;
 	}
 	
+	private int getSellPrice(Unit unit) {	
+		int upgradeCost = (unit.getLevel() - 1) * getUpgradePrice(unit);
+		return (int) ((Units.getCost(unit.getUnitType()) + upgradeCost)/2);
+	}
+	
+	private int getUpgradePrice(Unit unit) {
+		return (int) (Units.getCost(unit.getUnitType()) * 0.75);
+	}
+	
 	public int getTileType(int x, int y) {
 		x = x / 32;
 		y = y / 32;
@@ -276,6 +397,10 @@ public class Playing extends GameScene implements SceneMethods {
 		int id = level[y][x];
 		return game.getTileManager().getTile(id).getTileType();
 	}
+	
+	public boolean isGamePaused() {
+		return gamePaused;
+	}
 
 	public void setLevel(int[][] level) {
 		this.level = level;
@@ -283,5 +408,9 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public void setSelectedUnit(Unit selectedUnit) {
 		this.selectedUnit = selectedUnit;
+	}
+	
+	public void setGamePaused(boolean gamePaused) {
+		this.gamePaused = gamePaused;
 	}
 }

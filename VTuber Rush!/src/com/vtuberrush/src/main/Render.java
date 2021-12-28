@@ -30,6 +30,9 @@ public class Render {
 		case SETTINGS:
 			game.getSettings().render(graphics);
 			break;
+		case GAME_OVER:
+			game.getGameOver().render(graphics);
+			break;
 		default:
 			break;
 		}

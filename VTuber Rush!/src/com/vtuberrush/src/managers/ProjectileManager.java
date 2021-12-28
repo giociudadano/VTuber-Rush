@@ -85,6 +85,8 @@ public class ProjectileManager {
 						explosions.add(new Explosion(projectile.getPosition()));
 						explodeProjectile(projectile);
 					}
+				} else if (isOutOfBounds(projectile)) {
+					projectile.setActive(false);
 				}
 			}
 		}
@@ -96,8 +98,6 @@ public class ProjectileManager {
 		}
 	}
 	
-	
-
 	private boolean isHit(Projectile projectile) {
 		for (Enemy enemy : playing.getEnemyManager().getEnemies()) {
 			if (enemy.isAlive()) {
@@ -111,6 +111,19 @@ public class ProjectileManager {
 			}
 		}
 		return false;
+	}
+	
+	private boolean isOutOfBounds(Projectile projectile) {
+		if (projectile.getPosition().x > 0) {
+			if (projectile.getPosition().x < 1280) {
+				if (projectile.getPosition().y > 0) {
+					if (projectile.getPosition().y < 720) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	private void explodeProjectile(Projectile projectile) {
@@ -182,5 +195,11 @@ public class ProjectileManager {
 		public Point2D.Float getPosition(){
 			return position;
 		}
+	}
+	
+	public void resetGame() {
+		projectiles.clear();
+		explosions.clear();
+		id = 0;
 	}
 }
