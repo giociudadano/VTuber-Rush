@@ -23,6 +23,8 @@ When first booting up the game, the user will have the option to create their ow
 
 ### Copyright
 
-This project is licensed under CC-0, making it technically Public Domain, allowing you and anyone else to freely copy and use it without restrictions.
+![](https://i.creativecommons.org/p/zero/1.0/88x31.png)
+
+This project is licensed under CC-0, making it technically Public Domain, allowing you and anyone else to freely copy and use it without restrictions. If you plan on using this project, please feel free to credit me in your work. Thank you!
 
 [^note]: The illustrations and virtual characters included in the game are property of [Nijisanji](https://www.nijisanji.jp/), a subsidiary of [ANYCOLOR, Inc.](https://www.anycolor.co.jp/en). Permission was hereby granted to the author to use the characters, provided that it followed company guidelines for derivative works. For more information regarding secondary creation, please check the following [link](https://event.nijisanji.app/guidelines/en/).
