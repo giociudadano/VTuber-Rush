@@ -15,7 +15,7 @@ import com.vtuberrush.src.scenes.Playing;
 
 public class ActionBar extends Bar{
 	private Playing playing;
-	private Button buttonMenu;
+	private Button buttonMenu, buttonPause;
 	private Unit selectedUnit, displayedUnit;
 	
 	private Button[] unitButtons;
@@ -37,10 +37,12 @@ public class ActionBar extends Bar{
 		drawSelectedUnit(graphics);
 		drawDisplayedUnit(graphics);
 		drawStats(graphics);
+		drawPauseInfo(graphics);
 	}
 
 	private void initButtons() {
 		buttonMenu = new Button("Menu", 10, 560, 80, 30);
+		buttonPause = new Button("Pause", 10, 595, 80, 30);
 		unitButtons = new Button[3];
 		for(int i = 0; i < unitButtons.length; i++) {
 			unitButtons[i] = new Button("", 100 + (122 * i), 560, 112, 136, i);
@@ -49,6 +51,7 @@ public class ActionBar extends Bar{
 	
 	private void drawButtons(Graphics graphics) {
 		buttonMenu.draw(graphics);
+		buttonPause.draw(graphics);
 		for (Button button : unitButtons) {
 			graphics.drawImage(playing.getUnitManager().getUnitIcons()[button.getId()], button.x, button.y, button.width, button.height, null);
 			drawButtonsFeedback(graphics, button);
@@ -155,12 +158,29 @@ public class ActionBar extends Bar{
 		graphics.drawString("Gold: \uFFE5" + gold, 1160, 600);
 	}
 	
+	private void drawPauseInfo(Graphics graphics) {
+		if (playing.isGamePaused()) {
+			graphics.setColor(new Color(236, 230, 218));
+			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 16));
+			graphics.drawString("Game is paused.", 600, 530);
+		}
+	}
+	
 	public void addGold(int amount) {
 		this.gold += amount;
 	}
 	
 	public void subtractGold(int amount) {
 		this.gold -= amount;
+	}
+	
+	private void pauseGame() {
+		playing.setGamePaused(!playing.isGamePaused());
+		if (playing.isGamePaused()) {
+			buttonPause.setText("Unpause");
+		} else {
+			buttonPause.setText("Pause");
+		}
 	}
 	
 	public boolean isPurchasable(Unit unit) {
@@ -170,6 +190,8 @@ public class ActionBar extends Bar{
 	public void mouseClicked(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			setGameState(MENU);
+		} else if (buttonPause.getBounds().contains(x, y)) {
+			pauseGame();
 		} else {
 			for (Button button : unitButtons) {
 				if (button.getBounds().contains(x, y)) {
@@ -180,15 +202,18 @@ public class ActionBar extends Bar{
 				}
 			}
 		}
-	}
+	} 
 
 	public void mouseMoved(int x, int y) {
 		buttonMenu.setMouseOver(false);
+		buttonPause.setMouseOver(false);
 		for (Button button : unitButtons) {
 			button.setMouseOver(false);
 		}
 		if (buttonMenu.getBounds().contains(x, y)) {
 			buttonMenu.setMouseOver(true);
+		} else if (buttonPause.getBounds().contains(x, y)) {
+			buttonPause.setMouseOver(true);
 		} else {
 			for (Button button : unitButtons) {
 				if (button.getBounds().contains(x, y)) {
@@ -202,6 +227,8 @@ public class ActionBar extends Bar{
 	public void mousePressed(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			buttonMenu.setMousePressed(true);
+		} else if (buttonPause.getBounds().contains(x, y)) {
+			buttonPause.setMousePressed(true);
 		} else {
 			for (Button button : unitButtons) {
 				if (button.getBounds().contains(x, y)) {
@@ -214,6 +241,7 @@ public class ActionBar extends Bar{
 
 	public void mouseReleased(int x, int y) {
 		buttonMenu.resetButtons();
+		buttonPause.resetButtons();
 		for (Button button : unitButtons) {
 			button.resetButtons();
 		}

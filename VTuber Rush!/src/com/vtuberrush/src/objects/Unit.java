@@ -26,19 +26,19 @@ public class Unit {
 		this.level++;
 		switch(unitType) {
 		case POMU:
-			damage += 8;
-			range += 30;
-			cooldown -= 10;
+			damage += 5;
+			range += 15;
+			cooldown -= 7;
 			break;
 		case FINANA:
-			damage += 3;
-			range += 20;
-			cooldown -= 15;
+			damage += 2;
+			range += 15;
+			cooldown -= 10;
 			break;
 		case ELIRA:
-			damage += 10;
-			range += 15;
-			cooldown -= 15;
+			damage += 7;
+			range += 10;
+			cooldown -= 10;
 			break;
 		default: return;
 		}

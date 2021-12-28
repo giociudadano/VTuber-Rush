@@ -34,6 +34,7 @@ public class Playing extends GameScene implements SceneMethods {
 	private Unit selectedUnit;
 	private int mouseX, mouseY;
 	private int tickGold;
+	private boolean gamePaused = false;
 	
 	private Flag start, end;
 	private Button buttonUpgrade, buttonSell, buttonUpgradeMax;
@@ -60,27 +61,29 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	public void tick() {
-		tickAnimation();
-		waveManager.tick();
-		tickGold++;
-		if (tickGold % 180 == 0) {
-			actionBar.addGold(1);
-		}
-		if (isWaveNext()) {
-			if (isAddWaveNext()) {
-				waveManager.delayWaveStart();
-				if(isWaveDelayEnd()) {
-					waveManager.initNextWave();
-					enemyManager.getEnemies().clear();
+		if (!gamePaused) {
+			tickAnimation();
+			waveManager.tick();
+			tickGold++;
+			if (tickGold % 180 == 0) {
+				actionBar.addGold(1);
+			}
+			if (isWaveNext()) {
+				if (isAddWaveNext()) {
+					waveManager.delayWaveStart();
+					if(isWaveDelayEnd()) {
+						waveManager.initNextWave();
+						enemyManager.getEnemies().clear();
+					}
 				}
 			}
+			if(isAddEnemy()) {
+				addEnemy();
+			}
+			enemyManager.tick();
+			unitManager.tick();
+			projectileManager.tick();
 		}
-		if(isAddEnemy()) {
-			addEnemy();
-		}
-		enemyManager.tick();
-		unitManager.tick();
-		projectileManager.tick();
 	}
 	
 	@Override
@@ -172,12 +175,12 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager.addProjectile(unit, enemy);
 	}
 	
-	public void addGold(int amount) {
-		actionBar.addGold(Enemies.getReward(amount));
+	public void addGold(int type) {
+		actionBar.addGold(Enemies.getReward(type));
 	}
 	
-	private void subtractGold(int amount) {
-		actionBar.subtractGold(Units.getCost(amount));
+	private void subtractGold(int type) {
+		actionBar.subtractGold(Units.getCost(type));
 	}
 	
 	private void sellUnit(Unit unit) {
@@ -237,6 +240,39 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	private void checkDisplayedUnit(Unit displayedUnit, int x, int y) {
+		if (displayedUnit != null) {
+			if (displayedUnit.getId() != -1) {
+				if(buttonSell.getBounds().contains(x, y)) {
+					sellUnit(displayedUnit);
+				} else if (buttonUpgrade.getBounds().contains(x,y)) {
+					if (displayedUnit.getLevel() < 3) {
+						if (actionBar.getGold() >= getUpgradePrice(displayedUnit)) {
+							upgradeUnit(displayedUnit);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private void checkSelectedUnit(int x, int y) {
+		if (getSelectedUnit() != null) {
+			if (isPlacable(getSelectedUnit().getUnitType(), mouseX, mouseY)) {
+				if (getUnitAt(mouseX, mouseY) == null) {
+					if (isPurchasable(selectedUnit)) {
+						unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
+						subtractGold(selectedUnit.getUnitType());
+						cancelSelection();
+					}
+				}
+			}
+		} else {
+			Unit unit = getUnitAt(mouseX, mouseY);
+			actionBar.setDisplayedUnit(unit);
+		}
+	}
+	
 	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
@@ -244,33 +280,8 @@ public class Playing extends GameScene implements SceneMethods {
 			actionBar.mouseClicked(x, y);
 		} else {
 			Unit displayedUnit = actionBar.getDisplayedUnit();
-			if (displayedUnit != null) {
-				if (displayedUnit.getId() != -1) {
-					if(buttonSell.getBounds().contains(x, y)) {
-						sellUnit(displayedUnit);
-					} else if (buttonUpgrade.getBounds().contains(x,y)) {
-						if (displayedUnit.getLevel() < 3) {
-							if (actionBar.getGold() >= getUpgradePrice(displayedUnit)) {
-								upgradeUnit(displayedUnit);
-							}
-						}
-					}
-				}
-			}
-			if (getSelectedUnit() != null) {
-				if (isPlacable(getSelectedUnit().getUnitType(), mouseX, mouseY)) {
-					if (getUnitAt(mouseX, mouseY) == null) {
-						if (isPurchasable(selectedUnit)) {
-							unitManager.addUnit(getSelectedUnit(), mouseX, mouseY);
-							subtractGold(selectedUnit.getUnitType());
-							cancelSelection();
-						}
-					}
-				}
-			} else {
-				Unit unit = getUnitAt(mouseX, mouseY);
-				actionBar.setDisplayedUnit(unit);
-			}
+			checkDisplayedUnit(displayedUnit, x, y);
+			checkSelectedUnit(x, y);
 		}
 	}
 
@@ -351,14 +362,13 @@ public class Playing extends GameScene implements SceneMethods {
 		return selectedUnit;
 	}
 	
-	private int getSellPrice(Unit unit) {
-		
+	private int getSellPrice(Unit unit) {	
 		int upgradeCost = (unit.getLevel() - 1) * getUpgradePrice(unit);
 		return (int) ((Units.getCost(unit.getUnitType()) + upgradeCost)/2);
 	}
 	
 	private int getUpgradePrice(Unit unit) {
-		return (int) (Units.getCost(unit.getUnitType()) * 0.6);
+		return (int) (Units.getCost(unit.getUnitType()) * 0.75);
 	}
 	
 	public int getTileType(int x, int y) {
@@ -370,6 +380,10 @@ public class Playing extends GameScene implements SceneMethods {
 		int id = level[y][x];
 		return game.getTileManager().getTile(id).getTileType();
 	}
+	
+	public boolean isGamePaused() {
+		return gamePaused;
+	}
 
 	public void setLevel(int[][] level) {
 		this.level = level;
@@ -377,5 +391,9 @@ public class Playing extends GameScene implements SceneMethods {
 	
 	public void setSelectedUnit(Unit selectedUnit) {
 		this.selectedUnit = selectedUnit;
+	}
+	
+	public void setGamePaused(boolean gamePaused) {
+		this.gamePaused = gamePaused;
 	}
 }

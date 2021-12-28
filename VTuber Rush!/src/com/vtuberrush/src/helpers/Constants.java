@@ -33,16 +33,16 @@ public class Constants {
 			switch (enemyType) {
 			case SLIME_GREEN: return 100; 
 			case SLIME_BLUE: return 250;
-			case SLIME_RED: return 500;
+			case SLIME_RED: return 625;
 			default: return 0;
 			}
 		}
 		
 		public static int getReward(int enemyType) {
 			switch (enemyType) {
-			case SLIME_GREEN: return 10; 
-			case SLIME_BLUE: return 20;
-			case SLIME_RED: return 30;
+			case SLIME_GREEN: return 5; 
+			case SLIME_BLUE: return 7;
+			case SLIME_RED: return 10;
 			default: return 0;
 			}
 		}

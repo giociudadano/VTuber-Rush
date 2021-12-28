@@ -87,6 +87,10 @@ public class Button {
 		this.mouseOver = mouseOver;
 	}
 	
+	public void setText(String text) {
+		this.text = text;
+	}
+	
 	public Rectangle getBounds() {
 		return bounds;
 	}
