@@ -93,5 +93,15 @@ public class WaveManager {
 	public boolean isTimerStart() {
 		return waveDelayStart;
 	}
+
+	public void resetGame() {
+		waves.clear();
+		initWaves();
+		enemyIndex = 0;
+		waveIndex = 0;
+		waveDelayStart = false;
+		waveDelayEnd = false;
+		tickWave = tickWaveDuration;
+	}
 	
 }

@@ -88,6 +88,11 @@ public class UnitManager {
 		}	
 	}
 	
+	public void resetGame() {
+		units.clear();
+		id = 0;
+	}
+	
 	public BufferedImage[] getUnitSprites() {
 		return unitSprites;
 	}

@@ -67,7 +67,7 @@ public class EnemyManager {
 			enemy.move(getSpeed(enemy.getEnemyType()), enemy.getDirection());
 		} else if (isEnd(enemy)) {
 			enemy.takePurge();
-			System.out.println("Purged");
+			playing.subtractLives(1);
 		} else {
 			setDirection(enemy);
 		}
@@ -190,6 +190,10 @@ public class EnemyManager {
 	
 	public void addGold(int type) {
 		playing.addGold(type);
+	}
+	
+	public void resetGame() {
+		enemies.clear();
 	}
 	
 	public ArrayList<Enemy> getEnemies() {

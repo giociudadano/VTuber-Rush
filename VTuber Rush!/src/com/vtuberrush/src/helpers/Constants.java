@@ -40,9 +40,9 @@ public class Constants {
 		
 		public static int getReward(int enemyType) {
 			switch (enemyType) {
-			case SLIME_GREEN: return 5; 
-			case SLIME_BLUE: return 7;
-			case SLIME_RED: return 10;
+			case SLIME_GREEN: return 6; 
+			case SLIME_BLUE: return 9;
+			case SLIME_RED: return 12;
 			default: return 0;
 			}
 		}

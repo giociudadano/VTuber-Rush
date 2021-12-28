@@ -54,8 +54,8 @@ public class Playing extends GameScene implements SceneMethods {
 	}
 
 	private void loadLevelDefault() {
-		level = LoadSave.readLevel("new_level");
-		ArrayList<Flag> flags = LoadSave.readFlags("new_level");
+		level = LoadSave.readLevel("level");
+		ArrayList<Flag> flags = LoadSave.readFlags("level");
 		start = flags.get(0);
 		end = flags.get(1);
 	}
@@ -183,6 +183,10 @@ public class Playing extends GameScene implements SceneMethods {
 		actionBar.subtractGold(Units.getCost(type));
 	}
 	
+	public void subtractLives(int amount) {
+		actionBar.subtractLives(amount);
+	}
+	
 	private void sellUnit(Unit unit) {
 		unitManager.removeUnit(unit);
 		actionBar.addGold(getSellPrice(unit));
@@ -240,6 +244,10 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	private boolean isPurchasable(Unit unit) {
+		return actionBar.isPurchasable(unit);
+	}
+	
 	private void checkDisplayedUnit(Unit displayedUnit, int x, int y) {
 		if (displayedUnit != null) {
 			if (displayedUnit.getId() != -1) {
@@ -273,6 +281,19 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	public void resetGame() {
+		actionBar.resetGame();
+		enemyManager.resetGame();
+		unitManager.resetGame();
+		waveManager.resetGame();
+		projectileManager.resetGame();
+		mouseX = 0;
+		mouseY = 0;
+		selectedUnit = null;
+		tickGold = 0;
+		gamePaused = false;
+	}
+	
 	//Mouse Methods
 	@Override
 	public void mouseClicked(int x, int y) {
@@ -283,10 +304,6 @@ public class Playing extends GameScene implements SceneMethods {
 			checkDisplayedUnit(displayedUnit, x, y);
 			checkSelectedUnit(x, y);
 		}
-	}
-
-	private boolean isPurchasable(Unit unit) {
-		return actionBar.isPurchasable(unit);
 	}
 
 	@Override

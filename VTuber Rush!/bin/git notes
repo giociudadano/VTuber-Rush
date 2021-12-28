@@ -1,9 +1,5 @@
-Minor Update 19
+Minor Update 20
 
-- Added option to upgrade units
-    - Upgraded units have increased range, attack speed, and damage
-    - Upgrades cost 60% of the unit price
-- Added option to sell units
-    - Selling units refund 50% of the unit price including its upgrades
-- Updated UI
-- Updated healthbar
+- Added pause system
+- Added life system
+- Optimized projectiles

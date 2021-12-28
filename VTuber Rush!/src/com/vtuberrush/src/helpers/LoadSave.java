@@ -14,6 +14,30 @@ import javax.imageio.ImageIO;
 import com.vtuberrush.src.objects.Flag;
 
 public class LoadSave {
+	public static String homePath = System.getProperty("user.home");
+	public static String saveFolder = "VTuber Rush!";
+	public static String level = "level.txt";
+	public static String filePath = homePath + File.separator + saveFolder + File.separator + level;
+	private static File levelFile = new File(filePath);
+	
+	public static void createFolder() {
+		File folder = new File(homePath + File.separator + saveFolder);
+		if (!folder.exists()) {
+			folder.mkdir();
+		}
+	}
+	
+	public static BufferedImage getGameIcon() {
+		BufferedImage image = null;
+		InputStream imageStream = LoadSave.class.getClassLoader().getResourceAsStream("icon.png");
+		try {
+			image = ImageIO.read(imageStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
+	
 	public static BufferedImage getSpriteAtlas() {
 		BufferedImage image = null;
 		InputStream imageStream = LoadSave.class.getClassLoader().getResourceAsStream("tileset.png");
@@ -36,23 +60,23 @@ public class LoadSave {
 		return image;
 	}
 	
-	public static void createLevel(String name, int[] idArray) {
-		File level = new File("res/" + name + ".txt");
-		if(level.exists()) {
+	public static void createLevel(int[] idArray) {
+		if(levelFile.exists()) {
+			System.out.println("Level " + levelFile + " already exists!");
 			return;
 		} else {
 			try {
-				level.createNewFile();
+				levelFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			writeLevel(level, idArray, new Flag(0, 0), new Flag(0, 0));
+			writeLevel(idArray, new Flag(0, 0), new Flag(0, 0));
 		}
 	}
 	
-	private static void writeLevel(File file, int[] idArray, Flag start, Flag end) {
+	private static void writeLevel(int[] idArray, Flag start, Flag end) {
 		try {
-			PrintWriter printWriter = new PrintWriter(file);
+			PrintWriter printWriter = new PrintWriter(levelFile);
 			for(Integer i : idArray) {
 				printWriter.println(i);
 			}
@@ -69,27 +93,25 @@ public class LoadSave {
 	}
 	
 	public static int[][] readLevel(String name) {
-		File level = new File("res/" + name + ".txt");
-		if(level.exists()) {
-			ArrayList<Integer> array = readFile(level);
+		if(levelFile.exists()) {
+			ArrayList<Integer> array = readFile(levelFile);
 			return MathFunctions.array1Dto2D(array, 40, 18);
 		} else {
-			System.out.println("Level" + name + "does not exist!");
+			System.out.println("Level " + name + " does not exist!");
 			return null;
 		}
 		
 	}
 	
 	public static ArrayList<Flag> readFlags(String name) {
-		File level = new File("res/" + name + ".txt");
-		if(level.exists()) {
-			ArrayList<Integer> array = readFile(level);
+		if(levelFile.exists()) {
+			ArrayList<Integer> array = readFile(levelFile);
 			ArrayList<Flag> flags = new ArrayList<>();
 			flags.add(new Flag(array.get(720), array.get(721))); //Reads starting coordinates
 			flags.add(new Flag(array.get(722), array.get(723))); //Reads ending coordinates
 			return flags;
 		} else {
-			System.out.println("Level" + name + "does not exist!");
+			System.out.println("Level " + name + " does not exist!");
 			return null;
 		}
 	}
@@ -110,11 +132,10 @@ public class LoadSave {
 	}
 	
 	public static void saveLevel(String name, int[][] idArray, Flag start, Flag end) {
-		File level = new File("res/" + name + ".txt");
-		if(level.exists()) {
-			writeLevel(level, MathFunctions.array2Dto1D(idArray), start, end);
+		if(levelFile.exists()) {
+			writeLevel(MathFunctions.array2Dto1D(idArray), start, end);
 		} else {
-			System.out.println("Level" + name + "does not exist!");
+			System.out.println("Level " + name + " does not exist!");
 			return;
 		}
 	}

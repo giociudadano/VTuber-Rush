@@ -1,7 +1,6 @@
 package com.vtuberrush.src.ui;
 
-import static com.vtuberrush.src.main.GameStates.MENU;
-import static com.vtuberrush.src.main.GameStates.setGameState;
+import static com.vtuberrush.src.main.GameStates.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -22,6 +21,7 @@ public class ActionBar extends Bar{
 	private DecimalFormat formatter;
 	
 	private int gold = 150;
+	private int lives = 20;
 	
 	public ActionBar(int x, int y, int width, int height, Playing playing) {
 		super(x, y, width, height);
@@ -154,8 +154,9 @@ public class ActionBar extends Bar{
 			graphics.drawString("Enemies Left: " + remainingEnemies, 1160, 585);
 		}
 		
-		//Gold
-		graphics.drawString("Gold: \uFFE5" + gold, 1160, 600);
+		//Gold and Lives
+		graphics.drawString("Gold: \uFFE5" + gold, 1160, 610);
+		graphics.drawString("Lives: \u2605" + lives, 1160, 625);
 	}
 	
 	private void drawPauseInfo(Graphics graphics) {
@@ -174,6 +175,13 @@ public class ActionBar extends Bar{
 		this.gold -= amount;
 	}
 	
+	public void subtractLives(int amount) {
+		this.lives -= amount;
+		if (lives <= 0) {
+			setGameState(GAME_OVER);
+		}
+	}
+	
 	private void pauseGame() {
 		playing.setGamePaused(!playing.isGamePaused());
 		if (playing.isGamePaused()) {
@@ -181,6 +189,13 @@ public class ActionBar extends Bar{
 		} else {
 			buttonPause.setText("Pause");
 		}
+	}
+	
+	public void resetGame() {
+		gold = 150;
+		lives = 20;
+		selectedUnit = null;
+		displayedUnit = null;
 	}
 	
 	public boolean isPurchasable(Unit unit) {
@@ -257,5 +272,9 @@ public class ActionBar extends Bar{
 	
 	public int getGold() {
 		return gold;
+	}
+	
+	public int getLives() {
+		return lives;
 	}
 }
