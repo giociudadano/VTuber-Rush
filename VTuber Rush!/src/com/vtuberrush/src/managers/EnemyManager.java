@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import com.vtuberrush.src.enemies.Enemy;
 import com.vtuberrush.src.enemies.SlimeBlue;
 import com.vtuberrush.src.enemies.SlimeGreen;
+import com.vtuberrush.src.enemies.SlimePurple;
 import com.vtuberrush.src.enemies.SlimeRed;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Flag;
@@ -31,7 +32,7 @@ public class EnemyManager {
 		this.playing = playing;
 		this.start = start;
 		this.end = end;
-		enemySprites = new BufferedImage[4][3];
+		enemySprites = new BufferedImage[4][7];
 		loadEffects();
 		loadEnemies();
 	}
@@ -43,7 +44,7 @@ public class EnemyManager {
 	public void loadEnemies() {
 		BufferedImage atlas = LoadSave.getSpriteAtlas();
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
+			for (int j = 0; j < 7; j++) {
 				enemySprites[i][j] = atlas.getSubimage(32 * j, 352 + (32 * i), 32, 32);
 			}
 		}
@@ -60,8 +61,8 @@ public class EnemyManager {
 
 	private void tickAnimation() {
 		animationDelay = (animationDelay + 1) % 24;
-		if(animationDelay == 5) {
-			animationIndex = (animationIndex + 1) % 3;
+		if(animationDelay == 23) {
+			animationIndex = (animationIndex + 1) % 7;
 		}
 	}
 
@@ -78,7 +79,7 @@ public class EnemyManager {
 			enemy.move(getSpeed(enemy.getEnemyType()), enemy.getDirection());
 		} else if (isEnd(enemy)) {
 			enemy.takePurge();
-			playing.subtractLives(1);
+			playing.subtractLives(enemy.getEnemyType()+1);
 		} else {
 			setDirection(enemy);
 		}
@@ -196,6 +197,8 @@ public class EnemyManager {
 		case SLIME_RED:
 			enemies.add(new SlimeRed(x, y, 0, this));
 			break;
+		case SLIME_PURPLE:
+			enemies.add(new SlimePurple(x, y, 0, this));
 		}
 	}
 	
@@ -218,7 +221,7 @@ public class EnemyManager {
 				size++;
 			}
 		}
-		return enemies.size() - size;
+		return size;
 	}
 	
 	
