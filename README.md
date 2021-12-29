@@ -23,6 +23,16 @@ When first booting up the game, the user will have the option to create their ow
 
 2. Copy and paste at location `C:\Users\%user%\VTuber Rush!`. If the directory is not found, create a new folder with the specified path or run the executable atleast once for the folder to be created. Have fun!
 
+### Credits
+
+__Assets__
+
+The sprite resources provided below are all licensed under CC-0 (Public Domain) which allows the use of these resources for game distribution, provided that such assets are not redistributed or reuploaded from the original source.
+
+* [__Top-Down Earth Tileset__by beeler (itch.io)](https://beeler.itch.io/top-down-earth-tileset)
+
+* [__4-Directional Slime Monster__ by Tofame (itch.io)](https://tofame.itch.io/4-dir-slime-monster)
+
 ### Copyright
 
 ![](https://i.creativecommons.org/p/zero/1.0/88x31.png)
