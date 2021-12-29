@@ -4,6 +4,7 @@ import static com.vtuberrush.src.main.GameStates.*;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.text.DecimalFormat;
@@ -30,7 +31,7 @@ public class ActionBar extends Bar{
 	}
 	
 	public void draw(Graphics graphics) {
-		graphics.setColor(new Color(36, 48, 61, 200));
+		graphics.setColor(new Color(62, 69, 87, 200));
 		graphics.fillRect(x, y, width, height);
 		formatter = new DecimalFormat("0.0");
 		drawButtons(graphics);
@@ -87,9 +88,9 @@ public class ActionBar extends Bar{
 			int type = displayedUnit.getUnitType();
 			
 		//Frame
-			graphics.setColor(new Color(72, 79, 95));
+			graphics.setColor(new Color(62, 69, 87));
 			graphics.fillRect(16, 12, 400, 30);
-			graphics.setColor(new Color(36, 48, 61, 200));
+			graphics.setColor(new Color(62, 69, 87, 200));
 			graphics.fillRect(16, 42, 400, 120);
 			graphics.setColor(new Color(212, 205, 197, 30));
 			graphics.drawRect(18, 14, 396, 26);
@@ -161,6 +162,9 @@ public class ActionBar extends Bar{
 	
 	private void drawPauseInfo(Graphics graphics) {
 		if (playing.isGamePaused()) {
+			Graphics2D graphics2d = (Graphics2D) graphics;
+			graphics2d.setPaint(new GradientPaint(500,530,new Color(53, 57, 69, 0),670,530,new Color(53, 57, 69, 200),true));
+			graphics.fillRect(500,510,345,30);
 			graphics.setColor(new Color(236, 230, 218));
 			graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 16));
 			graphics.drawString("Game is paused.", 600, 530);

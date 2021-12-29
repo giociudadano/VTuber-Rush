@@ -2,6 +2,7 @@ package com.vtuberrush.src.scenes;
 
 import java.awt.Graphics;
 
+import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.ui.Button;
 import static com.vtuberrush.src.main.GameStates.*;
@@ -16,12 +17,13 @@ public class GameOver extends GameScene implements SceneMethods{
 	}
 	
 	private void initButtons() {
-		buttonReplay = new Button("Try Again", 550, 320, 200, 60);
-		buttonMenu = new Button("Main Menu", 550, 390, 200, 60);
+		buttonReplay = new Button("Try Again", 550, 300, 200, 60);
+		buttonMenu = new Button("Main Menu", 550, 370, 200, 60);
 	}
 	
 	@Override
 	public void render(Graphics graphics) {
+		graphics.drawImage(LoadSave.getBackground(), 0, 0, null);
 		buttonReplay.draw(graphics);
 		buttonMenu.draw(graphics);
 	}

@@ -2,6 +2,7 @@ package com.vtuberrush.src.scenes;
 
 import java.awt.Graphics;
 
+import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.ui.Button;
 import static com.vtuberrush.src.main.GameStates.*;
@@ -17,7 +18,29 @@ public class Menu extends GameScene implements SceneMethods {
 
 	@Override
 	public void render(Graphics graphics) {
+		graphics.drawImage(LoadSave.getBackground(), 0, 0, null);
 		drawButtons(graphics);
+	}
+
+	private void initButtons() {
+		buttonPlaying = new Button("Play", 550, 350, 200, 60);
+		buttonEditing = new Button("Edit", 550, 420, 200, 60);
+		buttonSettings = new Button("Settings", 550, 490, 200, 60);
+		buttonQuit = new Button("Exit", 550, 560, 200, 60);
+	}
+
+	private void drawButtons(Graphics graphics) {
+		buttonPlaying.draw(graphics);
+		buttonEditing.draw(graphics);
+		buttonSettings.draw(graphics);
+		buttonQuit.draw(graphics);
+	}
+	
+	private void resetButtons() {
+		buttonPlaying.resetButtons();
+		buttonEditing.resetButtons();
+		buttonSettings.resetButtons();
+		buttonQuit.resetButtons();
 	}
 	
 	@Override
@@ -73,27 +96,6 @@ public class Menu extends GameScene implements SceneMethods {
 	
 	@Override
 	public void mouseDragged(int x, int y) {
-	}
-	
-	private void initButtons() {
-		buttonPlaying = new Button("Play", 550, 250, 200, 60);
-		buttonEditing = new Button("Edit", 550, 320, 200, 60);
-		buttonSettings = new Button("Settings", 550, 390, 200, 60);
-		buttonQuit = new Button("Exit", 550, 460, 200, 60);
-	}
-
-	private void drawButtons(Graphics graphics) {
-		buttonPlaying.draw(graphics);
-		buttonEditing.draw(graphics);
-		buttonSettings.draw(graphics);
-		buttonQuit.draw(graphics);
-	}
-	
-	private void resetButtons() {
-		buttonPlaying.resetButtons();
-		buttonEditing.resetButtons();
-		buttonSettings.resetButtons();
-		buttonQuit.resetButtons();
 	}
 
 }

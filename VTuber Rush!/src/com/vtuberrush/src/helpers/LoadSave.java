@@ -38,6 +38,17 @@ public class LoadSave {
 		return image;
 	}
 	
+	public static BufferedImage getBackground() {
+		BufferedImage image = null;
+		InputStream imageStream = LoadSave.class.getClassLoader().getResourceAsStream("background.png");
+		try {
+			image = ImageIO.read(imageStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return image;
+	}
+	
 	public static BufferedImage getSpriteAtlas() {
 		BufferedImage image = null;
 		InputStream imageStream = LoadSave.class.getClassLoader().getResourceAsStream("tileset.png");

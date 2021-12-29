@@ -65,7 +65,7 @@ public class ToolBar extends Bar {
 	
 
 	public void draw(Graphics graphics) {
-		graphics.setColor(new Color(36, 48, 61, 200));
+		graphics.setColor(new Color(62, 69, 87, 200));
 		graphics.fillRect(x, y, width, height);
 		drawButtons(graphics);
 	}

@@ -148,8 +148,11 @@ public class Playing extends GameScene implements SceneMethods {
 				graphics.drawString("LV " + actionBar.getDisplayedUnit().getLevel(), 108, 60);
 				
 				int i = 0;
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
 				if (displayedUnit.getLevel() < 3) {
+					
 					buttonUpgrade.draw(graphics);
+					graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 10));
 					graphics.setColor(new Color(192, 252, 64));
 					graphics.drawString("Upgrade \uFFE5" + getUpgradePrice(actionBar.getDisplayedUnit()), 158 + (100 * i++), 60);
 				} else {
@@ -157,7 +160,9 @@ public class Playing extends GameScene implements SceneMethods {
 				}
 				
 				//Sell	
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
 				buttonSell.draw(graphics);
+				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 10));
 				graphics.setColor(new Color(250, 95, 64));
 				graphics.drawString("Sell \uFFE5" + getSellPrice(actionBar.getDisplayedUnit()), 158 + (100 * i++), 60);
 				
