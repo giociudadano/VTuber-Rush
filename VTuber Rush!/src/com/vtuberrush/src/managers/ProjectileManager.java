@@ -23,7 +23,9 @@ public class ProjectileManager {
 	private Playing playing;
 	private ArrayList<Projectile> projectiles = new ArrayList<>();
 	private ArrayList<Explosion> explosions = new ArrayList<>();
-	private BufferedImage[] projectileSprites, explosionSprites;
+	private BufferedImage[][] projectileSprites;
+	private BufferedImage[] explosionSprites;
+	private int animationIndex, animationDelay;
 	private int id = 0;
 	
 	public ProjectileManager(Playing playing) {
@@ -34,9 +36,11 @@ public class ProjectileManager {
 	private void loadProjectiles() {
 		BufferedImage atlas = LoadSave.getSpriteAtlas();
 		
-		projectileSprites = new BufferedImage[3];
+		projectileSprites = new BufferedImage[3][8];
 		for(int i = 0; i < 3; i++) {
-			projectileSprites[i] = atlas.getSubimage(16 * i, 208, 16, 16);
+			for (int j = 0; j < 8; j++) {
+				projectileSprites[i][j] = atlas.getSubimage(16 * j, 256 + (16 * i), 16, 16);
+			}
 		}
 		
 		explosionSprites = new BufferedImage[8];
@@ -76,6 +80,7 @@ public class ProjectileManager {
 	}
 
 	public void tick() {
+		tickAnimation();
 		for (Projectile projectile : projectiles) {
 			if (projectile.isActive()) {
 				projectile.move();
@@ -95,6 +100,13 @@ public class ProjectileManager {
 			if (explosion.getIndex() < 8) {
 				explosion.tick();
 			}
+		}
+	}
+	
+	private void tickAnimation() {
+		animationDelay = (animationDelay + 1) % 6;
+		if(animationDelay == 5) {
+			animationIndex = (animationIndex + 1) % 8;
 		}
 	}
 	
@@ -145,7 +157,7 @@ public class ProjectileManager {
 				AffineTransform oldXForm = graphics2d.getTransform();
 				graphics2d.translate(projectile.getPosition().x, projectile.getPosition().y);
 				graphics2d.rotate(Math.toRadians(projectile.getRotation()));
-				graphics2d.drawImage(projectileSprites[projectile.getProjectileType()], -8, -8, null);
+				graphics2d.drawImage(projectileSprites[projectile.getProjectileType()][getAnimationIndex()], -8, -8, null);
 				graphics2d.rotate(-Math.toRadians(-projectile.getRotation()));
 				graphics2d.translate(-projectile.getPosition().x, -projectile.getPosition().y);
 				graphics2d.setTransform(oldXForm);
@@ -162,6 +174,12 @@ public class ProjectileManager {
 			}
 		}
 	}
+	
+	public void resetGame() {
+		projectiles.clear();
+		explosions.clear();
+		id = 0;
+	}
 
 	private int getProjectileType(Unit unit) {
 		switch(unit.getUnitType()) {
@@ -170,6 +188,10 @@ public class ProjectileManager {
 		case ELIRA: return ELIRA_PROJ;
 		default: return 0;
 		}
+	}
+	
+	private int getAnimationIndex() {
+		return animationIndex;
 	}
 	
 	public class Explosion {
@@ -196,10 +218,5 @@ public class ProjectileManager {
 			return position;
 		}
 	}
-	
-	public void resetGame() {
-		projectiles.clear();
-		explosions.clear();
-		id = 0;
-	}
+
 }

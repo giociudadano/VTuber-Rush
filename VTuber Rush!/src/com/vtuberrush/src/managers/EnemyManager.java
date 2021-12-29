@@ -20,9 +20,10 @@ import static com.vtuberrush.src.helpers.Constants.Enemies.*;
 public class EnemyManager {
 	
 	private Playing playing;
-	private BufferedImage[] enemySprites;
+	private BufferedImage[][] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
 	private BufferedImage effectSlowed;
+	private int animationIndex, animationDelay;
 	
 	private Flag start, end;
 	
@@ -30,7 +31,7 @@ public class EnemyManager {
 		this.playing = playing;
 		this.start = start;
 		this.end = end;
-		enemySprites = new BufferedImage[4];
+		enemySprites = new BufferedImage[4][3];
 		loadEffects();
 		loadEnemies();
 	}
@@ -42,16 +43,26 @@ public class EnemyManager {
 	public void loadEnemies() {
 		BufferedImage atlas = LoadSave.getSpriteAtlas();
 		for (int i = 0; i < 4; i++) {
-			enemySprites[i] = atlas.getSubimage(32 * i, 128, 32, 32);
+			for (int j = 0; j < 3; j++) {
+				enemySprites[i][j] = atlas.getSubimage(32 * j, 352 + (32 * i), 32, 32);
+			}
 		}
 	}
 	
 	public void tick() {
+		tickAnimation();
 		for (Enemy enemy : enemies) {
 			if (enemy.isAlive()) {
 				tickMove(enemy);
 			}
 		}	
+	}
+
+	private void tickAnimation() {
+		animationDelay = (animationDelay + 1) % 24;
+		if(animationDelay == 5) {
+			animationIndex = (animationIndex + 1) % 3;
+		}
 	}
 
 	//Pathfinding AI
@@ -152,9 +163,9 @@ public class EnemyManager {
 	private void drawEnemy(Graphics graphics, Enemy enemy) {
 		graphics.setColor(new Color(0, 0, 0, 50));
 		graphics.fillOval((int)enemy.getX()+2, (int)enemy.getY()+24, 28, 8);
-		graphics.drawImage(enemySprites[enemy.getEnemyType()], (int)enemy.getX(), (int)enemy.getY(), null);
+		graphics.drawImage(enemySprites[enemy.getEnemyType()][getAnimationIndex()], (int)enemy.getX(), (int)enemy.getY(), null);
 	}
-	
+
 	private void drawHealthBar(Graphics graphics, Enemy enemy) {
 		graphics.setColor(new Color(156, 0, 0));
 		graphics.fillRect((int) enemy.getX(), (int) enemy.getY()-8, 32, 3);
@@ -208,5 +219,10 @@ public class EnemyManager {
 			}
 		}
 		return enemies.size() - size;
+	}
+	
+	
+	private int getAnimationIndex() {
+		return animationIndex;
 	}
 }
