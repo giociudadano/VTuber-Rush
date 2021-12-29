@@ -31,7 +31,7 @@ The sprite resources provided below are all licensed under CC-0 (Public Domain) 
 
 * [__Top-Down Earth Tileset__ by _beeler_ (itch.io)](https://beeler.itch.io/top-down-earth-tileset)
 * [__Nijisanji Pixel Art__ by _@TheYeetiest_ (Twitter)](https://twitter.com/TheYeetiest)
-* [__4-Directional Slime Monster__ by _Tofame_ (itch.io)](https://tofame.itch.io/4-dir-slime-monster)
+* [__2D Pixel Slime Set__ by _Teaveel_ (itch.io)](https://teaveel.itch.io/slime-pixel-set)
 * [__Free Pixel Effects Pack #8 - Mini-Monster Shoots__ by _xyezawr_ (itch.io)](https://xyezawr.itch.io/free-pixel-effects-pack8)
 * [__Free Pixel Effects Pack #10 - Mini-Monster Shoots 2__ by _xyezawr_ (itch.io)](https://xyezawr.itch.io/free-pixel-effects-pack-10-mini-magick-shoots2)
 * [__Free Lunar Battle Pack__ by _MattWalkden_ (itch.io)](https://mattwalkden.itch.io/lunar-battle-pack)
