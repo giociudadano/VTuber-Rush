@@ -23,10 +23,23 @@ When first booting up the game, the user will have the option to create their ow
 
 2. Copy and paste at location `C:\Users\%user%\VTuber Rush!`. If the directory is not found, create a new folder with the specified path or run the executable atleast once for the folder to be created. Have fun!
 
+### Credits
+
+__Assets__
+
+The sprite resources provided below are all licensed under CC-0 (Public Domain) which allows the use of these resources for game distribution, provided that such assets are not redistributed or reuploaded from the original source.
+
+* [__Top-Down Earth Tileset__ by _beeler_ (itch.io)](https://beeler.itch.io/top-down-earth-tileset)
+* [__Nijisanji Pixel Art__ by _@TheYeetiest_ (Twitter)](https://twitter.com/TheYeetiest)
+* [__2D Pixel Slime Set__ by _Teaveel_ (itch.io)](https://teaveel.itch.io/slime-pixel-set)
+* [__Free Pixel Effects Pack #8 - Mini-Monster Shoots__ by _xyezawr_ (itch.io)](https://xyezawr.itch.io/free-pixel-effects-pack8)
+* [__Free Pixel Effects Pack #10 - Mini-Monster Shoots 2__ by _xyezawr_ (itch.io)](https://xyezawr.itch.io/free-pixel-effects-pack-10-mini-magick-shoots2)
+* [__Free Lunar Battle Pack__ by _MattWalkden_ (itch.io)](https://mattwalkden.itch.io/lunar-battle-pack)
+
 ### Copyright
 
 ![](https://i.creativecommons.org/p/zero/1.0/88x31.png)
 
 This project is licensed under CC-0, making it technically Public Domain, allowing you and anyone else to freely copy and use it without restrictions. If you plan on using this project, please feel free to credit me in your work. Thank you!
 
-[^note]: The illustrations and virtual characters included in the game are property of [Nijisanji](https://www.nijisanji.jp/), a subsidiary of [ANYCOLOR, Inc.](https://www.anycolor.co.jp/en). Permission was hereby granted to the author to use the characters, provided that it followed company guidelines for derivative works. For more information regarding secondary creation, please check the following [link](https://event.nijisanji.app/guidelines/en/).
+[^note]: The illustrations and virtual characters included in the game are property of [Nijisanji](https://www.nijisanji.jp/), a subsidiary of [ANYCOLOR, Inc.](https://www.anycolor.co.jp/en). Permission was hereby granted to the author to use the characters, provided that it follows company guidelines for derivative works. For more information regarding secondary creation, please check the following [link](https://event.nijisanji.app/guidelines/en/).

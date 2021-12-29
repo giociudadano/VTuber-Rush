@@ -31,9 +31,9 @@ public class Unit {
 			cooldown -= 7;
 			break;
 		case FINANA:
-			damage += 2;
+			damage += 3;
 			range += 15;
-			cooldown -= 10;
+			cooldown -= 15;
 			break;
 		case ELIRA:
 			damage += 7;

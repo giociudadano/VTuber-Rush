@@ -4,6 +4,7 @@ import static com.vtuberrush.src.main.GameStates.MENU;
 import static com.vtuberrush.src.main.GameStates.setGameState;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import com.vtuberrush.src.main.Game;
@@ -23,6 +24,16 @@ public class Settings extends GameScene implements SceneMethods {
 		graphics.setColor(Color.black);
 		graphics.fillRect(0, 0, 1280, 720);
 		drawButtons(graphics);
+		drawText(graphics);
+	}
+	
+	private void drawText(Graphics graphics) {
+		graphics.setColor(new Color(211, 186, 145));
+		graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 15));
+		graphics.drawString("To be added in the future.", 550, 350);
+		graphics.drawString("Thank you for supporting the game!", 510, 370);
+		graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 12));
+		graphics.drawString("Gio Ciudadano", 610, 395);
 	}
 
 	@Override
@@ -59,7 +70,7 @@ public class Settings extends GameScene implements SceneMethods {
 	}
 	
 	private void initButtons() {
-		buttonMenu = new Button("Menu", 10, 10, 80, 25);
+		buttonMenu = new Button("Menu", 10, 10, 80, 30);
 	}
 	
 	private void drawButtons(Graphics graphics) {

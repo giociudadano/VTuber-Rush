@@ -19,12 +19,14 @@ public class Constants {
 		public static final int SLIME_GREEN = 0;
 		public static final int SLIME_BLUE = 1;
 		public static final int SLIME_RED = 2;
+		public static final int SLIME_PURPLE = 3;
 		
 		public static float getSpeed(int enemyType) {
 			switch (enemyType) {
 			case SLIME_GREEN: return 0.3f; 
-			case SLIME_BLUE: return 0.3f;
-			case SLIME_RED: return 0.3f;
+			case SLIME_BLUE: return 0.255f;
+			case SLIME_RED: return 0.217f;
+			case SLIME_PURPLE: return 0.184f;
 			default: return 0;
 			}
 		}
@@ -34,6 +36,7 @@ public class Constants {
 			case SLIME_GREEN: return 100; 
 			case SLIME_BLUE: return 250;
 			case SLIME_RED: return 625;
+			case SLIME_PURPLE: return 1562;
 			default: return 0;
 			}
 		}
@@ -43,6 +46,7 @@ public class Constants {
 			case SLIME_GREEN: return 6; 
 			case SLIME_BLUE: return 9;
 			case SLIME_RED: return 12;
+			case SLIME_PURPLE: return 18;
 			default: return 0;
 			}
 		}

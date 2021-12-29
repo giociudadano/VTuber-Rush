@@ -35,13 +35,33 @@ public class WaveManager {
 	}
 		
 	private void initWaves() {
+		//400, 600, 900, 1175, 1425
 		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,0))));
 		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0))));
 		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0,0,0,0))));
-		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,1,0,0,1,1))));
-		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,1,0,1,0,0,1,2))));
-		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,0,2,1,0,2,0,1,0))));
-		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,0,0,1,2,1,0,0,1,2))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,1,0,0,1,1,0))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,1,0,0,1,2))));
+		
+		//1800, 2250, 2525, 2950, 3175
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,1,0,0,1,1,0,0,1,0))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,0,2,0,2,0,1,0,0))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,0,0,2,0,0,0,1,1,0,0,1,0,0,0))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,0,1,0,0,2,1,0,0,1,0,0,2))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,1,0,1,1,2,1,0,1,2,2))));
+		
+		//3350, 3925, 4025, 4724, 4825
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,2,1,1,0,1,1,2,1,2))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(2,1,0,2,2,0,2,2,1,0))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,1,0,0,1,1,0,0,0,1,1,1,0,0,1,1,1,1))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,3,1,0,0,0,1,1,3,1))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(2,2,1,0,0,1,0,2,0,0,1,1,2,0,0,2))));
+		
+		//5462, 5425, 6149, 6087, 6811
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(2,2,1,1,0,0,1,2,2,0,0,3,1))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,1,1,0,0,2,1,1,1,0,0,1,2,1,1,0,0,1,1,2,0,0))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,2,0,1,3,0,2,0,1,3,2,2))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(1,1,0,0,1,1,2,1,1,3,0,1,1,2,1,0,0,2))));
+		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(2,2,3,1,3,2,3))));
 	}
 	
 	public void delayWaveStart() {

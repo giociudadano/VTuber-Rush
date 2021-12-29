@@ -2,6 +2,7 @@ package com.vtuberrush.src.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Button {
@@ -38,27 +39,29 @@ public class Button {
 	}
 	
 	private void drawBody(Graphics graphics) {
+		Graphics2D graphics2d = (Graphics2D) graphics;
 		if(mouseOver) {
-			graphics.setColor(new Color(85, 94, 113));
+			graphics.setColor(new Color(229, 226, 219));
 		} else {
-			graphics.setColor(new Color(72, 79, 95));
+			graphics.setColor(new Color(229, 226, 219, 200));
 		}
-		graphics.fillRect(x, y, width, height);
+		graphics2d.fillRoundRect(x, y, width, height, (int)(width * 0.3), height);
 	}
 	
 	private void drawBorder(Graphics graphics) {
+		Graphics2D graphics2d = (Graphics2D) graphics;
 		if(mousePressed) {
-			graphics.setColor(new Color(241, 239, 237, 100));
+			graphics.setColor(new Color(241, 239, 237));
 		} else {
-			graphics.setColor(new Color(212, 205, 197, 30));
+			graphics.setColor(new Color(219, 212, 204, 200));
 		}
-		graphics.drawRect(x+2, y+2, width-4, height-4);
+		graphics2d.drawRoundRect(x+2, y+2, width-4, height-4, (int)((width * 0.3)-4), height-4);
 	}
 
 	private void drawText(Graphics graphics) {
 		int textWidth = graphics.getFontMetrics().stringWidth(text);
 		int textHeight = graphics.getFontMetrics().getHeight();
-		graphics.setColor(new Color(211, 186, 145));
+		graphics.setColor(new Color(79, 88, 106));
 		graphics.drawString(text, x + (width - textWidth) / 2, y + (height + textHeight) / 2);
 	}
 
