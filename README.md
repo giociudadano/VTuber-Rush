@@ -9,19 +9,11 @@ Craft a perfect defense featuring your favorite vtubers in this retro-style, col
 
 1. Install the executable jar file located in the releases section of this page with version `v0.0.1-alpha.1`.
 
-2. Download the attached font `font.ttf`.
+2. Download and install the attached font `font.ttf`.
 
-3. Run the executable or by using `java -jar "Vtuber Rush!.jar"` in the command line. Have fun!
+3. Download the attached level file `level.txt`, copy, and paste at location `C:\Users\%user%\VTuber Rush!`. If the directory is not found, create a new folder with the specified path or run the executable atleast once for the folder to be created. Have fun!
 
-### Optional Instructions
-
-__Installing a Preset Level__
-
-When first booting up the game, the user will have the option to create their own level in-game using the level editor. A preset level was also provided in this repo for the convenience of the user.
-
-1. Download the attached level file `level.txt`.
-
-2. Copy and paste at location `C:\Users\%user%\VTuber Rush!`. If the directory is not found, create a new folder with the specified path or run the executable atleast once for the folder to be created. Have fun!
+3. Run the executable in the 'Desktop' or 'Downloads' folder by double-clicking the file or using `java -jar "Vtuber Rush!.jar"` in the command line. Have fun!
 
 ### Credits
 
