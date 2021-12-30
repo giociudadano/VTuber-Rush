@@ -17,8 +17,8 @@ public class GameOver extends GameScene implements SceneMethods{
 	}
 	
 	private void initButtons() {
-		buttonReplay = new Button("Try Again", 550, 300, 200, 60);
-		buttonMenu = new Button("Main Menu", 550, 370, 200, 60);
+		buttonReplay = new Button("Try Again", 550, 420, 200, 60);
+		buttonMenu = new Button("Main Menu", 550, 490, 200, 60);
 	}
 	
 	@Override

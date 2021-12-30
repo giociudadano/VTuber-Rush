@@ -10,6 +10,7 @@ import com.vtuberrush.src.enemies.SlimeBlue;
 import com.vtuberrush.src.enemies.SlimeGreen;
 import com.vtuberrush.src.enemies.SlimePurple;
 import com.vtuberrush.src.enemies.SlimeRed;
+import com.vtuberrush.src.enemies.SlimeWhite;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.scenes.Playing;
@@ -32,7 +33,7 @@ public class EnemyManager {
 		this.playing = playing;
 		this.start = start;
 		this.end = end;
-		enemySprites = new BufferedImage[4][7];
+		enemySprites = new BufferedImage[5][7];
 		loadEffects();
 		loadEnemies();
 	}
@@ -43,7 +44,7 @@ public class EnemyManager {
 	
 	public void loadEnemies() {
 		BufferedImage atlas = LoadSave.getSpriteAtlas();
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 7; j++) {
 				enemySprites[i][j] = atlas.getSubimage(32 * j, 352 + (32 * i), 32, 32);
 			}
@@ -199,6 +200,11 @@ public class EnemyManager {
 			break;
 		case SLIME_PURPLE:
 			enemies.add(new SlimePurple(x, y, 0, this));
+			break;
+		case SLIME_WHITE:
+			enemies.add(new SlimeWhite(x, y, 0, this));
+			break;
+		default: break;
 		}
 	}
 	
