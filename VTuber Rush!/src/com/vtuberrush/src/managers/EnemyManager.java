@@ -10,6 +10,7 @@ import com.vtuberrush.src.enemies.SlimeBlue;
 import com.vtuberrush.src.enemies.SlimeGreen;
 import com.vtuberrush.src.enemies.SlimePurple;
 import com.vtuberrush.src.enemies.SlimeRed;
+import com.vtuberrush.src.enemies.SlimeWhite;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.scenes.Playing;
@@ -23,7 +24,7 @@ public class EnemyManager {
 	private Playing playing;
 	private BufferedImage[][] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
-	private BufferedImage effectSlowed;
+	private BufferedImage effectSlowed, effectBurned;
 	private int animationIndex, animationDelay;
 	
 	private Flag start, end;
@@ -32,18 +33,19 @@ public class EnemyManager {
 		this.playing = playing;
 		this.start = start;
 		this.end = end;
-		enemySprites = new BufferedImage[4][7];
+		enemySprites = new BufferedImage[5][7];
 		loadEffects();
 		loadEnemies();
 	}
 	
 	public void loadEffects() {
 		effectSlowed = LoadSave.getSpriteAtlas().getSubimage(192, 0, 16, 16);
+		effectBurned = LoadSave.getSpriteAtlas().getSubimage(208, 0, 16, 16);
 	}
 	
 	public void loadEnemies() {
 		BufferedImage atlas = LoadSave.getSpriteAtlas();
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 7; j++) {
 				enemySprites[i][j] = atlas.getSubimage(32 * j, 352 + (32 * i), 32, 32);
 			}
@@ -175,8 +177,12 @@ public class EnemyManager {
 	}
 	
 	private void drawEffects(Graphics graphics, Enemy enemy) {
+		int i = 0;
 		if(enemy.isSlowed()) {
-			graphics.drawImage(effectSlowed, (int) enemy.getX(), (int) enemy.getY(), 16, 16, null);
+			graphics.drawImage(effectSlowed, (int) enemy.getX() + (18 * i++), (int) enemy.getY(), 16, 16, null);
+		}
+		if (enemy.isBurned()) {
+			graphics.drawImage(effectBurned, (int) enemy.getX() + (18 * i++), (int) enemy.getY(), 16, 16, null);
 		}
 	}
 	
@@ -199,6 +205,11 @@ public class EnemyManager {
 			break;
 		case SLIME_PURPLE:
 			enemies.add(new SlimePurple(x, y, 0, this));
+			break;
+		case SLIME_WHITE:
+			enemies.add(new SlimeWhite(x, y, 0, this));
+			break;
+		default: break;
 		}
 	}
 	

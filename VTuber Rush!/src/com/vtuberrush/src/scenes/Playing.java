@@ -22,6 +22,8 @@ import com.vtuberrush.src.ui.Button;
 
 import static com.vtuberrush.src.helpers.Constants.Tiles.*;
 import static com.vtuberrush.src.helpers.Constants.Units.FINANA;
+import static com.vtuberrush.src.main.GameStates.GAME_OVER;
+import static com.vtuberrush.src.main.GameStates.setGameState;
 
 public class Playing extends GameScene implements SceneMethods {
 
@@ -68,14 +70,16 @@ public class Playing extends GameScene implements SceneMethods {
 			if (tickGold % 180 == 0) {
 				actionBar.addGold(1);
 			}
-			if (isWaveNext()) {
-				if (isAddWaveNext()) {
+			if (isAddWaveNext()) {
+				if (isWaveNext()) {
 					waveManager.delayWaveStart();
 					if(isWaveDelayEnd()) {
 						waveManager.initNextWave();
 						enemyManager.getEnemies().clear();
-					}
+					}	
 				}
+			} else {
+				setGameState(GAME_OVER);
 			}
 			if(isAddEnemy()) {
 				addEnemy();
@@ -150,7 +154,6 @@ public class Playing extends GameScene implements SceneMethods {
 				int i = 0;
 				graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 11));
 				if (displayedUnit.getLevel() < 3) {
-					
 					buttonUpgrade.draw(graphics);
 					graphics.setFont(new Font("MiHoYo_SDK_Web", Font.PLAIN, 10));
 					graphics.setColor(new Color(192, 252, 64));

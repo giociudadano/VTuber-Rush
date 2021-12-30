@@ -16,8 +16,11 @@ public abstract class Enemy {
 	protected int enemyType;
 	protected EnemyManager enemyManager;
 	protected int direction;
-	protected int tickSlowDuration = 300;
-	protected int tickSlow = tickSlowDuration;
+	private int tickSlowDuration = 300;
+	private int tickSlow = tickSlowDuration;
+	private int tickBurnDuration = 480;
+	private int tickBurnCooldown;
+	private int tickBurn = tickBurnDuration;
 
 	
 	public Enemy(float x, float y, int id, int enemyType, EnemyManager enemyManager) {
@@ -48,6 +51,10 @@ public abstract class Enemy {
 		tickSlow = 0;
 	}
 	
+	public void takeBurn() {
+		tickBurn = 0;
+	}
+	
 	public void takePurge() {
 		alive = false;
 		health = 0;
@@ -75,8 +82,19 @@ public abstract class Enemy {
 		default: break;
 		}
 		tickHitbox();
+		tickBurn();
 	}
 	
+	private void tickBurn() {
+		if (tickBurn < tickBurnDuration) {
+			tickBurn++;
+			tickBurnCooldown = (tickBurnCooldown + 1) % 60;
+			if (tickBurnCooldown == 0) {
+				takeDamage((int)(5 + this.maxHealth * 0.01));
+			}
+		}
+	}
+
 	private void tickHitbox() {
 		bounds.x = (int) x;
 		bounds.y = (int) y;
@@ -88,6 +106,10 @@ public abstract class Enemy {
 	
 	public boolean isSlowed() {
 		return tickSlow < tickSlowDuration;
+	}
+	
+	public boolean isBurned() {
+		return tickBurn < tickBurnDuration;
 	}
 	
 	public float getX() {

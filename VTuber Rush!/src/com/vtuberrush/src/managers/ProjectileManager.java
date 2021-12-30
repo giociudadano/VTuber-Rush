@@ -36,8 +36,8 @@ public class ProjectileManager {
 	private void loadProjectiles() {
 		BufferedImage atlas = LoadSave.getSpriteAtlas();
 		
-		projectileSprites = new BufferedImage[3][8];
-		for(int i = 0; i < 3; i++) {
+		projectileSprites = new BufferedImage[6][8];
+		for(int i = 0; i < 6; i++) {
 			for (int j = 0; j < 8; j++) {
 				projectileSprites[i][j] = atlas.getSubimage(16 * j, 256 + (16 * i), 16, 16);
 			}
@@ -117,6 +117,8 @@ public class ProjectileManager {
 					enemy.takeDamage(projectile.getDamage());
 					if(projectile.getProjectileType() == FINANA_PROJ) {
 						enemy.takeSlow();
+					} else if (projectile.getProjectileType() == SELEN_PROJ) {
+						enemy.takeBurn();
 					}
 					return true;
 				}
@@ -186,6 +188,7 @@ public class ProjectileManager {
 		case POMU: return POMU_PROJ;
 		case FINANA: return FINANA_PROJ;
 		case ELIRA: return ELIRA_PROJ;
+		case SELEN: return SELEN_PROJ;
 		default: return 0;
 		}
 	}

@@ -44,7 +44,7 @@ public class ActionBar extends Bar{
 	private void initButtons() {
 		buttonMenu = new Button("Menu", 10, 560, 80, 30);
 		buttonPause = new Button("Pause", 10, 595, 80, 30);
-		unitButtons = new Button[3];
+		unitButtons = new Button[6];
 		for(int i = 0; i < unitButtons.length; i++) {
 			unitButtons[i] = new Button("", 100 + (122 * i), 560, 112, 136, i);
 		}

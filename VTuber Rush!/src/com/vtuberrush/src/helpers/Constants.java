@@ -20,13 +20,15 @@ public class Constants {
 		public static final int SLIME_BLUE = 1;
 		public static final int SLIME_RED = 2;
 		public static final int SLIME_PURPLE = 3;
+		public static final int SLIME_WHITE = 4;
 		
 		public static float getSpeed(int enemyType) {
 			switch (enemyType) {
 			case SLIME_GREEN: return 0.3f; 
-			case SLIME_BLUE: return 0.255f;
-			case SLIME_RED: return 0.217f;
-			case SLIME_PURPLE: return 0.184f;
+			case SLIME_BLUE: return 0.225f;
+			case SLIME_RED: return 0.169f;
+			case SLIME_PURPLE: return 0.126f;
+			case SLIME_WHITE: return 0.095f;
 			default: return 0;
 			}
 		}
@@ -37,6 +39,7 @@ public class Constants {
 			case SLIME_BLUE: return 250;
 			case SLIME_RED: return 625;
 			case SLIME_PURPLE: return 1562;
+			case SLIME_WHITE: return 3906;
 			default: return 0;
 			}
 		}
@@ -44,9 +47,10 @@ public class Constants {
 		public static int getReward(int enemyType) {
 			switch (enemyType) {
 			case SLIME_GREEN: return 6; 
-			case SLIME_BLUE: return 9;
+			case SLIME_BLUE: return 8;
 			case SLIME_RED: return 12;
-			case SLIME_PURPLE: return 18;
+			case SLIME_PURPLE: return 17;
+			case SLIME_WHITE: return 24;
 			default: return 0;
 			}
 		}
@@ -56,14 +60,18 @@ public class Constants {
 		public static final int POMU = 0;
 		public static final int FINANA = 1;
 		public static final int ELIRA = 2;
-		
+		public static final int ROSEMI = 3;
+		public static final int PETRA = 4;
+		public static final int SELEN = 5;
 
-		
 		public static String getName(int unitType) {
 			switch (unitType) {
 			case POMU: return "Pomu Rainpuff";
 			case FINANA: return "Finana Ryugu";
 			case ELIRA: return "Elira Pendora";
+			case ROSEMI: return "Rosemi Lovelock";
+			case PETRA: return "Petra Gurin";
+			case SELEN: return "Selen Tatsuki";
 			default: return "";
 			}
 		}
@@ -71,8 +79,9 @@ public class Constants {
 		public static int getCost(int unitType) {
 			switch (unitType) {
 			case POMU: return 100;
-			case FINANA: return 70;
+			case FINANA: return 75;
 			case ELIRA: return 150;
+			case SELEN: return 150;
 			default: return 0;
 			}
 		}
@@ -89,6 +98,10 @@ public class Constants {
 				return "Deals heavy damage to enemies. Fireballs\n"
 					+ "explode on-hit, dealing 50% of the damage to\n"
 					+ "surrounding enemies.";
+			case SELEN:
+				return "Deals heavy damage to enemies. Enemies hit\n"
+					+ "burn for 10 + 2% of their max health per\n"
+					+ "second over 4 seconds.";
 			default:
 				return "";
 			}
@@ -107,6 +120,17 @@ public class Constants {
 				return "A sky dragon who came from the heavens closest\n"
 					+ "to the sun. She has the kindness that makes the\n"
 					+ "light of a sunny day fall equally on all.";
+			case ROSEMI:
+				return "A rose maiden raised in a beautiful garden. Pretty\n"
+					+ "as a rose in a vase, but a little sharp to the touch.\n";
+			case PETRA:
+				return "A penguin who spent much time alone in the frosty\n"
+					+ "sea. Like the waves during a storm, she is the bearer\n"
+					+ "of both complexity and charm.";
+			case SELEN:
+				return "A sky dragon descended from the moon. She has a\n"
+					+ "gentle heart hidden underneath her mischievous\n"
+					+ "nature like the glow of the moon on a cloudy night.";
 			default:
 				return "";
 			}
@@ -117,6 +141,7 @@ public class Constants {
 			case POMU: return 35; 
 			case FINANA: return 15;
 			case ELIRA: return 50;
+			case SELEN: return 70;
 			default: return 0;
 			}
 		}
@@ -126,6 +151,7 @@ public class Constants {
 			case POMU: return 320; 
 			case FINANA: return 250;
 			case ELIRA: return 250;
+			case SELEN: return 250;
 			default: return 0;
 			}
 		}
@@ -135,6 +161,7 @@ public class Constants {
 			case POMU: return 100; 
 			case FINANA: return 200;
 			case ELIRA: return 250;
+			case SELEN: return 350;
 			default: return 0;
 			}
 		}
@@ -145,12 +172,14 @@ public class Constants {
 		public static final int POMU_PROJ = 0;
 		public static final int FINANA_PROJ = 1;
 		public static final int ELIRA_PROJ = 2;
+		public static final int SELEN_PROJ = 5;
 		
 		public static float getSpeed(int projType) {
 			switch(projType) {
 			case POMU_PROJ: return 2.5f;
 			case FINANA_PROJ: return 4f;
 			case ELIRA_PROJ: return 2f;
+			case SELEN_PROJ: return 0.8f;
 			default: return 0f;
 			}
 		}
