@@ -40,6 +40,11 @@ public class Unit {
 			range += 10;
 			cooldown -= 10;
 			break;
+		case SELEN:
+			damage += 7;
+			range += 10;
+			cooldown -= 14;
+			break;
 		default: return;
 		}
 	}

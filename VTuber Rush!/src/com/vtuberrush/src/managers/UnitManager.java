@@ -51,9 +51,9 @@ public class UnitManager {
 	private void loadUnits() {
 		BufferedImage spriteAtlas = LoadSave.getSpriteAtlas();
 		BufferedImage iconAtlas = LoadSave.getUnitIconsAtlas();
-		unitSprites = new BufferedImage[3];
-		unitIcons = new BufferedImage[3];
-		for (int i = 0; i < 3; i++) {
+		unitSprites = new BufferedImage[6];
+		unitIcons = new BufferedImage[6];
+		for (int i = 0; i < 6; i++) {
 			unitSprites[i] = spriteAtlas.getSubimage(i*32, 160, 32, 48);
 			unitIcons[i] = iconAtlas.getSubimage(i*112, 0, 112, 136);
 		}

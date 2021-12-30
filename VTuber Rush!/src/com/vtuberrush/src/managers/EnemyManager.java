@@ -24,7 +24,7 @@ public class EnemyManager {
 	private Playing playing;
 	private BufferedImage[][] enemySprites;
 	private ArrayList<Enemy> enemies = new ArrayList<>();
-	private BufferedImage effectSlowed;
+	private BufferedImage effectSlowed, effectBurned;
 	private int animationIndex, animationDelay;
 	
 	private Flag start, end;
@@ -40,6 +40,7 @@ public class EnemyManager {
 	
 	public void loadEffects() {
 		effectSlowed = LoadSave.getSpriteAtlas().getSubimage(192, 0, 16, 16);
+		effectBurned = LoadSave.getSpriteAtlas().getSubimage(208, 0, 16, 16);
 	}
 	
 	public void loadEnemies() {
@@ -176,8 +177,12 @@ public class EnemyManager {
 	}
 	
 	private void drawEffects(Graphics graphics, Enemy enemy) {
+		int i = 0;
 		if(enemy.isSlowed()) {
-			graphics.drawImage(effectSlowed, (int) enemy.getX(), (int) enemy.getY(), 16, 16, null);
+			graphics.drawImage(effectSlowed, (int) enemy.getX() + (18 * i++), (int) enemy.getY(), 16, 16, null);
+		}
+		if (enemy.isBurned()) {
+			graphics.drawImage(effectBurned, (int) enemy.getX() + (18 * i++), (int) enemy.getY(), 16, 16, null);
 		}
 	}
 	

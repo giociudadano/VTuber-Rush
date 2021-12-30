@@ -35,7 +35,6 @@ public class WaveManager {
 	}
 		
 	private void initWaves() {
-
 		//400, 600, 900, 1175, 1425
 		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,0))));
 		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0))));
