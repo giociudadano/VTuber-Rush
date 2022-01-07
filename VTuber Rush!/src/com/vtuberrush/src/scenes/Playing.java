@@ -183,6 +183,10 @@ public class Playing extends GameScene implements SceneMethods {
 		projectileManager.addProjectile(unit, enemy);
 	}
 	
+	public void blastEnemy(Unit unit, Enemy enemy) {
+		enemy.takeDamage(unit.getDamage());
+	}
+	
 	public void addGold(int type) {
 		actionBar.addGold(Enemies.getReward(type));
 	}

@@ -6,8 +6,8 @@ public class Unit {
 	private int x, y, id, damage, unitType, tickCooldown;
 	private float range, cooldown;
 	private int level;
-	private int tickHasteBuffer = 720;
-	private int tickHasteCooldown = 360;
+	private int tickHasteCooldown = 960;
+	private int tickHasteDuration = 360;
 	private int tickHaste = tickHasteCooldown;
 	
 	public Unit(int x, int y, int id, int unitType) {
@@ -53,8 +53,13 @@ public class Unit {
 			range += 10;
 			cooldown -= 10;
 			break;
+		case PETRA:
+			damage += 1;
+			range += 12;
+			break;
 		case ROSEMI:
-			range += 60;
+			range += 80;
+			break;
 		case SELEN:
 			damage += 10;
 			range += 10;
@@ -69,11 +74,11 @@ public class Unit {
 	}
 	
 	public boolean isHasted() {
-		return tickHasteCooldown > tickHaste;
+		return tickHasteDuration > tickHaste;
 	}
 	
 	public void takeHaste() {
-		if (tickHaste > tickHasteBuffer) {
+		if (tickHaste > tickHasteCooldown) {
 			tickHaste = 0;
 		}
 	}
