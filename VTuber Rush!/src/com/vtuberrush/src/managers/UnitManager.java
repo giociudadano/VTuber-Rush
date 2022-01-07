@@ -10,19 +10,23 @@ import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
 
+import static com.vtuberrush.src.helpers.Constants.Units.*;
+
 public class UnitManager {
 	
 	private Playing playing;
 	private BufferedImage[] unitSprites;
 	private BufferedImage[] unitIcons;
+	private BufferedImage effectHasted;
 	private ArrayList<Unit> units = new ArrayList<>();
 	private int id = 0;
 	
 	public UnitManager(Playing playing) {
 		this.playing = playing;
+		loadEffects();
 		loadUnits();
 	}
-	
+
 	public void tick() {
 		for(Unit unit : units) {
 			unit.tick();
@@ -35,7 +39,11 @@ public class UnitManager {
 			if (enemy.isAlive()) {
 				if (isNearby(unit, enemy)) {
 					if(unit.isOffCooldown()) {
-						playing.shootEnemy(unit, enemy);
+						if(unit.getUnitType() != ROSEMI) {
+							playing.shootEnemy(unit, enemy);
+						} else {
+							buffAllies(unit);
+						}
 						unit.resetCooldown();
 					}
 				}
@@ -43,9 +51,26 @@ public class UnitManager {
 		}
 	}
 
+	private void buffAllies(Unit unit) {
+		for (Unit u: units) {
+			if (isNearby(unit, u)) {
+				u.takeHaste();
+			}
+		}
+	}
+
 	private boolean isNearby(Unit unit, Enemy enemy) {
 		int range = com.vtuberrush.src.helpers.MathFunctions.getDistance(unit.getX(), unit.getY(), enemy.getX(), enemy.getY());
 		return range < unit.getRange()/2;
+	}
+	
+	private boolean isNearby(Unit unit, Unit unit2) {
+		int range = com.vtuberrush.src.helpers.MathFunctions.getDistance(unit.getX(), unit.getY(), unit2.getX(), unit2.getY());
+		return range < unit.getRange()/2;
+	}
+	
+	private void loadEffects() {
+		effectHasted = LoadSave.getSpriteAtlas().getSubimage(224, 0, 16, 16);
 	}
 
 	private void loadUnits() {
@@ -61,10 +86,26 @@ public class UnitManager {
 	}
 	
 	public void draw(Graphics graphics) {
-		graphics.setColor(new Color(0, 0, 0, 50));
 		for (Unit unit : units) {
-			graphics.fillOval(unit.getX()+2, unit.getY()+12, 28, 8);
-			graphics.drawImage(unitSprites[unit.getUnitType()], unit.getX(), unit.getY()-32, null);
+			if (unit != null) {
+				graphics.setColor(new Color(0, 0, 0, 50));
+				graphics.fillOval(unit.getX()+2, unit.getY()+12, 28, 8);
+				graphics.drawImage(unitSprites[unit.getUnitType()], unit.getX(), unit.getY()-32, null);
+				drawEffects(graphics, unit);
+			}
+		}
+	}
+	
+	private void drawEffects(Graphics graphics, Unit unit) {
+		if(unit.isHasted()) {
+			if (unit.getUnitType() != ROSEMI) {
+				graphics.drawImage(effectHasted, unit.getX(), unit.getY()-32, 16, 16, null);
+			} else {
+				graphics.setColor(new Color(255, 214, 227, 100));
+				graphics.drawOval(unit.getX()+16 - (int)(unit.getRange()/2),
+						unit.getY()+16 - (int)(unit.getRange()/2),
+						(int)(unit.getRange()), (int)(unit.getRange()));
+			}
 		}
 	}
 	

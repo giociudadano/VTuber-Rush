@@ -46,11 +46,11 @@ public class Constants {
 		
 		public static int getReward(int enemyType) {
 			switch (enemyType) {
-			case SLIME_GREEN: return 6; 
-			case SLIME_BLUE: return 8;
-			case SLIME_RED: return 12;
-			case SLIME_PURPLE: return 17;
-			case SLIME_WHITE: return 24;
+			case SLIME_GREEN: return 4; 
+			case SLIME_BLUE: return 6;
+			case SLIME_RED: return 8;
+			case SLIME_PURPLE: return 11;
+			case SLIME_WHITE: return 16;
 			default: return 0;
 			}
 		}
@@ -81,6 +81,7 @@ public class Constants {
 			case POMU: return 100;
 			case FINANA: return 75;
 			case ELIRA: return 150;
+			case ROSEMI: return 150;
 			case SELEN: return 150;
 			default: return 0;
 			}
@@ -98,10 +99,14 @@ public class Constants {
 				return "Deals heavy damage to enemies. Fireballs\n"
 					+ "explode on-hit, dealing 50% of the damage to\n"
 					+ "surrounding enemies.";
+			case ROSEMI:
+				return "Grants 50% attack speed for 3 seconds to\n"
+					+ "nearby allies when enemies are within range.\n"
+					+ "(6 second cooldown per unit, non-stackable)";
 			case SELEN:
 				return "Deals heavy damage to enemies. Enemies hit\n"
-					+ "burn for 10 + 2% of their max health per\n"
-					+ "second over 4 seconds.";
+					+ "burn a portion of their maximum health for\n"
+					+ "4 seconds.";
 			default:
 				return "";
 			}
@@ -141,7 +146,7 @@ public class Constants {
 			case POMU: return 35; 
 			case FINANA: return 15;
 			case ELIRA: return 50;
-			case SELEN: return 70;
+			case SELEN: return 75;
 			default: return 0;
 			}
 		}
@@ -151,6 +156,7 @@ public class Constants {
 			case POMU: return 320; 
 			case FINANA: return 250;
 			case ELIRA: return 250;
+			case ROSEMI: return 250;
 			case SELEN: return 250;
 			default: return 0;
 			}
@@ -161,6 +167,7 @@ public class Constants {
 			case POMU: return 100; 
 			case FINANA: return 200;
 			case ELIRA: return 250;
+			case ROSEMI: return 720;
 			case SELEN: return 350;
 			default: return 0;
 			}

@@ -90,7 +90,7 @@ public abstract class Enemy {
 			tickBurn++;
 			tickBurnCooldown = (tickBurnCooldown + 1) % 60;
 			if (tickBurnCooldown == 0) {
-				takeDamage((int)(5 + this.maxHealth * 0.01));
+				takeDamage((int)(5 + this.maxHealth * 0.005));
 			}
 		}
 	}
