@@ -46,11 +46,11 @@ public class Constants {
 		
 		public static int getReward(int enemyType) {
 			switch (enemyType) {
-			case SLIME_GREEN: return 6; 
-			case SLIME_BLUE: return 8;
-			case SLIME_RED: return 12;
-			case SLIME_PURPLE: return 17;
-			case SLIME_WHITE: return 24;
+			case SLIME_GREEN: return 4; 
+			case SLIME_BLUE: return 6;
+			case SLIME_RED: return 8;
+			case SLIME_PURPLE: return 11;
+			case SLIME_WHITE: return 16;
 			default: return 0;
 			}
 		}
@@ -81,6 +81,8 @@ public class Constants {
 			case POMU: return 100;
 			case FINANA: return 75;
 			case ELIRA: return 150;
+			case ROSEMI: return 150;
+			case PETRA: return 75;
 			case SELEN: return 150;
 			default: return 0;
 			}
@@ -92,16 +94,24 @@ public class Constants {
 				return "Deals moderate damage to enemies.\n";
 			case FINANA: 
 				return "Deals light damage to enemies. Enemies hit\n"
-					+ "are slowed by 50% for 2.5 seconds. Can only\n"
+					+ "are slowed by 60% for 2.5 seconds. Can only\n"
 					+ "be placed in water.";
 			case ELIRA: 
 				return "Deals heavy damage to enemies. Fireballs\n"
 					+ "explode on-hit, dealing 50% of the damage to\n"
-					+ "surrounding enemies.";
+					+ "nearby enemies.";
+			case ROSEMI:
+				return "Grants 50% attack speed to nearby allies for\n"
+					+ "3 seconds when an enemy is in range (5\n"
+					+ "second cooldown per unit).";
+			case PETRA:
+				return "Deals very light damage to enemies. Enemies hit\n"
+					+ "are stunned for 0.75 seconds (5s cooldown\n"
+					+ "per unit). Nearby enemies are slowed by 25%.";
 			case SELEN:
 				return "Deals heavy damage to enemies. Enemies hit\n"
-					+ "burn for 10 + 2% of their max health per\n"
-					+ "second over 4 seconds.";
+					+ "burn a portion of their maximum health for\n"
+					+ "4 seconds.";
 			default:
 				return "";
 			}
@@ -141,7 +151,8 @@ public class Constants {
 			case POMU: return 35; 
 			case FINANA: return 15;
 			case ELIRA: return 50;
-			case SELEN: return 70;
+			case PETRA: return 4;
+			case SELEN: return 75;
 			default: return 0;
 			}
 		}
@@ -151,6 +162,8 @@ public class Constants {
 			case POMU: return 320; 
 			case FINANA: return 250;
 			case ELIRA: return 250;
+			case ROSEMI: return 400;
+			case PETRA: return 160;
 			case SELEN: return 250;
 			default: return 0;
 			}
@@ -161,6 +174,8 @@ public class Constants {
 			case POMU: return 100; 
 			case FINANA: return 200;
 			case ELIRA: return 250;
+			case ROSEMI: return 180;
+			case PETRA: return 120;
 			case SELEN: return 350;
 			default: return 0;
 			}

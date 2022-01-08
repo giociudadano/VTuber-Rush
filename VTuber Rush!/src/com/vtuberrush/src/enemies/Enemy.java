@@ -16,11 +16,19 @@ public abstract class Enemy {
 	protected int enemyType;
 	protected EnemyManager enemyManager;
 	protected int direction;
+	
 	private int tickSlowDuration = 300;
 	private int tickSlow = tickSlowDuration;
+	
 	private int tickBurnDuration = 480;
 	private int tickBurnCooldown;
 	private int tickBurn = tickBurnDuration;
+	
+	private boolean isChilled = false;
+	private int tickFrozenCooldown = 690;
+	private int tickFrozenDuration = 90;
+	private int tickFrozen = tickFrozenCooldown;
+
 
 	
 	public Enemy(float x, float y, int id, int enemyType, EnemyManager enemyManager) {
@@ -55,6 +63,12 @@ public abstract class Enemy {
 		tickBurn = 0;
 	}
 	
+	public void takeFrozen() {
+		if (tickFrozen >= tickFrozenCooldown) {
+			tickFrozen = 0;
+		}
+	}
+	
 	public void takePurge() {
 		alive = false;
 		health = 0;
@@ -62,9 +76,18 @@ public abstract class Enemy {
 	
 	public void move(float speed, int directionMove) {
 		direction = directionMove;
-		if (tickSlow < tickSlowDuration) {
+		if (isChilled()) {
+			speed *= 0.75f;
+		}
+		if (isSlowed()) {
 			tickSlow++;
-			speed *= 0.5f;
+			speed *= 0.4f;
+		}
+		if (tickFrozen < tickFrozenCooldown) {
+			tickFrozen++;
+			if (isFrozen()) {
+				speed = 0;
+			}
 		}
 		switch (directionMove) {
 		case LEFT:
@@ -90,7 +113,7 @@ public abstract class Enemy {
 			tickBurn++;
 			tickBurnCooldown = (tickBurnCooldown + 1) % 60;
 			if (tickBurnCooldown == 0) {
-				takeDamage((int)(5 + this.maxHealth * 0.01));
+				takeDamage((int)(5 + this.maxHealth * 0.005));
 			}
 		}
 	}
@@ -110,6 +133,14 @@ public abstract class Enemy {
 	
 	public boolean isBurned() {
 		return tickBurn < tickBurnDuration;
+	}
+	
+	public boolean isChilled() {
+		return isChilled;
+	}
+
+	public boolean isFrozen() {
+		return tickFrozen < tickFrozenDuration;
 	}
 	
 	public float getX() {
@@ -147,5 +178,9 @@ public abstract class Enemy {
 	public void setPosition(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void setChilled(boolean b) {
+		isChilled = b;
 	}
 }

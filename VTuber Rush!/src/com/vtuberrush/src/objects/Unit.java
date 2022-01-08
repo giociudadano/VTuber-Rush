@@ -6,6 +6,9 @@ public class Unit {
 	private int x, y, id, damage, unitType, tickCooldown;
 	private float range, cooldown;
 	private int level;
+	private int tickHasteCooldown = 960;
+	private int tickHasteDuration = 360;
+	private int tickHaste = tickHasteCooldown;
 	
 	public Unit(int x, int y, int id, int unitType) {
 		this.x = x;
@@ -19,9 +22,19 @@ public class Unit {
 	}
 
 	public void tick() {
-		tickCooldown++;
+		tickCooldown();
 	}
 	
+	private void tickCooldown() {
+		tickCooldown++;
+		tickHaste++;
+		if (isHasted()) {
+			if (tickHaste % 2 == 0) {
+				tickCooldown++;
+			}
+		}
+	}
+
 	public void addLevel() {
 		this.level++;
 		switch(unitType) {
@@ -40,10 +53,17 @@ public class Unit {
 			range += 10;
 			cooldown -= 10;
 			break;
+		case PETRA:
+			damage += 1;
+			range += 12;
+			break;
+		case ROSEMI:
+			range += 80;
+			break;
 		case SELEN:
-			damage += 7;
+			damage += 10;
 			range += 10;
-			cooldown -= 14;
+			cooldown -= 10;
 			break;
 		default: return;
 		}
@@ -51,6 +71,16 @@ public class Unit {
 	
 	public boolean isOffCooldown() {
 		return tickCooldown > cooldown;
+	}
+	
+	public boolean isHasted() {
+		return tickHasteDuration > tickHaste;
+	}
+	
+	public void takeHaste() {
+		if (tickHaste > tickHasteCooldown) {
+			tickHaste = 0;
+		}
 	}
 
 	public void resetCooldown() {
