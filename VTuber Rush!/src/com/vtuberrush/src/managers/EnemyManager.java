@@ -15,9 +15,20 @@ import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.objects.Flag;
 import com.vtuberrush.src.scenes.Playing;
 
-import static com.vtuberrush.src.helpers.Constants.Direction.*;
-import static com.vtuberrush.src.helpers.Constants.Tiles.*;
-import static com.vtuberrush.src.helpers.Constants.Enemies.*;
+import static com.vtuberrush.src.helpers.Constants.Direction.UP;
+import static com.vtuberrush.src.helpers.Constants.Direction.DOWN;
+import static com.vtuberrush.src.helpers.Constants.Direction.LEFT;
+import static com.vtuberrush.src.helpers.Constants.Direction.RIGHT;
+
+import static com.vtuberrush.src.helpers.Constants.Tiles.ROAD;
+
+import static com.vtuberrush.src.helpers.Constants.Enemies.SLIME_GREEN;
+import static com.vtuberrush.src.helpers.Constants.Enemies.SLIME_BLUE;
+import static com.vtuberrush.src.helpers.Constants.Enemies.SLIME_PURPLE;
+import static com.vtuberrush.src.helpers.Constants.Enemies.SLIME_RED;
+import static com.vtuberrush.src.helpers.Constants.Enemies.SLIME_WHITE;
+import static com.vtuberrush.src.helpers.Constants.Enemies.getSpeed;
+
 
 public class EnemyManager {
 	
@@ -72,7 +83,7 @@ public class EnemyManager {
 
 	//Pathfinding AI
 	private void tickMove(Enemy enemy) {
-		if (enemy.getDirection() == NONE) {
+		if (enemy.getDirection() == -1) {
 			setDirection(enemy);
 		}
 		

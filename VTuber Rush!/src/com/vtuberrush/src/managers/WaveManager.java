@@ -6,6 +6,12 @@ import java.util.Arrays;
 import com.vtuberrush.src.scenes.Playing;
 import com.vtuberrush.src.waves.Wave;
 
+/**
+ * Facilitates the spawning of waves or groups of enemies in set intervals.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class WaveManager {
 
 	private Playing playing;
@@ -17,11 +23,23 @@ public class WaveManager {
 	private int enemyIndex, waveIndex;
 	private boolean waveDelayStart, waveDelayEnd;
 	
+	/**
+	 * Initializes and creates a list of waves for the player to defend against.
+	 * Created when initializing the <b>PLAYING</b> game state.
+	 * @param playing - Defines the specific instance of the scene where the wave manager is initialized.
+	 * @see #initWaves()
+	 */
 	public WaveManager(Playing playing) {
 		this.playing = playing;
 		initWaves();
 	}
 	
+	/**
+	 * Updates game timers used for controlling the delay of spawning between
+	 * enemies and the delay for spawning enemies between waves.
+	 * @see #isAddEnemyNext()
+	 * @see #isAddWaveNext()
+	 */
 	public void tick() {
 		if (tickAdd < tickAddDuration) {
 			tickAdd++;
@@ -33,7 +51,13 @@ public class WaveManager {
 			}
 		}
 	}
-		
+	
+	/**
+	 * Creates a new <b><i>Wave</i></b> object 25 times and assigns it to <b><i>waves</i></b> array list
+	 * containing Wave objects as its members.
+	 * <br> Used by the <b><i>EnemyManager</i></b> to spawn new enemies in set intervals while
+	 * playing the game.
+	 */
 	private void initWaves() {
 		//400, 600, 900, 1175, 1425
 		waves.add(new Wave(new ArrayList<Integer>(Arrays.asList(0,0,0,0))));
@@ -72,10 +96,19 @@ public class WaveManager {
 		
 	}
 	
+	/**
+	 * Starts a timer which spawns the next wave after 5 seconds.
+	 * <br>Called when all enemies in a wave have been killed and the user is ready to
+	 * accept another wave of enemies.
+	 */
 	public void delayWaveStart() {
 		waveDelayStart = true;
 	}
 	
+	/**
+	 * Increments the wave index by one, resets the wave delay timer, and defines the next
+	 * enemy to be spawned as the enemy in the first index of the next wave.
+	 */
 	public void initNextWave() {
 		waveIndex++;
 		tickWave = 0;
@@ -84,44 +117,85 @@ public class WaveManager {
 		enemyIndex = 0;
 	}
 	
+	/**
+	 * Returns <i>true</i> if the timer used to spawn the next wave is more than 5 seconds.
+	 * <br>Used to check and spawn the next wave if set to <i>false</i>.
+	 * @return {@link #waveDelayEnd}
+	 */
 	public boolean isWaveDelayEnd() {
 		return waveDelayEnd;
 	}
 	
+	/**
+	 * Returns <i>true</i> if the timer used to spawn the next enemy in the wave is more than 1.25 seconds.
+	 * <br>Used to check whether to spawn a new enemy.
+	 */
 	public boolean isAddEnemy() {
 		return tickAdd >= tickAddDuration;
 	}
 	
+	/**
+	 * Returns <i>true</i> if there are still available enemies to be spawned in the wave.
+	 * <br>Used for spawning a new wave and stopping spawns in a spawned wave.
+	 */
 	public boolean isAddEnemyNext() {
 		return enemyIndex < waves.get(waveIndex).getEnemyList().size();
 	}
 	
+	/**
+	 * Returns <i>true</i> if there are still waves to be spawned.
+	 * <br>Used to end the game if all enemies were spawned and killed.
+	 */
 	public boolean isAddWaveNext() {
 		return waveIndex < waves.size();
 	}
 	
+	/**
+	 * Returns an array list whose members are <b><i>Wave</i></b> objects.
+	 * @return {@link #waves}
+	 */
 	public ArrayList<Wave> getWaves() {
 		return waves;
 	}
 	
+	/**
+	 * Returns the current wave number.
+	 * @return {@link #waveIndex}
+	 */
 	public int getWaveIndex() {
 		return waveIndex;
 	}
 
+	/**
+	 * Returns the next enemy in the <b><i>Wave</i></b> enemy type list.
+	 * <br>Resets the timer used to delay the spawning between enemies in a wave.
+	 * @return {@link #waveIndex}
+	 */
 	public int getNextEnemy() {
 		tickAdd = 0;
 		return waves.get(waveIndex).getEnemyList().get(enemyIndex++);
 	}
 	
+	/**
+	 * Returns the amount of time remaining before the next wave.
+	 */
 	public float getTimeLeft() {
 		float secondsLeft = tickWaveDuration - tickWave;
 		return secondsLeft / 120.0f;
 	}
 
+	/**
+	 * Returns <i>true</i> if the timer used to delay the spawning between waves is
+	 * currently active.
+	 */
 	public boolean isTimerStart() {
 		return waveDelayStart;
 	}
 
+	/**
+	 * Resets all timers, wave numbers, and enemy indices.
+	 * <br> Called during a game over or game complete condition.
+	 */
 	public void resetGame() {
 		waves.clear();
 		initWaves();

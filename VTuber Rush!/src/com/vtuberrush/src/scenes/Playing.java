@@ -20,8 +20,11 @@ import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.ui.ActionBar;
 import com.vtuberrush.src.ui.Button;
 
-import static com.vtuberrush.src.helpers.Constants.Tiles.*;
+import static com.vtuberrush.src.helpers.Constants.Tiles.WATER;
+import static com.vtuberrush.src.helpers.Constants.Tiles.GRASS;
+
 import static com.vtuberrush.src.helpers.Constants.Units.FINANA;
+
 import static com.vtuberrush.src.main.GameStates.GAME_OVER;
 import static com.vtuberrush.src.main.GameStates.setGameState;
 

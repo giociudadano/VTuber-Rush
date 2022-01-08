@@ -4,7 +4,10 @@ import java.awt.Rectangle;
 
 import com.vtuberrush.src.managers.EnemyManager;
 
-import static com.vtuberrush.src.helpers.Constants.Direction.*;
+import static com.vtuberrush.src.helpers.Constants.Direction.UP;
+import static com.vtuberrush.src.helpers.Constants.Direction.DOWN;
+import static com.vtuberrush.src.helpers.Constants.Direction.LEFT;
+import static com.vtuberrush.src.helpers.Constants.Direction.RIGHT;
 
 public abstract class Enemy {
 	
@@ -38,7 +41,7 @@ public abstract class Enemy {
 		this.enemyType = enemyType;
 		this.enemyManager = enemyManager;
 		bounds = new Rectangle((int)x, (int)y, 32, 32);
-		direction = NONE;
+		direction = -1;
 		setMaxHealth();
 	}
 	
@@ -150,7 +153,7 @@ public abstract class Enemy {
 	public float getY() {
 		return y;
 	}
-
+	
 	public Rectangle getBounds() {
 		return bounds;
 	}

@@ -5,7 +5,11 @@ import java.awt.Graphics;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.ui.Button;
-import static com.vtuberrush.src.main.GameStates.*;
+
+import static com.vtuberrush.src.main.GameStates.PLAYING;
+import static com.vtuberrush.src.main.GameStates.EDITING;
+import static com.vtuberrush.src.main.GameStates.SETTINGS;
+import static com.vtuberrush.src.main.GameStates.setGameState;
 
 public class Menu extends GameScene implements SceneMethods {
 	

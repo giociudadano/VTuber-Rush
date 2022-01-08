@@ -1,7 +1,5 @@
 package com.vtuberrush.src.ui;
 
-import static com.vtuberrush.src.main.GameStates.*;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -12,6 +10,10 @@ import java.text.DecimalFormat;
 import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
+
+import static com.vtuberrush.src.main.GameStates.MENU;
+import static com.vtuberrush.src.main.GameStates.GAME_OVER;
+import static com.vtuberrush.src.main.GameStates.setGameState;
 
 public class ActionBar extends Bar{
 	private Playing playing;
