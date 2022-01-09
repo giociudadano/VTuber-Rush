@@ -28,6 +28,13 @@ import static com.vtuberrush.src.helpers.Constants.Units.FINANA;
 import static com.vtuberrush.src.main.GameStates.GAME_OVER;
 import static com.vtuberrush.src.main.GameStates.setGameState;
 
+/**
+ * A <b><i>playing game scene</i></b> is a subclass of a game scene that facilitates the
+ * game loop.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class Playing extends GameScene implements SceneMethods {
 
 	private int[][] level;
@@ -44,6 +51,12 @@ public class Playing extends GameScene implements SceneMethods {
 	private Flag start, end;
 	private Button buttonUpgrade, buttonSell, buttonUpgradeMax;
 	
+	/**
+	 * Creates a new <b><i>playing game scene</i></b>, attempts to load an
+	 * existing game level, initializes a new instance of all game managers,
+	 * and creates new buttons for upgrading and selling a displayed unit.
+	 * @param game - The current instance of the game.
+	 */
 	public Playing(Game game) {
 		super(game);
 		loadLevelDefault();
@@ -65,6 +78,15 @@ public class Playing extends GameScene implements SceneMethods {
 		end = flags.get(1);
 	}
 
+	/**
+	 * Facilitates the spawning and pathfinding of new waves and enemies <b>(WaveManager, EnemyManager)</b>;
+	 * the creation, deletion, and targeting of all units <b>(UnitManager)</b>; and the creation, deletion, and
+	 * velocity of projectiles <b>(ProjectileManager)</b>.
+	 * Grants additional passive gold to the player in set intervals. <p>
+	 * 
+	 * <i>For more information regarding the function of each game manager, please see the associated
+	 * package and classes.</i>
+	 */
 	public void tick() {
 		if (!gamePaused) {
 			tickAnimation();
@@ -182,14 +204,31 @@ public class Playing extends GameScene implements SceneMethods {
 		enemyManager.addEnemy(waveManager.getNextEnemy());
 	}
 	
+	/**
+	 * Creates a projectile in the location of the passed unit, which travels to the passed enemy based on the
+	 * unit's existing projectile speed.
+	 * @param unit - The unit dealing damage. The amount of damage is dependent on the unit source.
+	 * @param enemy - The enemy receiving the damage.
+	 */
 	public void shootEnemy(Unit unit, Enemy enemy) {
 		projectileManager.addProjectile(unit, enemy);
 	}
 	
+	/**
+	 * Deals damage to the passed enemy that is near the passed unit.<br>
+	 * Called when a <b><i>Petra</i></b> unit spots an enemy within range.
+	 * @param unit - The unit dealing damage. The amount of damage is dependent on the unit source.
+	 * @param enemy - The enemy receiving the damage.
+	 */
 	public void blastEnemy(Unit unit, Enemy enemy) {
 		enemy.takeDamage(unit.getDamage());
 	}
 	
+	/**
+	 * Adds gold to the user depending on the passed enemy type. <br>
+	 * Called when an enemy was killed.
+	 * @param type - The enemy type that was killed.
+	 */
 	public void addGold(int type) {
 		actionBar.addGold(Enemies.getReward(type));
 	}
@@ -198,6 +237,10 @@ public class Playing extends GameScene implements SceneMethods {
 		actionBar.subtractGold(Units.getCost(type));
 	}
 	
+	/**
+	 * Reduces the amount of lives of the player by the passed amount. <br>
+	 * @param amount - The amount of lives being subtracted. Dependent on the enemy type.
+	 */
 	public void subtractLives(int amount) {
 		actionBar.subtractLives(amount);
 	}
@@ -296,6 +339,9 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 	
+	/**
+	 * Resets all game managers, selections, pauses, gold, and mouse coordinates.
+	 */
 	public void resetGame() {
 		actionBar.resetGame();
 		enemyManager.resetGame();
@@ -340,7 +386,11 @@ public class Playing extends GameScene implements SceneMethods {
 		}
 	}
 
-	
+	/**
+	 * Dynamically checks if the user has pressed <b>ESCAPE</b> which unselects and
+	 * undisplays the currently selected and displayed unit.
+	 * @param e - The event indicating a key was pressed.
+	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			cancelSelection();
@@ -378,18 +428,34 @@ public class Playing extends GameScene implements SceneMethods {
 		return unitManager.getUnitAt(x, y);
 	}
 	
+	/**
+	 * Returns the current instance of the unit manager.
+	 * @return {@link #unitManager}
+	 */
 	public UnitManager getUnitManager() {
 		return unitManager;
 	}
 	
+	/**
+	 * Returns the current instance of the wave manager.
+	 * @return {@link #waveManager}
+	 */
 	public WaveManager getWaveManager() {
 		return waveManager;
 	}
 	
+	/**
+	 * Returns the current instance of the enemy manager.
+	 * @return {@link #enemyManager}
+	 */
 	public EnemyManager getEnemyManager() {
 		return enemyManager;
 	}
 	
+	/**
+	 * Returns the currently selected unit.
+	 * @return {@link #selectedUnit}
+	 */
 	public Unit getSelectedUnit() {
 		return selectedUnit;
 	}
@@ -403,6 +469,12 @@ public class Playing extends GameScene implements SceneMethods {
 		return (int) (Units.getCost(unit.getUnitType()) * 0.75);
 	}
 	
+	/**
+	 * Returns the type of the tile in the passed coordinates.
+	 * @param x - Defines the horizontal position of the unit from the left of the window in pixels.
+	 * @param y - Defines the vertical position of the unit from the top of the window in pixels.
+	 * @return <b>type</b> - The type of the tile based on the passed coordinates.
+	 */
 	public int getTileType(int x, int y) {
 		x = x / 32;
 		y = y / 32;
@@ -413,18 +485,36 @@ public class Playing extends GameScene implements SceneMethods {
 		return game.getTileManager().getTile(id).getTileType();
 	}
 	
+	/**
+	 * Returns <b><i>true</i></b> if the game is currently paused.
+	 * @return {@link #gamePaused}
+	 */
 	public boolean isGamePaused() {
 		return gamePaused;
 	}
 
+	/**
+	 * Sets the playing field equal to the passed two-dimensional level format which was
+	 * converted using <b>MathFunctions</b> from reading a level file in <b>LoadSave</b>.
+	 * @param level - The converted level file format.
+	 */
 	public void setLevel(int[][] level) {
 		this.level = level;
 	}
 	
+	/**
+	 * Modifies the currently selected unit to be the unit either clicked from the playing field
+	 * or clicked from the associated unit button in the action bar.
+	 * @param selectedUnit - The new unit that is selected.
+	 */
 	public void setSelectedUnit(Unit selectedUnit) {
 		this.selectedUnit = selectedUnit;
 	}
 	
+	/**
+	 * Pauses or unpauses the game.
+	 * @param gamePaused - Defines whether the game is currently paused.
+	 */
 	public void setGamePaused(boolean gamePaused) {
 		this.gamePaused = gamePaused;
 	}

@@ -186,7 +186,7 @@ public class UnitManager {
 	}
 	
 	/**
-	 * Places a new unit.
+	 * Places a new unit at the passed location.
 	 * @param unit - The unit being placed.
 	 * @param x - Defines the horizontal position of the unit from the left of the window in pixels rounded to the nearest tile.
 	 * @param y - Defines the vertical position of the unit from the top of the window in pixels rounded to the nearest tile.
@@ -196,7 +196,7 @@ public class UnitManager {
 	}
 	
 	/**
-	 * Removes the unit.
+	 * Removes the passed unit.
 	 * @param unit - The unit being removed.
 	 */
 	public void removeUnit(Unit unit) {
@@ -208,7 +208,7 @@ public class UnitManager {
 	}
 	
 	/**
-	 * Increments the level of the selected unit by one.
+	 * Increments the level of the passed unit by one.
 	 * @param unit - The unit being upgraded.
 	 */
 	public void upgradeUnit(Unit unit) {

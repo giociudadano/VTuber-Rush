@@ -10,6 +10,12 @@ import static com.vtuberrush.src.helpers.Constants.Tiles.WATER;
 import static com.vtuberrush.src.helpers.Constants.Tiles.GRASS;
 import static com.vtuberrush.src.helpers.Constants.Tiles.ROAD;
 
+/**
+ * Facilitates the rendering of tiles.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class TileManager {
 	
 	public Tile GRASS_BASE, GRASS_VAR_A, GRASS_VAR_B, GRASS_VAR_C;

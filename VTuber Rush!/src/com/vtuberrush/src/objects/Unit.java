@@ -8,7 +8,7 @@ import static com.vtuberrush.src.helpers.Constants.Units.PETRA;
 import static com.vtuberrush.src.helpers.Constants.Units.SELEN;
 
 /**
- * A <b><i>unit</i></b> is a superclass that interacts with any <b><i>enemy</i></b>
+ * A <b><i>unit</i></b> is a superclass object that interacts with any <b><i>enemy</i></b>
  * to prevent it from reaching the end of the level. <br>
  * A unit can be created, upgraded, and deleted by the user in order to defend waves
  * of enemies and complete the game.
@@ -26,8 +26,8 @@ public class Unit {
 	
 	/**
 	 * Creates a new unit with the passed unit type in the set location.
-	 * @param x - Defines the vertical position of the unit from the left of the window in pixels rounded to the nearest tile.
-	 * @param y - Defines the horizontal position of the unit from the top of the window in pixels rounded to the nearest tile.
+	 * @param x - Defines the horizontal position of the unit from the left of the window in pixels rounded to the nearest tile.
+	 * @param y - Defines the vertical position of the unit from the top of the window in pixels rounded to the nearest tile.
 	 * @param id - A unique identifier for this unit, used as the index in the <b><i>units</i></b> [Unit] array list.
 	 * @param unitType - Defines the type of this unit (e.g. Pomu, Finana, Elira).
 	 */

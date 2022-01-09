@@ -12,34 +12,38 @@ import java.awt.Graphics;
 public interface SceneMethods {
 	
 	/**
-	 * Defines that all game scenes must be able to render graphics.
+	 * Draws all objects to the game screen.
 	 * @param graphics - Responsible for drawing objects to the screen.
 	 */
 	public void render(Graphics graphics);
 	
 	/**
-	 * Defines that all game scenes must be able to listen to mouse clicks.
+	 * Checks if the position of the mouse being <i>clicked</i> is within bounds of an object,
+	 * and runs the appropriate method or function associated with clicking that object.
 	 * @param x - Defines the horizontal position of the mouse from the left of the window in pixels.
 	 * @param y - Defines the vertical position of the mouse from the top of the window in pixels.
 	 */
 	public void mouseClicked(int x, int y);
 	
 	/**
-	 * Defines that all game scenes must be able to listen to mouse movement.
+	 * Checks if the position of a mouse is within bounds of an object, and runs the appropriate
+	 * method or function associated with hovering over that object.
 	 * @param x - Defines the horizontal position of the mouse from the left of the window in pixels.
 	 * @param y - Defines the vertical position of the mouse from the top of the window in pixels.
 	 */
 	public void mouseMoved(int x, int y);
 	
 	/**
-	 * Defines that all game scenes must be able to listen to mouse presses.
+	 * Checks if the position of a mouse is within bounds of an object while being <i>pressed</i>, and
+	 * runs the appropriate method or function associated with pressing that object.
 	 * @param x - Defines the horizontal position of the mouse from the left of the window in pixels.
 	 * @param y - Defines the vertical position of the mouse from the top of the window in pixels.
 	 */
 	public void mousePressed(int x, int y);
 	
 	/**
-	 * Defines that all game scenes must be able to listen to mouse releases.
+	 * Checks if the position of a mouse is within bounds of an object after being <i>pressed</i>, and
+	 * runs the appropriate method or function associated after pressing that object.
 	 * @param x - Defines the horizontal position of the mouse from the left of the window in pixels.
 	 * @param y - Defines the vertical position of the mouse from the top of the window in pixels.
 	 */

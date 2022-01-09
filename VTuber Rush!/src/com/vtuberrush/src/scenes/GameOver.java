@@ -10,10 +10,23 @@ import static com.vtuberrush.src.main.GameStates.PLAYING;
 import static com.vtuberrush.src.main.GameStates.MENU;
 import static com.vtuberrush.src.main.GameStates.setGameState;
 
+/**
+ * An <b><i>game over game scene</i></b> is a subclass of a game scene that facilitates the
+ * resetting of the playing game scene when an end game condition is met such as finishing
+ * all waves in a map or when all lives of the player has been lost.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class GameOver extends GameScene implements SceneMethods{
 
 	private Button buttonReplay, buttonMenu;
 	
+	/**
+	 * Creates a new <b><i>game over game scene</i></b> and initializes the try again
+	 * and menu buttons.
+	 * @param game - The current instance of the game.
+	 */
 	public GameOver(Game game) {
 		super(game);
 		initButtons();
