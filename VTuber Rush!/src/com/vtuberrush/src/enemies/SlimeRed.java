@@ -2,10 +2,26 @@ package com.vtuberrush.src.enemies;
 
 import static com.vtuberrush.src.helpers.Constants.Enemies.SLIME_RED;
 
+import com.vtuberrush.src.managers.EnemyManager;
+
+/**
+ * A <b><i>Red Slime</i> (Level 3 Slime)</b> is a subclass of an <b><i>Enemy</i></b> with 625 health and 20.28 movement speed. <br>
+ * A red slime has 625% of the health and 56.33% of the movement speed of a green slime.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class SlimeRed extends Enemy {
 
-	public SlimeRed(float x, float y, int id) {
-		super(x, y, id, SLIME_RED);
+	/**
+	 * Creates a new <b><i>Red Slime</i></b> at the defined location.
+	 * @param x - Defines the horizontal position of where the enemy will spawn or where the <i>start</i> flag is located.
+	 * @param y - Defines the vertical position of where the enemy will spawn or where the <i>start</i> flag is located.
+	 * @param id - A unique identifier for this enemy.
+	 * @param enemyManager - Facilitates the rendering and pathfinding of this enemy.
+	 */
+	public SlimeRed(float x, float y, int id, EnemyManager enemyManager) {
+		super(x, y, id, SLIME_RED, enemyManager);
 	}
 
 }

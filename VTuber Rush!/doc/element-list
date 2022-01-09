@@ -1,0 +1,10 @@
+module:main
+com.vtuberrush.src.enemies
+com.vtuberrush.src.helpers
+com.vtuberrush.src.input
+com.vtuberrush.src.main
+com.vtuberrush.src.managers
+com.vtuberrush.src.objects
+com.vtuberrush.src.scenes
+com.vtuberrush.src.ui
+com.vtuberrush.src.waves

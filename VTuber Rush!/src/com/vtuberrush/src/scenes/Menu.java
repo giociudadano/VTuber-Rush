@@ -1,21 +1,34 @@
 package com.vtuberrush.src.scenes;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
+import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.ui.Button;
-import static com.vtuberrush.src.main.GameStates.*;
 
+import static com.vtuberrush.src.main.GameStates.PLAYING;
+import static com.vtuberrush.src.main.GameStates.EDITING;
+import static com.vtuberrush.src.main.GameStates.SETTINGS;
+import static com.vtuberrush.src.main.GameStates.setGameState;
+
+/**
+ * An <b><i>menu game scene</i></b> is a subclass of a game scene that facilitates the
+ * the changing of different game states and moving across different game scenes.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class Menu extends GameScene implements SceneMethods {
 	
 	private Button buttonPlaying, buttonEditing, buttonSettings, buttonQuit;
 	
+
+	/**
+	 * Creates a new <b><i>menu game scene</i></b>, and initializes
+	 * all the buttons for changing the current game state and moving
+	 * across different game scenes.
+	 * @param game - The current instance of the game.
+	 */
 	public Menu(Game game) {
 		super(game);
 		initButtons();
@@ -23,7 +36,29 @@ public class Menu extends GameScene implements SceneMethods {
 
 	@Override
 	public void render(Graphics graphics) {
+		graphics.drawImage(LoadSave.getBackground(), 0, 0, null);
 		drawButtons(graphics);
+	}
+
+	private void initButtons() {
+		buttonPlaying = new Button("Play", 550, 350, 200, 60);
+		buttonEditing = new Button("Edit", 550, 420, 200, 60);
+		buttonSettings = new Button("Settings", 550, 490, 200, 60);
+		buttonQuit = new Button("Exit", 550, 560, 200, 60);
+	}
+
+	private void drawButtons(Graphics graphics) {
+		buttonPlaying.draw(graphics);
+		buttonEditing.draw(graphics);
+		buttonSettings.draw(graphics);
+		buttonQuit.draw(graphics);
+	}
+	
+	private void resetButtons() {
+		buttonPlaying.resetButtons();
+		buttonEditing.resetButtons();
+		buttonSettings.resetButtons();
+		buttonQuit.resetButtons();
 	}
 	
 	@Override
@@ -79,27 +114,6 @@ public class Menu extends GameScene implements SceneMethods {
 	
 	@Override
 	public void mouseDragged(int x, int y) {
-	}
-	
-	private void initButtons() {
-		buttonPlaying = new Button("Play", 550, 250, 200, 60);
-		buttonEditing = new Button("Edit", 550, 320, 200, 60);
-		buttonSettings = new Button("Settings", 550, 390, 200, 60);
-		buttonQuit = new Button("Exit", 550, 460, 200, 60);
-	}
-
-	private void drawButtons(Graphics graphics) {
-		buttonPlaying.draw(graphics);
-		buttonEditing.draw(graphics);
-		buttonSettings.draw(graphics);
-		buttonQuit.draw(graphics);
-	}
-	
-	private void resetButtons() {
-		buttonPlaying.resetButtons();
-		buttonEditing.resetButtons();
-		buttonSettings.resetButtons();
-		buttonQuit.resetButtons();
 	}
 
 }
