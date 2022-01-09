@@ -1,7 +1,5 @@
 package com.vtuberrush.src.ui;
 
-import static com.vtuberrush.src.main.GameStates.*;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;
@@ -13,6 +11,19 @@ import com.vtuberrush.src.helpers.Constants.Units;
 import com.vtuberrush.src.objects.Unit;
 import com.vtuberrush.src.scenes.Playing;
 
+import static com.vtuberrush.src.main.GameStates.MENU;
+import static com.vtuberrush.src.main.GameStates.GAME_OVER;
+import static com.vtuberrush.src.main.GameStates.setGameState;
+
+/**
+ * An <b><i>action bar</i></b> is a subclass of a <b><i>bar</i></b> used for selecting and placing
+ * down units in the game's playing field. <br>
+ * An action bar contains a collection of <b><i>Unit Buttons</i></b> which can be selected and placed
+ * down when clicking on the playing field.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class ActionBar extends Bar{
 	private Playing playing;
 	private Button buttonMenu, buttonPause;
@@ -24,12 +35,25 @@ public class ActionBar extends Bar{
 	private int gold = 150;
 	private int lives = 20;
 	
+	/**
+	 * Creates a new bar in defined location, and initializes all unit icons and unit sprites.
+	 * @param x - The horizontal position of the bar from the left of the window in pixels.
+	 * @param y - The vertical position of the bar from the top of the window in pixels.
+	 * @param width - The horizontal size of the bar in pixels.
+	 * @param height - The vertical size of the bar in pixels.
+	 * @param playing - Defines the specific instance of the scene where the action bar is initialized.
+	 */
 	public ActionBar(int x, int y, int width, int height, Playing playing) {
 		super(x, y, width, height);
 		this.playing = playing;
 		initButtons();
 	}
 	
+	/**
+	 * Renders all unit buttons, the currently selected and displayed units on the playing field,
+	 * the statistics of the currently selected unit, and information regarding the game being paused.
+	 * @param graphics - Responsible for drawing objects to the screen.
+	 */
 	public void draw(Graphics graphics) {
 		graphics.setColor(new Color(62, 69, 87, 200));
 		graphics.fillRect(x, y, width, height);
@@ -68,6 +92,11 @@ public class ActionBar extends Bar{
 		}
 	}
 	
+	/**
+	 * Dynamically updates the color of the unit buttons in the action bar when it is being <i>hovered</i> or <i>pressed</i>.
+	 * @param graphics - Responsible for drawing objects to the screen.
+	 * @param button - Contains information on what button is being updated.
+	 */
 	public void drawButtonsFeedback(Graphics graphics, Button button) {
 		Graphics2D graphics2d = (Graphics2D) graphics;
 		if(button.isMouseOver()) {
@@ -171,14 +200,30 @@ public class ActionBar extends Bar{
 		}
 	}
 	
+	/**
+	 * Adds gold equal to the passed amount. Called by the tick method as passive income
+	 * or by the <b>EnemyManager</b> when an enemy is killed.
+	 * @param amount - Amount of gold being added. Dependent on the enemy type being killed.
+	 */
 	public void addGold(int amount) {
 		this.gold += amount;
 	}
 	
+	/**
+	 * Subtracts gold equal to the passed amount. Called when placing down a
+	 * unit or when upgrading a unit in field.
+	 * @param amount - Amount of gold being subtracted. Dependent on the upgrade or unit cost.
+	 */
 	public void subtractGold(int amount) {
 		this.gold -= amount;
 	}
 	
+	/**
+	 * Subtracts player lies equal to the passed amount. Called when an enemy reaches
+	 * the <i>end</i> flag of a level. Sets to a game end condition when player lives
+	 * have all run out.
+	 * @param amount - Amount of lives being subtracted. Higher-level enemies subtract more lives.
+	 */
 	public void subtractLives(int amount) {
 		this.lives -= amount;
 		if (lives <= 0) {
@@ -195,6 +240,9 @@ public class ActionBar extends Bar{
 		}
 	}
 	
+	/**
+	 * Unselects the currently selected and displayed unit and resets the current lives and gold of the user.
+	 */
 	public void resetGame() {
 		gold = 150;
 		lives = 20;
@@ -202,10 +250,21 @@ public class ActionBar extends Bar{
 		displayedUnit = null;
 	}
 	
+	/**
+	 * Returns <b><i>true</i></b> if there is sufficient gold to be subtracted from the user when the passed
+	 * <b><i>unit</i></b> is placed on the field.
+	 * @param unit - The selected unit being placed.
+	 */
 	public boolean isPurchasable(Unit unit) {
 		return gold >= Units.getCost(unit.getUnitType());
 	}
 	
+	/**
+	 * Traverses the list of buttons and checks if the position being clicked is within bounds of a button, selecting
+	 * and displaying that unit if it is a unit button and running the associated method if it is a regular button.
+	 * @param x - The horizontal position of the mouse from the left of the window in pixels.
+	 * @param y - The vertical position of the mouse from the top of the window in pixels.
+	 */
 	public void mouseClicked(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			setGameState(MENU);
@@ -223,6 +282,13 @@ public class ActionBar extends Bar{
 		}
 	} 
 
+	/**
+	 * Traverses the list of buttons and checks if the position of a mouse is within bounds of a button, dynamically
+	 * updating the color of the unit button when <i>hovered</i>.<br>
+	 * If the mouse is not hovered, the <i>hovered</i> condition is set to <b><i>false</i></b> by default.
+	 * @param x - The horizontal position of the mouse from the left of the window in pixels.
+	 * @param y - The vertical position of the mouse from the top of the window in pixels.
+	 */
 	public void mouseMoved(int x, int y) {
 		buttonMenu.setMouseOver(false);
 		buttonPause.setMouseOver(false);
@@ -242,7 +308,13 @@ public class ActionBar extends Bar{
 		}
 		
 	}
-
+	
+	/**
+	 * Traverses the list of buttons and checks if the position being clicked is within bounds of a button, dynamically
+	 * updating the border color of the unit button when <i>pressed</i>.<br>
+	 * @param x - The horizontal position of the mouse from the left of the window in pixels.
+	 * @param y - The vertical position of the mouse from the top of the window in pixels.
+	 */
 	public void mousePressed(int x, int y) {
 		if (buttonMenu.getBounds().contains(x, y)) {
 			buttonMenu.setMousePressed(true);
@@ -257,7 +329,11 @@ public class ActionBar extends Bar{
 		}
 	}
 	
-
+	/**
+	 * Dynamically resets all buttons after a button is <i>pressed</i>.
+	 * @param x - The horizontal position of the mouse from the left of the window in pixels.
+	 * @param y - The vertical position of the mouse from the top of the window in pixels.
+	 */
 	public void mouseReleased(int x, int y) {
 		buttonMenu.resetButtons();
 		buttonPause.resetButtons();
@@ -266,18 +342,37 @@ public class ActionBar extends Bar{
 		}
 	}
 	
+	/**
+	 * Sets the displayed unit to the passed unit. <br>
+	 * Called when clicking on a unit in the playing field or when clicking a unit button.
+	 * @param unit - The unit being displayed.
+	 */
 	public void setDisplayedUnit(Unit unit) {
 		displayedUnit = unit;
 	}
 	
+	/**
+	 * Returns the currently displayed unit.
+	 * @return {@link #displayedUnit}
+	 */
 	public Unit getDisplayedUnit() {
 		return displayedUnit;
 	}
 	
+	/**
+	 * Returns the amount of gold the player currently has. <br>
+	 * Called when updating gold information and making purchases.
+	 * @return {@link #gold}
+	 */
 	public int getGold() {
 		return gold;
 	}
 	
+	/**
+	 * Returns the amount of lives the player currently has. <br>
+	 * Called when subtracting lives and checking or a game end condition.
+	 * @return {@link #lives}
+	 */
 	public int getLives() {
 		return lives;
 	}

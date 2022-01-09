@@ -13,6 +13,14 @@ import com.vtuberrush.src.ui.ToolBar;
 
 import static com.vtuberrush.src.helpers.Constants.Tiles.ROAD;
 
+/**
+ * An <b><i>editing game scene</i></b> is a subclass of a game scene that facilitates the
+ * editing and modification of level tiles.
+ * the mouse with other game objects such as buttons, and allows interacting
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class Editing extends GameScene implements SceneMethods{
 	
 	private int[][] level;
@@ -25,6 +33,11 @@ public class Editing extends GameScene implements SceneMethods{
 	
 	private Flag start, end;
 
+	/**
+	 * Creates a new <b><i>editing game scene</i></b>, attempts to load an
+	 * existing game level, and initializes a new toolbar object.
+	 * @param game - The current instance of the game.
+	 */
 	public Editing(Game game) {
 		super(game);
 		loadLevelDefault();
@@ -38,6 +51,9 @@ public class Editing extends GameScene implements SceneMethods{
 		end = flags.get(1);
 	}
 	
+	/**
+	 * Updates the animation of all tiles in the editing field.
+	 */
 	public void tick() {
 		tickAnimation();
 	}
@@ -65,6 +81,10 @@ public class Editing extends GameScene implements SceneMethods{
 		}
 	}
 	
+	/**
+	 * Saves all changes made in the level editor to the level file and updates the
+	 * current instance of the level across the editing and playing fields.
+	 */
 	public void saveLevel() {
 		LoadSave.saveLevel("new_level", level, start, end);
 		game.getPlaying().setLevel(level);
@@ -86,6 +106,11 @@ public class Editing extends GameScene implements SceneMethods{
 		}
 	}
 
+	/**
+	 * Modifies the currently selected tile to the first tile in a category mapped to the new button pressed,
+	 * or the next tile in the category of the last selected tile if a new variant was requested.
+	 * @param tile - The new tile that is selected.
+	 */
 	public void setSelectedTile(Tile tile) {
 		this.selectedTile = tile;
 		drawSelectedTile = true;
@@ -157,7 +182,12 @@ public class Editing extends GameScene implements SceneMethods{
 		}
 	}
 	
-	//Keyboard Methods
+	/**
+	 * Dynamically checks if the user has pressed <b>R</b> which changes the current tile
+	 * into the next tile in the same category, given that the currently selected tile belongs
+	 * to a tile category (e.g. grass corners, grass variants, etc.).
+	 * @param e - The event indicating a key was pressed.
+	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_R) {
 			toolBar.getVariant();

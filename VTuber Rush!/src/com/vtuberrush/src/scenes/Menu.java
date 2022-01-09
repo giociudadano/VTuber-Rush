@@ -5,12 +5,30 @@ import java.awt.Graphics;
 import com.vtuberrush.src.helpers.LoadSave;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.ui.Button;
-import static com.vtuberrush.src.main.GameStates.*;
 
+import static com.vtuberrush.src.main.GameStates.PLAYING;
+import static com.vtuberrush.src.main.GameStates.EDITING;
+import static com.vtuberrush.src.main.GameStates.SETTINGS;
+import static com.vtuberrush.src.main.GameStates.setGameState;
+
+/**
+ * An <b><i>menu game scene</i></b> is a subclass of a game scene that facilitates the
+ * the changing of different game states and moving across different game scenes.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class Menu extends GameScene implements SceneMethods {
 	
 	private Button buttonPlaying, buttonEditing, buttonSettings, buttonQuit;
 	
+
+	/**
+	 * Creates a new <b><i>menu game scene</i></b>, and initializes
+	 * all the buttons for changing the current game state and moving
+	 * across different game scenes.
+	 * @param game - The current instance of the game.
+	 */
 	public Menu(Game game) {
 		super(game);
 		initButtons();

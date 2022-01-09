@@ -10,10 +10,23 @@ import java.awt.Graphics;
 import com.vtuberrush.src.main.Game;
 import com.vtuberrush.src.ui.Button;
 
+/**
+ * An <b><i>settings game scene</i></b> is a subclass of a game scene is a <i>future use</i>
+ * scene for adjusting the settings, currently being used by the author as acknowledgement to
+ * all the players currently playing the game.
+ * 
+ * @author Gio Carlo Ciudadano
+ * @version 0.0.1-alpha.1
+ */
 public class Settings extends GameScene implements SceneMethods {
 
 	private Button buttonMenu;
 	
+	/**
+	 * Creates a new <b><i>settings game scene</i></b>, and initializes
+	 * the button for going back to the main menu.
+	 * @param game - The current instance of the game.
+	 */
 	public Settings(Game game) {
 		super(game);
 		initButtons();
